@@ -10,6 +10,8 @@ notifySign.appendChild(signImageNotify);
 
 let notifySrc = '';
 let numSigns = 10;
+var roundNumber = 0;
+
 
 //playContainer.appendChild(signImagePlay);
 function getRandomInt(min, max) {
@@ -57,6 +59,10 @@ function populateGame() {
 
 
     numSigns += 3;
+
+    roundNumber++;
+    var element = document.getElementById("roundCounter");
+    element.textContent = "Round " + roundNumber;
 
 }
 
