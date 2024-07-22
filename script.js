@@ -4,7 +4,14 @@ const playContainer = document.querySelector(".play-container");
 console.log(playContainer);
 
 const notifySign = document.querySelector(".notify-sign");
+const signImageNotify = document.createElement("img");
+//const signImagePlay = signImageNotify.cloneNode(true);
+notifySign.appendChild(signImageNotify);
 
+let notifySrc = '';
+let numSigns = 10;
+
+//playContainer.appendChild(signImagePlay);
 function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -12,29 +19,53 @@ function getRandomInt(min, max) {
 }
 
 function updateUI() {
-  signImageNotify;
-  signImagePlay;
+    newWaldo();
+    populateGame();
 }
 
-const signImageNotify = document.createElement("img");
+function newWaldo() {
+    notifySrc = `./assets/signs/image_${getRandomInt(1, 515)}.png`;
+    signImageNotify.src = notifySrc;
+    //signImagePlay.src = newSrc;
+    signImageNotify.alt = "Traffic sign";
 
-signImageNotify.src = `./assets/signs/image_${getRandomInt(1, 515)}.png`;
-
-signImageNotify.alt = "Traffic sign";
-
-const signImagePlay = signImageNotify.cloneNode(true);
-
-notifySign.appendChild(signImageNotify);
-playContainer.appendChild(signImagePlay);
-
-signImage.src = `./assets/signs/image_${getRandomInt(1, 515)}.png`;
-
-const numSigns = 10;
-
-let imgList = [];
-
-for (i = 0; i < numSigns; i++) {
-  const newSign = document.createElement("img");
-  newSign.src = `./assets/signs/image_${getRandomInt(1, 515)}.png`;
-  playContainer.appendChild(newSign);
 }
+
+function populateGame() {
+    playContainer.innerHTML = '';
+
+    let imgList = [];
+    
+    //getting random image sources and appending to a list
+    for (i = 0; i < numSigns; i++) {
+        let newSignSrc = `./assets/signs/image_${getRandomInt(1, 515)}.png`;
+        imgList.push(newSignSrc);
+    }
+    //add Waldo image
+    let notifyLoc = getRandomInt(0, numSigns)
+    imgList.splice(notifyLoc,0, notifySrc);
+
+    //populate container
+    for (i = 0; i < imgList.length; i++){
+        const newSign = document.createElement("img");
+        newSign.src = imgList[i];
+        if (i == notifyLoc){
+            newSign.addEventListener('click', ()=> updateUI());
+        }
+        playContainer.appendChild(newSign);
+    }
+
+
+    numSigns += 3;
+
+}
+
+//signImagePlay.addEventListener('click', ()=> updateUI());
+
+updateUI();
+
+
+
+//signImage.src = `./assets/signs/image_${getRandomInt(1, 515)}.png`;
+
+
