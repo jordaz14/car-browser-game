@@ -2,3 +2,9 @@
   padding: 0px;
   margin: 0px;
 }
+
+.traffic-scene {
+  background-color: lightblue;
+  width: 500px;
+  height: 500px;
+}
