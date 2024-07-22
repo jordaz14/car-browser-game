@@ -1,7 +1,7 @@
 * {
   padding: 0px;
   margin: 0px;
-  font-family: sans-serif;
+  font-family: 'Highway Gothic', sans-serif;
 }
 
 body {
@@ -19,3 +19,11 @@ body {
   width: 1000px;
   height: 500px;
 }
+
+@font-face {
+  font-family: 'Highway Gothic';
+  src: url('./assets/fonts/HWYGOTH.TTF') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
