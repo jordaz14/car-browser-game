@@ -18,6 +18,8 @@ body {
   background-color: gray;
   width: 1000px;
   height: 500px;
+  overflow: auto;
+
 }
 
 @font-face {
