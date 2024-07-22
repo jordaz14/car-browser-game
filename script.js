@@ -1,6 +1,7 @@
 console.log("Welcome to Traffic Game.");
 
 const playContainer = document.querySelector(".play-container");
+console.log(playContainer);
 
 const notifySign = document.querySelector(".notify-sign");
 
@@ -10,13 +11,30 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-const signImage = document.createElement("img");
+function updateUI() {
+  signImageNotify;
+  signImagePlay;
+}
 
-signImage.src = `./assets/signs/image_${getRandomInt(0, 10)}.png`;
+const signImageNotify = document.createElement("img");
 
-signImage.alt = "Traffic sign";
+signImageNotify.src = `./assets/signs/image_${getRandomInt(1, 515)}.png`;
 
-console.log(signImage);
+signImageNotify.alt = "Traffic sign";
 
-playContainer.appendChild(signImage);
-notifySign.appendChild(signImage);
+const signImagePlay = signImageNotify.cloneNode(true);
+
+notifySign.appendChild(signImageNotify);
+playContainer.appendChild(signImagePlay);
+
+signImagePlay.addEventListener("click", () => updateUI());
+
+const numSigns = 10;
+
+let imgList = [];
+
+for (i = 0; i < numSigns; i++) {
+  const newSign = document.createElement("img");
+  newSign.src = `./assets/signs/image_${getRandomInt(1, 515)}.png`;
+  playContainer.appendChild(newSign);
+}
