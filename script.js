@@ -12,7 +12,7 @@ function getRandomInt(min, max) {
 
 const signImage = document.createElement("img");
 
-signImage.src = `./assets/signs/image_${getRandomInt(0, 10)}.png`;
+signImage.src = `./assets/signs/image_${getRandomInt(1, 515)}.png`;
 
 signImage.alt = "Traffic sign";
 
