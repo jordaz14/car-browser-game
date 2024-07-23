@@ -1,20 +1,37 @@
 const movableCar = document.querySelector(".car");
 const otherCar = document.querySelector(".other-car");
 const roadContainer = document.querySelector(".road");
+const notifySign = document.querySelector(".notify-sign");
+let gameActive = false;
 
-document.addEventListener("keydown", (e) => {
+startGame();
+
+function startGame() {
+  gameActive = true;
+  document.addEventListener("keydown", handleKeyDown);
+}
+
+function stopGame() {
+  gameActive = false;
+  document.removeEventListener("keydown", handleKeyDown);
+}
+
+function handleKeyDown(e) {
+  if (!gameActive) return;
+
   const roadRect = roadContainer.getBoundingClientRect();
   const carRect = movableCar.getBoundingClientRect();
   const otherCarRect = otherCar.getBoundingClientRect();
 
-  moveUserCar(e, carRect, roadRect);
+  moveCar(e, carRect, roadRect);
 
   if (checkIfTouching(carRect, otherCarRect)) {
-    alert("CRASH!");
+    notifySign.style.display = "flex";
+    stopGame();
   }
-});
+}
 
-function moveUserCar(e, movingRect, containerRect) {
+function moveCar(e, movingRect, containerRect) {
   const step = 20;
 
   let newLeft = movingRect.left - containerRect.left;
