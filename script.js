@@ -9,10 +9,10 @@ notifySign.appendChild(signImageNotify);
 
 let notifySrc = "";
 let numSigns = 10;
+function getRandomInt(min, max) {
 let roundNumber = 0;
 const MAXROUNDS = 10;
 
-function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;

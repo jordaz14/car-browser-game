@@ -1,0 +1,33 @@
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
+body {
+  display: flex;
+  height: 100vh;
+}
+
+.dirt {
+  background-color: black;
+  color: white;
+  flex: 1;
+  height: 100%;
+}
+
+.road {
+  flex: 3;
+  position: relative;
+}
+
+.car {
+  position: absolute;
+  background-color: black;
+  border: solid;
+  border-color: white;
+  border-radius: 25px;
+  width: 50px;
+  height: 50px;
+  top: 0;
+  left: 0;
+}
