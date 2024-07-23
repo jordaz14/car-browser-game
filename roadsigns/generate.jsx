@@ -1,11 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { ArrowUpRight } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import { ArrowUpRight } from "lucide-react";
 
-const cities = ['Albuquerque', 'Los Angeles', 'New York City', 'Jersey City', 'El Paso', 'Dallas'];
+const cities = [
+  "Albuquerque",
+  "Los Angeles",
+  "New York City",
+  "Jersey City",
+  "El Paso",
+  "Dallas",
+];
 
 const TrafficSign = () => {
-  const [city, setCity] = useState('');
-  const [interstate, setInterstate] = useState('');
+  const [city, setCity] = useState("");
+  const [interstate, setInterstate] = useState("");
 
   useEffect(() => {
     const changeSign = () => {

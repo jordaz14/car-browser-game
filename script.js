@@ -54,13 +54,17 @@ function populateGame() {
   let notifyLoc = getRandomInt(0, numSigns);
   imgList.splice(notifyLoc, 0, notifySrc);
 
-  //populate container
-  for (i = 0; i < imgList.length; i++) {
+  // Populate play container with traffic signs
+  for (i = 0; i < numSigns; i++) {
     const newSign = document.createElement("img");
     newSign.src = imgList[i];
+
     if (i == notifyLoc) {
       newSign.addEventListener("click", () => playRound());
+    } else {
+      newSign.addEventListener("click", () => alert("Game Over"));
     }
+
     playContainer.appendChild(newSign);
   }
 
