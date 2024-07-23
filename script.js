@@ -37,17 +37,20 @@ function populateGame() {
   // Clear play container every round
   playContainer.innerHTML = "";
 
+  // Set empty list of img sources every round
   let imgList = [];
 
-  //getting random image sources and appending to a list
+  // Push random img src from assets to imgList
   for (i = 0; i < numSigns; i++) {
     let newSignSrc = `./assets/signs/image_${getRandomInt(1, 515)}.png`;
+
+    // Enusre that new image added is not the same as as notify image
     if (newSignSrc != notifySrc) {
       imgList.push(newSignSrc);
     }
   }
 
-  //add Waldo image
+  // Insert notify image src to random location in imgList
   let notifyLoc = getRandomInt(0, numSigns);
   imgList.splice(notifyLoc, 0, notifySrc);
 
