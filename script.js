@@ -54,28 +54,57 @@ function isOverlapping(newPos, newSize, existingPositions) {
     return false;
 }
 
+
 //random positioning in tightly bound shape
 function getPosition(existingPositions, size, allowOverflow) {
     const containerRect = playContainer.getBoundingClientRect();
-    const maxX = containerRect.width - size.width;
-    const maxY = containerRect.height - size.height;
+    const padding = 1;
+
+    if (existingPositions.length === 0) {
+        // Place the first sign randomly within the container
+        return {
+            x: containerRect.left + Math.random() * (containerRect.width - size.width),
+            y: containerRect.top + Math.random() * (containerRect.height - size.height)
+        };
+    }
 
     for (let attempts = 0; attempts < maxPlacementAttempts; attempts++) {
         let x, y;
         if (allowOverflow) {
-            // Allow positions outside the container
-            x = betaDistribution(1, 1) * maxX;
-            y = betaDistribution(1, 1) * maxY;
+            // Allow positions outside the container to the left, right, above, or below
+            const edge = Math.floor(Math.random() * 4);
+            switch(edge) {
+                case 0: // Top
+                    x = clusterBounds.left + Math.random() * (clusterBounds.right - clusterBounds.left);
+                    y = clusterBounds.top - size.height - padding;
+                    break;
+                case 1: // Right
+                    x = clusterBounds.right + padding;
+                    y = clusterBounds.top + Math.random() * (clusterBounds.bottom - clusterBounds.top);
+                    break;
+                case 2: // Bottom
+                    x = clusterBounds.left + Math.random() * (clusterBounds.right - clusterBounds.left);
+                    y = clusterBounds.bottom + padding;
+                    break;
+                case 3: // Left
+                    x = clusterBounds.left - size.width - padding;
+                    y = clusterBounds.top + Math.random() * (clusterBounds.bottom - clusterBounds.top);
+                    break;
+            }
         } else {
             // Use beta distribution for positions inside the container
+            const maxX = containerRect.width;
+            const maxY = containerRect.height;
+            
+            // Use beta distribution with adjusted parameters for better spread
             x = betaDistribution(4, 4) * maxX;
             y = betaDistribution(4, 4) * maxY;
+            
+            // Adjust positions relative to the container
         }
         let newPos = { x, y };
 
         if (!isOverlapping(newPos, size, existingPositions)) {
-            return newPos;
-        } else if (isOverlapping && allowOverflow) {
             return newPos;
         }
     }
