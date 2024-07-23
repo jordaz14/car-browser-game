@@ -1,28 +1,30 @@
 console.log("Welcome to Traffic Game.");
 
 const playContainer = document.querySelector(".play-container");
-console.log(playContainer);
-
 const notifySign = document.querySelector(".notify-sign");
 const signImageNotify = document.createElement("img");
 const roundCounter = document.getElementById("roundCounter");
-//const signImagePlay = signImageNotify.cloneNode(true);
+
 notifySign.appendChild(signImageNotify);
 
 let notifySrc = "";
 let numSigns = 10;
 let roundNumber = 0;
+const MAXROUNDS = 10;
 
-//playContainer.appendChild(signImagePlay);
 function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function updateUI() {
-  newWaldo();
-  populateGame();
+function playRound() {
+  if (roundNumber > MAXROUNDS - 1) {
+    alert("Game Over");
+  } else {
+    newWaldo();
+    populateGame();
+  }
 }
 
 function newWaldo() {
@@ -55,7 +57,7 @@ function populateGame() {
     const newSign = document.createElement("img");
     newSign.src = imgList[i];
     if (i == notifyLoc) {
-      newSign.addEventListener("click", () => updateUI());
+      newSign.addEventListener("click", () => playRound());
     }
     playContainer.appendChild(newSign);
   }
@@ -67,8 +69,8 @@ function populateGame() {
   roundCounter.textContent = `Round ${roundNumber}`;
 }
 
-//signImagePlay.addEventListener('click', ()=> updateUI());
+//signImagePlay.addEventListener('click', ()=> startNewRound());
 
-updateUI();
+playRound();
 
 //signImage.src = `./assets/signs/image_${getRandomInt(1, 515)}.png`;
