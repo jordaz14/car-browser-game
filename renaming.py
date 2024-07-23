@@ -1,29 +1,31 @@
 import os
 
-def rename_files_sequentially(directory, total_files):
-    # List all files in the directory and sort them
-    files = sorted(os.listdir(directory))
-    # Filter only the files that start with 'image_' and end with '.png'
+def rename_files(directory, total_files):
+    # List all files in the directory
+    files = os.listdir(directory)
+    # Filter only the image files
     image_files = [f for f in files if f.startswith('image_') and f.endswith('.png')]
     
-    # Make sure the number of image files matches the expected count
-    if len(image_files) != total_files:
-        print(f"Warning: The number of files in the directory ({len(image_files)}) does not match the expected ({total_files}).")
-        return
+    # Step 1: Rename all files to a temporary name
+    temp_prefix = "temp_image_"
+    for file in image_files:
+        temp_name = temp_prefix + file.split('_')[1]
+        old_path = os.path.join(directory, file)
+        temp_path = os.path.join(directory, temp_name)
+        os.rename(old_path, temp_path)
     
-    # Rename files sequentially
-    for index, file in enumerate(image_files, start=1):
-        new_name = f'image_{index}.png'
-        old_file = os.path.join(directory, file)
-        new_file = os.path.join(directory, new_name)
-        
-        # Rename the file if the new name is different from the current name
-        if new_name != file:
-            os.rename(old_file, new_file)
+    # Step 2: Rename from temporary names to final names in sequential order
+    temp_files = sorted(os.listdir(directory))
+    temp_image_files = [f for f in temp_files if f.startswith(temp_prefix)]
+    
+    for index, temp_file in enumerate(temp_image_files, start=1):
+        final_name = f'image_{index}.png'
+        temp_path = os.path.join(directory, temp_file)
+        final_path = os.path.join(directory, final_name)
+        os.rename(temp_path, final_path)
     
     print(f"All files have been renamed sequentially from image_1.png to image_{total_files}.png")
 
-# Example usage
 directory_path = './assets/signs'
-total_files = 515
-rename_files_sequentially(directory_path, total_files)
+total_files = 514
+rename_files(directory_path, total_files)

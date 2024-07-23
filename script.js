@@ -39,9 +39,13 @@ function populateGame() {
     let imgList = [];
     
     //getting random image sources and appending to a list
-    for (i = 0; i < numSigns; i++) {
+    let i = 0;
+    while (i < numSigns) {
         let newSignSrc = `./assets/signs/image_${getRandomInt(1, 515)}.png`;
-        imgList.push(newSignSrc);
+        if (newSignSrc != notifySrc) {
+            imgList.push(newSignSrc);
+            i++;
+        }
     }
     //add Waldo image
     let notifyLoc = getRandomInt(0, numSigns)
