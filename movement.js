@@ -1,15 +1,24 @@
 const movableCar = document.querySelector(".car");
 const otherCar = document.querySelector(".other-car");
-const roadContainer = movableCar.parentElement;
+const roadContainer = document.querySelector(".road");
 
 document.addEventListener("keydown", (e) => {
-  const step = 20;
   const roadRect = roadContainer.getBoundingClientRect();
   const carRect = movableCar.getBoundingClientRect();
   const otherCarRect = otherCar.getBoundingClientRect();
 
-  let newLeft = carRect.left - roadRect.left;
-  let newTop = carRect.top - roadRect.top;
+  moveUserCar(e, carRect, roadRect);
+
+  if (checkIfTouching(carRect, otherCarRect)) {
+    alert("CRASH!");
+  }
+});
+
+function moveUserCar(e, movingRect, containerRect) {
+  const step = 20;
+
+  let newLeft = movingRect.left - containerRect.left;
+  let newTop = movingRect.top - containerRect.top;
 
   switch (e.key) {
     case "ArrowUp":
@@ -24,31 +33,26 @@ document.addEventListener("keydown", (e) => {
     case "ArrowRight":
       newLeft += step;
       break;
-      return;
   }
 
   newLeft = Math.max(
     0,
-    Math.min(newLeft, roadRect.width - movableCar.offsetWidth)
+    Math.min(newLeft, containerRect.width - movableCar.offsetWidth)
   );
   newTop = Math.max(
     0,
-    Math.min(newTop, roadRect.height - movableCar.offsetHeight)
+    Math.min(newTop, containerRect.height - movableCar.offsetHeight)
   );
 
   movableCar.style.left = `${newLeft}px`;
   movableCar.style.top = `${newTop}px`;
+}
 
-  if (checkIfTouching(carRect, otherCarRect)) {
-    alert("CRASH!");
-  }
-});
-
-const checkIfTouching = (rect1, rect2) => {
+function checkIfTouching(rect1, rect2) {
   return !(
     rect1.right < rect2.left ||
     rect1.left > rect2.right ||
     rect1.bottom < rect2.top ||
     rect1.top > rect2.bottom
   );
-};
+}
