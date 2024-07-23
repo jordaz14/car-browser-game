@@ -3,17 +3,27 @@ const otherCar = document.querySelector(".other-car");
 const roadContainer = document.querySelector(".road");
 const notifySign = document.querySelector(".notify-sign");
 let gameActive = false;
+let animationFrameId;
+
+let newTop = 0;
 
 startGame();
 
 function startGame() {
   gameActive = true;
   document.addEventListener("keydown", handleKeyDown);
+  gameLoop();
 }
 
 function stopGame() {
   gameActive = false;
   document.removeEventListener("keydown", handleKeyDown);
+}
+
+function gameLoop() {
+  console.log(animationFrameId);
+  moveTraffic();
+  animationFrameId = requestAnimationFrame(gameLoop);
 }
 
 function handleKeyDown(e) {
@@ -72,4 +82,11 @@ function checkIfTouching(rect1, rect2) {
     rect1.bottom < rect2.top ||
     rect1.top > rect2.bottom
   );
+}
+
+function moveTraffic() {
+  console.log("move car");
+  newTop += 1;
+  otherCar.style.top = `${newTop}px`;
+  console.log(otherCar.style.top);
 }
