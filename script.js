@@ -30,24 +30,23 @@ function playRound() {
 function newWaldo() {
   notifySrc = `./assets/signs/image_${getRandomInt(1, 515)}.png`;
   signImageNotify.src = notifySrc;
-  //signImagePlay.src = newSrc;
   signImageNotify.alt = "Traffic sign";
 }
 
 function populateGame() {
+  // Clear play container every round
   playContainer.innerHTML = "";
 
   let imgList = [];
 
   //getting random image sources and appending to a list
-  let i = 0;
-  while (i < numSigns) {
+  for (i = 0; i < numSigns; i++) {
     let newSignSrc = `./assets/signs/image_${getRandomInt(1, 515)}.png`;
     if (newSignSrc != notifySrc) {
       imgList.push(newSignSrc);
-      i++;
     }
   }
+
   //add Waldo image
   let notifyLoc = getRandomInt(0, numSigns);
   imgList.splice(notifyLoc, 0, notifySrc);
@@ -69,8 +68,4 @@ function populateGame() {
   roundCounter.textContent = `Round ${roundNumber}`;
 }
 
-//signImagePlay.addEventListener('click', ()=> startNewRound());
-
 playRound();
-
-//signImage.src = `./assets/signs/image_${getRandomInt(1, 515)}.png`;
