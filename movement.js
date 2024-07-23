@@ -2,7 +2,7 @@ const movableCar = document.querySelector(".car");
 const roadContainer = movableCar.parentElement;
 
 document.addEventListener("keydown", (e) => {
-  const step = 10;
+  const step = 20;
   const roadRect = roadContainer.getBoundingClientRect();
   const carRect = movableCar.getBoundingClientRect();
 

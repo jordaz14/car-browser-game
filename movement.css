@@ -16,8 +16,15 @@ body {
 }
 
 .road {
+  display: flex;
   flex: 3;
   position: relative;
+}
+
+.lane {
+  background-color: white;
+  border-right: dotted;
+  flex: 1;
 }
 
 .car {
