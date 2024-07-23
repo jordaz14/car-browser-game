@@ -1,42 +1,50 @@
-const movableCar = document.querySelector(".car");
+const car = document.querySelector(".car");
 const otherCar = document.querySelector(".other-car");
 const roadContainer = document.querySelector(".road");
+const roadRect = roadContainer.getBoundingClientRect();
 const notifySign = document.querySelector(".notify-sign");
+let carRect = car.getBoundingClientRect();
+let otherCarRect = otherCar.getBoundingClientRect();
 let gameActive = false;
 let animationFrameId;
 
-let newTop = 0;
+let newOtherCarTop = 0;
 
 startGame();
 
 function startGame() {
   gameActive = true;
   document.addEventListener("keydown", handleKeyDown);
+  otherCar.style.left = `${getRandomInt(
+    0,
+    roadRect.width - otherCar.offsetWidth
+  )}px`;
   gameLoop();
 }
 
 function stopGame() {
   gameActive = false;
   document.removeEventListener("keydown", handleKeyDown);
+  notifySign.style.display = "flex";
 }
 
 function gameLoop() {
-  console.log(animationFrameId);
   moveTraffic();
+  if (collisionDetector(carRect, otherCarRect)) {
+    stopGame();
+  }
   animationFrameId = requestAnimationFrame(gameLoop);
 }
 
 function handleKeyDown(e) {
   if (!gameActive) return;
 
-  const roadRect = roadContainer.getBoundingClientRect();
-  const carRect = movableCar.getBoundingClientRect();
-  const otherCarRect = otherCar.getBoundingClientRect();
+  carRect = car.getBoundingClientRect();
+  otherCarRect = otherCar.getBoundingClientRect();
 
   moveCar(e, carRect, roadRect);
 
   if (checkIfTouching(carRect, otherCarRect)) {
-    notifySign.style.display = "flex";
     stopGame();
   }
 }
@@ -44,35 +52,35 @@ function handleKeyDown(e) {
 function moveCar(e, movingRect, containerRect) {
   const step = 20;
 
-  let newLeft = movingRect.left - containerRect.left;
-  let newTop = movingRect.top - containerRect.top;
+  let newCarLeft = movingRect.left - containerRect.left;
+  let newCarTop = movingRect.top - containerRect.top;
 
   switch (e.key) {
     case "ArrowUp":
-      newTop -= step;
+      newCarTop -= step;
       break;
     case "ArrowDown":
-      newTop += step;
+      newCarTop += step;
       break;
     case "ArrowLeft":
-      newLeft -= step;
+      newCarLeft -= step;
       break;
     case "ArrowRight":
-      newLeft += step;
+      newCarLeft += step;
       break;
   }
 
-  newLeft = Math.max(
+  newCarLeft = Math.max(
     0,
-    Math.min(newLeft, containerRect.width - movableCar.offsetWidth)
+    Math.min(newCarLeft, containerRect.width - car.offsetWidth)
   );
-  newTop = Math.max(
+  newCarTop = Math.max(
     0,
-    Math.min(newTop, containerRect.height - movableCar.offsetHeight)
+    Math.min(newCarTop, containerRect.height - car.offsetHeight)
   );
 
-  movableCar.style.left = `${newLeft}px`;
-  movableCar.style.top = `${newTop}px`;
+  car.style.left = `${newCarLeft}px`;
+  car.style.top = `${newCarTop}px`;
 }
 
 function checkIfTouching(rect1, rect2) {
@@ -85,8 +93,24 @@ function checkIfTouching(rect1, rect2) {
 }
 
 function moveTraffic() {
-  console.log("move car");
-  newTop += 1;
-  otherCar.style.top = `${newTop}px`;
-  console.log(otherCar.style.top);
+  newOtherCarTop += 2;
+  otherCar.style.top = `${newOtherCarTop}px`;
+}
+
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function collisionDetector(rect1, rect2) {
+  carRect = car.getBoundingClientRect();
+  otherCarRect = otherCar.getBoundingClientRect();
+
+  return !(
+    rect1.right < rect2.left ||
+    rect1.left > rect2.right ||
+    rect1.bottom < rect2.top ||
+    rect1.top > rect2.bottom
+  );
 }
