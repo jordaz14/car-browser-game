@@ -17,9 +17,10 @@ body {
 
 .play-container {
   margin-top: 20px;
-  background-color: hsla(0, 100%, 50%, 0.0);
-  width: 1000px;
-  height: 500px;
+  background-color: aquamarine;
+  /*background-color: hsla(0, 100%, 50%, 0.0);*/
+  width: 82%;
+  height: 600px;
   overflow: visible;
 
 }

@@ -64,16 +64,18 @@ function getPosition(existingPositions, size, allowOverflow) {
         let x, y;
         if (allowOverflow) {
             // Allow positions outside the container
-            x = (Math.random() * 2 - 0.5) * containerRect.width;
-            y = (Math.random() * 2 - 0.5) * containerRect.height;
+            x = betaDistribution(1, 1) * maxX;
+            y = betaDistribution(1, 1) * maxY;
         } else {
             // Use beta distribution for positions inside the container
-            x = betaDistribution(2, 2) * maxX;
-            y = betaDistribution(2, 2) * maxY;
+            x = betaDistribution(4, 4) * maxX;
+            y = betaDistribution(4, 4) * maxY;
         }
         let newPos = { x, y };
 
         if (!isOverlapping(newPos, size, existingPositions)) {
+            return newPos;
+        } else if (isOverlapping && allowOverflow) {
             return newPos;
         }
     }
@@ -135,10 +137,12 @@ async function populateGame() {
         const newSign = document.createElement("img");
         newSign.src = imgList[i];
         newSign.style.position = 'absolute';
-
+        
+        //scaling if necessary
         const size = await scaleImage(newSign);
         newSign.style.width = `${size.width}px`;
         newSign.style.height = `${size.height}px`;
+
 
         const position = getPosition(positions, size, false);
         if (position === null) {
@@ -146,6 +150,7 @@ async function populateGame() {
             break;
         }
 
+        //push size and positions of newSign
         positions.push({ pos: position, size: size });
 
         newSign.style.left = `${position.x}px`;
