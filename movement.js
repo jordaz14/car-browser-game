@@ -81,8 +81,14 @@ function moveCar(e, movingRect, containerRect) {
 }
 
 function moveTraffic() {
-  newOtherCarTop += 2;
+  newOtherCarTop += 5;
   otherCar.style.top = `${newOtherCarTop}px`;
+  console.log(otherCar.style.top);
+
+  if (otherCarRect.bottom > roadRect.height + 10) {
+    newOtherCarTop = roadRect.top;
+    console.log("Collision.");
+  }
 }
 
 function getRandomInt(min, max) {
