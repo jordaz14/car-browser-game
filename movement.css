@@ -15,13 +15,13 @@ body {
   height: 100%;
 }
 
-.dirt:nth-child(1) {
+.dirt:nth-child(2) {
   border-right: black;
   border-right: double;
   border-width: 20px;
 }
 
-.dirt:nth-child(3) {
+.dirt:nth-child(4) {
   border-left: black;
   border-left: double;
   border-width: 20px;

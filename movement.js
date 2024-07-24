@@ -19,6 +19,7 @@ function startGame(e) {
   if (e.key == " ") {
     notifySign.style.display = "none";
     gameActive = true;
+    playAudio();
     document.addEventListener("keydown", handleKeyDown);
     randomStartPoint(otherCar, roadRect);
     gameLoop();
@@ -38,6 +39,7 @@ function gameLoop() {
 
 function stopGame() {
   gameActive = false;
+  playAudio();
   document.removeEventListener("keydown", handleKeyDown);
   notifySign.textContent = "GAME OVER";
   notifySign.style.display = "flex";
@@ -123,4 +125,12 @@ function randomStartPoint(movingObject, objectContainerRect) {
     0,
     objectContainerRect.width - movingObject.offsetWidth
   )}px`;
+}
+
+function playAudio() {
+  if (gameActive == true) {
+    document.getElementById("myAudio").play();
+  } else {
+    document.getElementById("myAudio").pause();
+  }
 }
