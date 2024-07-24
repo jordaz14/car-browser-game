@@ -18,10 +18,11 @@ body {
 
 .play-container {
   margin-top: 20px;
-  background-color: aquamarine;
-  /*background-color: hsla(0, 100%, 50%, 0.0);*/
-  width: 1100px;
-  height: 500px;
+  background-color: hsla(0, 100%, 50%, 0);
+  width: 75%;
+  max-width: 1100px;
+  height: 300px;
+  max-height: 500px;
   overflow: visible;
   position: relative;
 
@@ -49,5 +50,10 @@ body {
   background-image: url('./assets/road.png'); 
   background-size: cover;
   background-position: center;
+}
+
+#instructions {
+  font-size: large;
+  margin-top: 10px;
 }
 
