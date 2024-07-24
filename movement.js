@@ -82,7 +82,7 @@ function moveTraffic() {
   otherCar.style.top = `${newOtherCarTop}px`;
   console.log(otherCar.style.top);
 
-  if (otherCarRect.bottom > roadRect.height + 50) {
+  if (otherCarRect.bottom > roadRect.height + 10) {
     newOtherCarTop = roadRect.top;
     randomStartPoint(otherCar, roadRect);
   }

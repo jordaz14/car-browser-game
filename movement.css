@@ -14,8 +14,7 @@ body {
   color: white;
   flex: 1;
   height: 100%;
-  background-image: url(./assets/output-onlinepngtools.png);
-  
+  background-image: url(./assets/dirt.png);
 }
 
 .dirt:nth-child(1) {
