@@ -16,10 +16,7 @@ startGame();
 function startGame() {
   gameActive = true;
   document.addEventListener("keydown", handleKeyDown);
-  otherCar.style.left = `${getRandomInt(
-    0,
-    roadRect.width - otherCar.offsetWidth
-  )}px`;
+  randomStartPoint(otherCar, roadRect);
   gameLoop();
 }
 
@@ -81,13 +78,13 @@ function moveCar(e, movingRect, containerRect) {
 }
 
 function moveTraffic() {
-  newOtherCarTop += 5;
+  newOtherCarTop += 10;
   otherCar.style.top = `${newOtherCarTop}px`;
   console.log(otherCar.style.top);
 
-  if (otherCarRect.bottom > roadRect.height + 10) {
+  if (otherCarRect.bottom > roadRect.height + 50) {
     newOtherCarTop = roadRect.top;
-    console.log("Collision.");
+    randomStartPoint(otherCar, roadRect);
   }
 }
 
@@ -107,4 +104,11 @@ function collisionDetector(rect1, rect2) {
     rect1.bottom < rect2.top ||
     rect1.top > rect2.bottom
   );
+}
+
+function randomStartPoint(movingObject, objectContainerRect) {
+  movingObject.style.left = `${getRandomInt(
+    0,
+    objectContainerRect.width - movingObject.offsetWidth
+  )}px`;
 }
