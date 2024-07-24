@@ -11,6 +11,9 @@ const signImageNotify = document.createElement("img");
 //appends it to the notify-sign div 
 notifySign.appendChild(signImageNotify);
 
+//container for poles
+let poleContainer;
+
 
 let notifySrc = ""; //makes string for notify src 
 let numSigns = 10; //starting num of signs displayed
@@ -178,12 +181,16 @@ function calculateDistance(space, sign, centerX, centerY, containerWidth, contai
 }
 
 function randomPosition(sign, centerX, centerY, containerWidth, containerHeight) {
-  const angle = Math.random() * 2 * Math.PI;
-  const distance = Math.random() * Math.min(containerWidth, containerHeight) / 1.5 ; 
+  const angle = Math.random() * 2 * Math.PI; 
+  const distance = Math.random() * Math.min(containerWidth, containerHeight); 
 
-  // Calculate x and y with bias adjustments
-  let x = centerX + Math.cos(angle) * distance - sign.width / 2 + getRandomInt(10,100); // Add bias towards the bottom-left
-  let y = centerY + Math.sin(angle) * distance - sign.height / 2 + getRandomInt(10,100); // Add bias towards the bottom-left
+  // Dynamic bias for more variance
+  let biasX = 50 + Math.random() * 30; // Adds 50 to 80 pixels bias to the right
+  let biasY = 50 + Math.random() * 30; // Adds 50 to 80 pixels bias downwards
+
+  // Calculate x and y with dynamic bias adjustments
+  let x = centerX + Math.cos(angle) * distance - sign.width / 2 + biasX;
+  let y = centerY + Math.sin(angle) * distance - sign.height / 2 + biasY;
 
   // Ensure the sign stays within the boundaries of the container
   x = Math.max(0, Math.min(containerWidth - sign.width, x));
@@ -197,124 +204,23 @@ function randomPosition(sign, centerX, centerY, containerWidth, containerHeight)
   };
 }
 
-/*
-function packSigns(signs, containerWidth, containerHeight) {
-  const positions = [];
-  const spaces = [{ x: 0, y: 0, w: containerWidth, h: containerHeight }];
-  const centerX = containerWidth / 2;
-  const centerY = containerHeight / 2;
-
-  // Sort signs by area in descending order
-  signs.sort((a, b) => b.width * b.height - a.width * a.height);
-
-  for (const sign of signs) {
-    let bestSpace = null;
-    let bestScore = Infinity;
-
-    for (let i = spaces.length - 1; i >= 0; i--) {
-      const space = spaces[i];
-      if (space.w >= sign.width && space.h >= sign.height) {
-        // Calculate distance from center of the space to the center of the container
-        const spaceCenterX = space.x + space.w / 2;
-        const spaceCenterY = space.y + space.h / 2;
-        const distanceToCenter = Math.sqrt(
-          Math.pow(spaceCenterX - centerX, 2) +
-            Math.pow(spaceCenterY - centerY, 2)
-        );
-
-        // Combine fit score and centrality score
-        const fitScore = Math.max(space.w - sign.width, space.h - sign.height);
-        const centralityScore =
-          distanceToCenter /
-          Math.sqrt(
-            containerWidth * containerWidth + containerHeight * containerHeight
-          );
-        const score = fitScore + centralityScore * 75; // Adjust weight as needed
-
-        if (score < bestScore) {
-          bestSpace = space;
-          bestScore = score;
-        }
-      }
-    }
-
-    if (bestSpace) {
-      positions.push({ x: bestSpace.x, y: bestSpace.y });
-
-      // Split the space
-      if (bestSpace.w - sign.width > 0) {
-        spaces.push({
-          x: bestSpace.x + sign.width,
-          y: bestSpace.y,
-          w: bestSpace.w - sign.width,
-          h: sign.height,
-        });
-      }
-      if (bestSpace.h - sign.height > 0) {
-        spaces.push({
-          x: bestSpace.x,
-          y: bestSpace.y + sign.height,
-          w: bestSpace.w,
-          h: bestSpace.h - sign.height,
-        });
-      }
-
-      // Remove the used space
-      const index = spaces.indexOf(bestSpace);
-      spaces.splice(index, 1);
-    } else {
-      // If we can't fit the sign, place it near the center with some randomness
-      const angle = Math.random() * 2 * Math.PI;
-      const distance =
-        (Math.random() * Math.min(containerWidth, containerHeight)) / 4;
-      positions.push({
-        x: Math.max(
-          0,
-          Math.min(
-            containerWidth - sign.width,
-            centerX + Math.cos(angle) * distance - sign.width / 2
-          )
-        ),
-        y: Math.max(
-          0,
-          Math.min(
-            containerHeight - sign.height,
-            centerY + Math.sin(angle) * distance - sign.height / 2
-          )
-        ),
-      });
-    }
-  }
-
-  // Calculate the centroid of all placed signs
-  const centroid = calculateCentroid(positions, signs);
-
-  // Adjust positions to center the group
-  const xOffset = centerX - centroid.x;
-  const yOffset = centerY - centroid.y;
-
-  positions.forEach((pos) => {
-    pos.x += xOffset;
-    pos.y += yOffset;
-    // Ensure signs stay within the container
-    pos.x = Math.max(
-      0,
-      Math.min(containerWidth - signs[positions.indexOf(pos)].width, pos.x)
-    );
-    pos.y = Math.max(
-      0,
-      Math.min(containerHeight - signs[positions.indexOf(pos)].height, pos.y)
-    );
-  });
-
-  return positions;
-}
-*/
 baseURL = window.location.origin;
+
+function initializePoleContainer() {
+  if (!poleContainer) {
+    poleContainer = document.createElement('div');
+    poleContainer.className = 'pole-container';
+    document.body.appendChild(poleContainer);
+  } else {
+    poleContainer.innerHTML = ''; // Clear existing poles
+  }
+}
 
 async function populateGame() {
   playContainer.innerHTML = "";
   const containerRect = playContainer.getBoundingClientRect();
+
+  initializePoleContainer();
 
   //generate src for imgs
   let imgList = [];
@@ -346,6 +252,7 @@ async function populateGame() {
     sign.style.position = "absolute";
     sign.style.left = `${position.x}px`;
     sign.style.top = `${position.y}px`;
+    sign.style.zIndex = "2";
 
     fixedSign = sign.src.replace(baseURL, "");
     fixedSign = `.${fixedSign}`;
@@ -356,9 +263,27 @@ async function populateGame() {
       sign.setAttribute('id', "WHERE")
       sign.addEventListener("click", () => updateUI());
     }
+    
+    // Create and position the pole element
+    const pole = document.createElement('div');
+    pole.className = 'pole';
+    const playContainerOffset = playContainer.getBoundingClientRect();
+    const poleX = playContainerOffset.left + position.x + sign.width / 2;
+    const poleY = playContainerOffset.top + position.y;
+    pole.style.left = `${poleX}px`;
+    pole.style.top = `${poleY}px`;
+    pole.style.height = `calc(100vh - ${poleY}px)`;
 
+    poleContainer.appendChild(pole);
     playContainer.appendChild(sign);
   });
+
+  const roadContainer = document.getElementById('road-container');
+  if (roadContainer) {
+    roadContainer.style.position = 'relative';
+    roadContainer.style.zIndex = "2";
+  }
+
 
   numSigns += 3;
 }
