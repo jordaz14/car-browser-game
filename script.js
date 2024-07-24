@@ -19,6 +19,8 @@ let notifySrc = ""; //makes string for notify src
 let numSigns = 10; //starting num of signs displayed
 var roundNumber = 0; //round variable
 const maxSignSize = 180; //limits the sign size (in pixels)
+let timer = 5; 
+let timerInterval;
 
 //random int function
 function getRandomInt(min, max) {
@@ -323,9 +325,37 @@ function calculateBoundingBox(positions, elements) {
     height: maxY - minY,
   };
 }
+
+function updateTimerDisplay() {
+  const timerElement = document.querySelector('.left');
+  if (timerElement) {
+    timerElement.textContent = `Timer: ${timer}`;
+  }
+}
+
+function runTimer() {
+  clearInterval(timerInterval); 
+  timer = 5; 
+  updateTimerDisplay(); 
+  
+  timerInterval = setInterval(() => {
+    timer--;
+    updateTimerDisplay();
+    
+    if (timer <= 0) {
+      clearInterval(timerInterval);
+      playContainer.innerHTML = '';
+      poleContainer.innerHTML = '';
+    }
+  }, 1000);
+}
+
+
 //separated into a function so it can also include updates to the scenes as we implement them
 function updateUI() {
   nextRound();
+  runTimer();
 }
+
 
 updateUI();
