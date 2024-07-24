@@ -11,13 +11,18 @@ let animationFrameId;
 
 let newOtherCarTop = 0;
 
-startGame();
+notifySign.tabIndex = 0;
+notifySign.focus();
+notifySign.addEventListener("keydown", (e) => startGame(e));
 
-function startGame() {
-  gameActive = true;
-  document.addEventListener("keydown", handleKeyDown);
-  randomStartPoint(otherCar, roadRect);
-  gameLoop();
+function startGame(e) {
+  if (e.key == " ") {
+    notifySign.style.display = "none";
+    gameActive = true;
+    document.addEventListener("keydown", handleKeyDown);
+    randomStartPoint(otherCar, roadRect);
+    gameLoop();
+  }
 }
 
 function gameLoop() {
@@ -34,6 +39,7 @@ function gameLoop() {
 function stopGame() {
   gameActive = false;
   document.removeEventListener("keydown", handleKeyDown);
+  notifySign.textContent = "GAME OVER";
   notifySign.style.display = "flex";
 }
 
