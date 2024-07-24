@@ -40,6 +40,8 @@ function handleKeyDown(e) {
   carRect = car.getBoundingClientRect();
   otherCarRect = otherCar.getBoundingClientRect();
 
+  car.style.transform = "none";
+
   moveCar(e, carRect, roadRect);
 }
 
@@ -50,12 +52,14 @@ function moveCar(e, movingRect, containerRect) {
   let newCarTop = movingRect.top - containerRect.top;
 
   switch (e.key) {
+    /*
     case "ArrowUp":
       newCarTop -= step;
       break;
     case "ArrowDown":
       newCarTop += step;
       break;
+      */
     case "ArrowLeft":
       newCarLeft -= step;
       break;
@@ -82,7 +86,7 @@ function moveTraffic() {
   otherCar.style.top = `${newOtherCarTop}px`;
   console.log(otherCar.style.top);
 
-  if (otherCarRect.bottom > roadRect.height + 10) {
+  if (otherCarRect.bottom > roadRect.height + 50) {
     newOtherCarTop = roadRect.top;
     randomStartPoint(otherCar, roadRect);
   }
