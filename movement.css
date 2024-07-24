@@ -10,10 +10,12 @@ body {
 }
 
 .dirt {
-  background-color: black;
+  background-color: rgb(0, 0, 0);
   color: white;
   flex: 1;
   height: 100%;
+  background-image: url(./assets/output-onlinepngtools.png);
+  
 }
 
 .dirt:nth-child(1) {
@@ -36,7 +38,8 @@ body {
 
 .lane {
   background-color: white;
-  border: dotted;
+  border: dashed;
+  border-color: gray;
   border-top: none;
   border-bottom: none;
   flex: 1;
