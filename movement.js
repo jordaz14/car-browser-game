@@ -1,10 +1,11 @@
 const car = document.querySelector(".car");
+let carRect = car.getBoundingClientRect();
 const otherCar = document.querySelector(".other-car");
+let otherCarRect = otherCar.getBoundingClientRect();
 const roadContainer = document.querySelector(".road");
 const roadRect = roadContainer.getBoundingClientRect();
 const notifySign = document.querySelector(".notify-sign");
-let carRect = car.getBoundingClientRect();
-let otherCarRect = otherCar.getBoundingClientRect();
+
 let gameActive = false;
 let animationFrameId;
 
@@ -43,10 +44,6 @@ function handleKeyDown(e) {
   otherCarRect = otherCar.getBoundingClientRect();
 
   moveCar(e, carRect, roadRect);
-
-  if (checkIfTouching(carRect, otherCarRect)) {
-    stopGame();
-  }
 }
 
 function moveCar(e, movingRect, containerRect) {
@@ -81,15 +78,6 @@ function moveCar(e, movingRect, containerRect) {
 
   car.style.left = `${newCarLeft}px`;
   car.style.top = `${newCarTop}px`;
-}
-
-function checkIfTouching(rect1, rect2) {
-  return !(
-    rect1.right < rect2.left ||
-    rect1.left > rect2.right ||
-    rect1.bottom < rect2.top ||
-    rect1.top > rect2.bottom
-  );
 }
 
 function moveTraffic() {
