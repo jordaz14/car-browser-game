@@ -20,18 +20,21 @@ function startGame() {
   gameLoop();
 }
 
+function gameLoop() {
+  console.log(gameActive);
+  if (gameActive == true) {
+    moveTraffic();
+    if (collisionDetector(carRect, otherCarRect)) {
+      stopGame();
+    }
+    animationFrameId = requestAnimationFrame(gameLoop);
+  }
+}
+
 function stopGame() {
   gameActive = false;
   document.removeEventListener("keydown", handleKeyDown);
   notifySign.style.display = "flex";
-}
-
-function gameLoop() {
-  moveTraffic();
-  if (collisionDetector(carRect, otherCarRect)) {
-    stopGame();
-  }
-  animationFrameId = requestAnimationFrame(gameLoop);
 }
 
 function handleKeyDown(e) {
@@ -46,7 +49,7 @@ function handleKeyDown(e) {
 }
 
 function moveCar(e, movingRect, containerRect) {
-  const step = 20;
+  const step = 30;
 
   let newCarLeft = movingRect.left - containerRect.left;
   let newCarTop = movingRect.top - containerRect.top;
@@ -59,7 +62,7 @@ function moveCar(e, movingRect, containerRect) {
     case "ArrowDown":
       newCarTop += step;
       break;
-      */
+*/
     case "ArrowLeft":
       newCarLeft -= step;
       break;
@@ -82,11 +85,10 @@ function moveCar(e, movingRect, containerRect) {
 }
 
 function moveTraffic() {
-  newOtherCarTop += 10;
+  newOtherCarTop += 30;
   otherCar.style.top = `${newOtherCarTop}px`;
-  console.log(otherCar.style.top);
 
-  if (otherCarRect.bottom > roadRect.height + 50) {
+  if (otherCarRect.bottom > roadRect.height + 200) {
     newOtherCarTop = roadRect.top;
     randomStartPoint(otherCar, roadRect);
   }
