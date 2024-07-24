@@ -16,6 +16,18 @@ body {
   height: 100%;
 }
 
+.dirt:nth-child(1) {
+  border-right: white;
+  border-right: double;
+  border-width: 20px;
+}
+
+.dirt:nth-child(3) {
+  border-left: white;
+  border-left: double;
+  border-width: 20px;
+}
+
 .road {
   display: flex;
   flex: 3;
@@ -24,7 +36,9 @@ body {
 
 .lane {
   background-color: white;
-  border-right: dotted;
+  border: dotted;
+  border-top: none;
+  border-bottom: none;
   flex: 1;
 }
 
@@ -36,8 +50,8 @@ body {
   border-radius: 25px;
   width: 50px;
   height: 50px;
-  top: 50%;
-  left: 50%;
+  top: 0;
+  left: 0;
 }
 
 .other-car {
