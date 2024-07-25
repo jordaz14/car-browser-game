@@ -460,4 +460,14 @@ function updateUI() {
 }
 
 
+function switchToMovement() {
+  document.getElementById('signPart').style.display = 'none';
+  document.getElementById('movementPart').style.display = 'block';
+}
+
+function switchToSigns() {
+  document.getElementById('movementPart').style.display = 'none';
+  document.getElementById('signPart').style.display = 'block';
+}
+
 updateUI();
