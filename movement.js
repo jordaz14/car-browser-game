@@ -5,11 +5,13 @@ let otherCarRect = otherCar.getBoundingClientRect();
 const roadContainer = document.querySelector(".road");
 const roadRect = roadContainer.getBoundingClientRect();
 const notifySign = document.querySelector(".notify-sign");
+const highwaySign = document.querySelector(".highway-sign");
+let highwaySignRect = highwaySign.getBoundingClientRect();
 
 let gameActive = false;
 let animationFrameId;
-
-let newOtherCarTop = 0;
+let trafficCounter = 0;
+let topPosition = 0;
 
 notifySign.tabIndex = 0;
 notifySign.focus();
@@ -29,9 +31,16 @@ function startGame(e) {
 function gameLoop() {
   console.log(gameActive);
   if (gameActive == true) {
-    moveTraffic();
-    if (collisionDetector(carRect, otherCarRect)) {
+    if (trafficCounter % 5 == 0 && trafficCounter != 0) {
+      moveTraffic(highwaySign, highwaySignRect, roadRect);
+    } else {
+      moveTraffic(otherCar, otherCarRect, roadRect);
+    }
+    if (collisionDetector(car, carRect, otherCar, otherCarRect)) {
       stopGame();
+    }
+    if (collisionDetector(car, carRect, highwaySign, highwaySignRect)) {
+      console.log("SWITCH SCENE");
     }
     animationFrameId = requestAnimationFrame(gameLoop);
   }
@@ -92,13 +101,21 @@ function moveCar(e, movingRect, containerRect) {
   car.style.top = `${newCarTop}px`;
 }
 
-function moveTraffic() {
-  newOtherCarTop += 30;
-  otherCar.style.top = `${newOtherCarTop}px`;
+function moveTraffic(movingObj, movingObjRect, containerRect) {
+  topPosition += 30;
+  movingObj.style.top = `${topPosition}px`;
 
-  if (otherCarRect.bottom > roadRect.height + 200) {
-    newOtherCarTop = roadRect.top;
-    randomStartPoint(otherCar, roadRect);
+  movingObjRect = movingObj.getBoundingClientRect();
+
+  if (movingObjRect.bottom > containerRect.height + 200) {
+    trafficCounter++;
+    console.log(trafficCounter);
+    topPosition = containerRect.top;
+    randomStartPoint(movingObj, containerRect);
+
+    // Update the car's position and bounding rectangle
+    movingObj.style.top = `${topPosition}px`;
+    movingObjRect = movingObj.getBoundingClientRect();
   }
 }
 
@@ -108,9 +125,9 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function collisionDetector(rect1, rect2) {
-  carRect = car.getBoundingClientRect();
-  otherCarRect = otherCar.getBoundingClientRect();
+function collisionDetector(movingObj1, rect1, movingObj2, rect2) {
+  rect1 = movingObj1.getBoundingClientRect();
+  rect2 = movingObj2.getBoundingClientRect();
 
   return !(
     rect1.right < rect2.left ||

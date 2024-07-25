@@ -85,3 +85,8 @@ body {
   font-family: monospace;
   text-align: center;
 }
+
+.highway-sign {
+  background-color: aqua;
+  position: absolute;
+}
