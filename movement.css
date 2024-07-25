@@ -86,7 +86,13 @@ body {
   text-align: center;
 }
 
+.notify-sign:focus {
+  border: double;
+  border-width: 10px;
+}
+
 .highway-sign {
-  background-color: aqua;
   position: absolute;
+  width: 100%;
+  display: none;
 }

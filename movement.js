@@ -32,8 +32,10 @@ function gameLoop() {
   console.log(gameActive);
   if (gameActive == true) {
     if (trafficCounter % 5 == 0 && trafficCounter != 0) {
+      highwaySign.style.display = "block";
       moveTraffic(highwaySign, highwaySignRect, roadRect);
     } else {
+      highwaySign.style.display = "none";
       moveTraffic(otherCar, otherCarRect, roadRect);
     }
     if (collisionDetector(car, carRect, otherCar, otherCarRect)) {
