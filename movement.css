@@ -60,7 +60,7 @@ body {
   font-family: monospace;
 }
 
-.other-car {
+.obstacle {
   position: absolute;
   z-index: -1;
   width: 200px;
@@ -70,7 +70,7 @@ body {
   transform: translate(-50%, -50%);
 }
 
-.notify-sign {
+.game-status-sign {
   display: flex;
   position: absolute;
   top: 50%;
@@ -88,7 +88,7 @@ body {
   text-align: center;
 }
 
-.notify-sign:focus {
+.game-status-sign:focus {
   border: double;
   border-width: 10px;
 }
@@ -97,6 +97,7 @@ body {
   position: absolute;
   width: 100%;
   display: none;
+  z-index: 2;
 }
 
 .scenery {
