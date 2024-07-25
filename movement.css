@@ -9,19 +9,21 @@ body {
   overflow: hidden;
 }
 
-.dirt {
+.dirt-left,
+.dirt-right {
   background-color: rgb(255, 255, 255);
   flex: 1;
   height: 100%;
+  position: relative;
 }
 
-.dirt:nth-child(2) {
+.dirt-left {
   border-right: black;
   border-right: double;
   border-width: 20px;
 }
 
-.dirt:nth-child(4) {
+.dirt-right {
   border-left: black;
   border-left: double;
   border-width: 20px;
@@ -95,4 +97,13 @@ body {
   position: absolute;
   width: 100%;
   display: none;
+}
+
+.scenery {
+  background-color: black;
+  width: fit-content;
+  font-weight: bold;
+  padding: 20px;
+  color: white;
+  font-size: x-large;
 }

@@ -32,10 +32,12 @@ function gameLoop() {
   console.log(gameActive);
   if (gameActive == true) {
     if (trafficCounter % 5 == 0 && trafficCounter != 0) {
+      otherCar.style.display = "none";
       highwaySign.style.display = "block";
       moveTraffic(highwaySign, highwaySignRect, roadRect);
     } else {
       highwaySign.style.display = "none";
+      otherCar.style.display = "block";
       moveTraffic(otherCar, otherCarRect, roadRect);
     }
     if (collisionDetector(car, carRect, otherCar, otherCarRect)) {
@@ -116,7 +118,7 @@ function moveTraffic(movingObj, movingObjRect, containerRect) {
     randomStartPoint(movingObj, containerRect);
 
     // Update the car's position and bounding rectangle
-    movingObj.style.top = `${topPosition}px`;
+    movingObj.style.top = `${topPosition}px` + 200;
     movingObjRect = movingObj.getBoundingClientRect();
   }
 }
