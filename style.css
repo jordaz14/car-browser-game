@@ -131,6 +131,7 @@ font-size: 25px;}
   width: 300px;
   padding: 20px;
   background-color: #4CAF50;
+  border: 2px solid white;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -147,7 +148,7 @@ font-size: 25px;}
 }
 
 .exit-sign-container {
-  border: 2px solid white;
+  border: 4px solid white;
   border-radius: 5px;
   padding: 10px 20px;
   margin-bottom: 20px;
@@ -174,7 +175,7 @@ font-size: 25px;}
 
 .arrow-body {
   width: 20px;
-  height: 40px;
+  height: 42px;
   background-color: white;
   position: absolute;
   left: 10px;

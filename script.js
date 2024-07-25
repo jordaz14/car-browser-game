@@ -371,15 +371,64 @@ function endGame() {
 
 function showGameOverModal() {
   const modal = document.getElementById('gameOverModal');
-  const signs = document.getElementById('play-container');
+  const signs = document.querySelector('.play-container');
+  const notify = document.querySelector('.notify-sign');
+  const instr = document.querySelector('#instructions');
+
+  //clear gameplay
+  notify.innerHTML = '';
+  notify.style.border = 'none';
+  instr.innerHTML = '';
+  poleContainer.innerHTML = '';
+  signs.innerHTML = '';
+
+
+  console.log(signs)
+  const stateText = document.querySelector('.game-over-text');
+  stateText.innerHTML = 'Game Over!';
+
+  const exit = document.querySelector('.exit-text');
+  exit.innerHTML = "EXIT";
+
+  const highway = document.querySelector('.highway-text');
+  highway.innerHTML = "HIGHWAY";
+
+
   modal.style.display = 'block';
   modal.addEventListener('click', () => {
-    signs.innerHTML = '';
-    poleContainer.innerHTML = '';
-    modal.style.display = 'none';
+    updateModal();
   });
 }
-  
+
+function updateModal() {
+  const arrowhead = document.querySelector('.arrow-head');
+  arrowhead.style.display = 'none';
+
+  const arrow = document.querySelector('.arrow-body');
+  arrow.style.display = 'none';
+
+  const stateText = document.querySelector('.game-over-text');
+  stateText.innerHTML = 'High Score: ' + highScore;
+
+  const exit = document.querySelector('.exit-text');
+  exit.innerHTML = "PlAY";
+
+  const highway = document.querySelector('.highway-text');
+  highway.innerHTML = "AGAIN";
+
+  const actionContainer = document.querySelector('.exit-sign-container');
+  actionContainer.style.height = '60px';
+  // Update for high score and play again
+
+  // Add event listener to PLAY AGAIN text
+  actionContainer.addEventListener('click', function() {
+      console.log('Restarting game...');
+      //modal.style.display = 'none';
+      //restartGame();  
+  });
+
+  console.log(actionContainer);  // Log to ensure updates are made
+}
 
 function runTimer() {
   clearInterval(timerInterval); 
