@@ -1,10 +1,9 @@
 const car = document.querySelector(".car");
 let carRect = car.getBoundingClientRect();
-const otherCar = document.querySelector(".other-car");
-let otherCarRect = otherCar.getBoundingClientRect();
-const roadContainer = document.querySelector(".road");
-const roadRect = roadContainer.getBoundingClientRect();
-const notifySign = document.querySelector(".notify-sign");
+const obstacle = document.querySelector(".obstacle");
+let obstacleRect = obstacle.getBoundingClientRect();
+const road = document.querySelector(".road");
+let roadRect = road.getBoundingClientRect();
 const highwaySign = document.querySelector(".highway-sign");
 let highwaySignRect = highwaySign.getBoundingClientRect();
 
@@ -13,34 +12,36 @@ let animationFrameId;
 let trafficCounter = 0;
 let topPosition = 0;
 
-notifySign.tabIndex = 0;
-notifySign.focus();
-notifySign.addEventListener("keydown", (e) => startGame(e));
+const gameStatusSign = document.querySelector(".game-status-sign");
+gameStatusSign.addEventListener("keydown", (e) => startGame(e));
+gameStatusSign.tabIndex = 0;
+gameStatusSign.focus();
 
 function startGame(e) {
   if (e.key == " ") {
-    notifySign.style.display = "none";
     gameActive = true;
-    playAudio();
+    toggleAudio(gameActive);
     document.addEventListener("keydown", handleKeyDown);
-    randomStartPoint(otherCar, roadRect);
+
+    gameStatusSign.style.display = "none";
+
+    randomStartPoint(obstacle, roadRect);
     gameLoop();
   }
 }
 
 function gameLoop() {
-  console.log(gameActive);
   if (gameActive == true) {
     if (trafficCounter % 5 == 0 && trafficCounter != 0) {
-      otherCar.style.display = "none";
+      obstacle.style.display = "none";
       highwaySign.style.display = "block";
       moveTraffic(highwaySign, highwaySignRect, roadRect);
     } else {
       highwaySign.style.display = "none";
-      otherCar.style.display = "block";
-      moveTraffic(otherCar, otherCarRect, roadRect);
+      obstacle.style.display = "block";
+      moveTraffic(obstacle, obstacleRect, roadRect);
     }
-    if (collisionDetector(car, carRect, otherCar, otherCarRect)) {
+    if (collisionDetector(car, carRect, obstacle, obstacleRect)) {
       stopGame();
     }
     if (collisionDetector(car, carRect, highwaySign, highwaySignRect)) {
@@ -52,38 +53,31 @@ function gameLoop() {
 
 function stopGame() {
   gameActive = false;
-  playAudio();
+
+  toggleAudio(gameActive);
   document.removeEventListener("keydown", handleKeyDown);
-  notifySign.textContent = "GAME OVER";
-  notifySign.style.display = "flex";
+  gameStatusSign.textContent = "GAME OVER";
+  gameStatusSign.style.display = "flex";
 }
 
 function handleKeyDown(e) {
   if (!gameActive) return;
 
   carRect = car.getBoundingClientRect();
-  otherCarRect = otherCar.getBoundingClientRect();
+  obstacleRect = obstacle.getBoundingClientRect();
 
   car.style.transform = "none";
 
   moveCar(e, carRect, roadRect);
 }
 
-function moveCar(e, movingRect, containerRect) {
+function moveCar(e, movingObjRect, containerRect) {
   const step = 30;
 
-  let newCarLeft = movingRect.left - containerRect.left;
-  let newCarTop = movingRect.top - containerRect.top;
+  let newCarLeft = movingObjRect.left - containerRect.left;
+  let newCarTop = movingObjRect.top - containerRect.top;
 
   switch (e.key) {
-    /*
-    case "ArrowUp":
-      newCarTop -= step;
-      break;
-    case "ArrowDown":
-      newCarTop += step;
-      break;
-*/
     case "ArrowLeft":
       newCarLeft -= step;
       break;
@@ -148,7 +142,7 @@ function randomStartPoint(movingObject, objectContainerRect) {
   )}px`;
 }
 
-function playAudio() {
+function toggleAudio(gameActive) {
   if (gameActive == true) {
     document.getElementById("myAudio").play();
   } else {
