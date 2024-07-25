@@ -14,18 +14,30 @@ notifySign.appendChild(signImageNotify);
 //container for poles
 let poleContainer;
 
-
-let notifySrc = ""; //makes string for notify src 
-let numSigns = 10; //starting num of signs displayed
-var roundNumber = 0; //round variable
-const maxSignSize = 180; //limits the sign size (in pixels)
+const maxSignSize = 180;  // Limits the sign size in pixels
 let timer = 5; 
 let timerInterval;
-let score = 0 //game score 
+let notifySrc = ""; 
 
-let highScore = 0;
+function initializeGameState() {
+    // Retrieve game state from storage or set default values
+    const storedNumSigns = sessionStorage.getItem('numSigns');
+    const storedRoundNumber = sessionStorage.getItem('currentRound');
+    const storedScore = sessionStorage.getItem('currentScore');
+    const storedGameEnded = sessionStorage.getItem('gameEnded');
+    const storedHighScore = localStorage.getItem('highScore');
 
-let gameEnded = false;
+    // Initialize game variables
+    let numSigns = storedNumSigns ? parseInt(storedNumSigns, 10) : 10;
+    let roundNumber = storedRoundNumber ? parseInt(storedRoundNumber, 10) : 0;
+    let score = storedScore ? parseInt(storedScore, 10) : 0;
+    let highScore = storedHighScore ? parseInt(storedHighScore, 10) : 0;
+    let gameEnded = storedGameEnded ? (storedGameEnded === 'true') : false;
+
+    // Update UI based on the retrieved values
+    updateScoreDisplay();
+    updateRoundDisplay();
+}
 
 //random int function
 function getRandomInt(min, max) {
@@ -38,6 +50,8 @@ function getRandomInt(min, max) {
 function nextRound() {
   //update round number UI
   roundNumber++;
+  sessionStorage.setItem('currentRound', roundNumber.toString());
+
   document.getElementById("roundCounter").textContent = "Round " + roundNumber;
   //get new notify sign
   newNotify();
@@ -303,6 +317,7 @@ async function populateGame() {
 
 function losePoints(int) {
   score -= int;
+  sessionStorage.setItem('currentScore', score.toString()); 
   updateScoreDisplay();
   if (score < 0) {
     endGame();
@@ -311,6 +326,7 @@ function losePoints(int) {
 
 function addPoints(int){
   score += int;
+  sessionStorage.setItem('currentScore', score.toString());
   updateScoreDisplay();
 }
 
@@ -360,6 +376,9 @@ function updateTimerDisplay() {
 function endGame() {
   if (!gameEnded) {
     gameEnded = true;
+    gameActive = false;
+    saveGameState();
+    checkHighScore();
     clearInterval(timerInterval);
     showGameOverModal();
     if (score > highScore) {
@@ -471,7 +490,77 @@ function switchToSigns() {
   document.getElementById('signPart').style.display = 'block';
 }
 
-updateUI();
-switchToMovement();
+
+//initializing game state 
+function initializeGameState() {
+  let storedScore = sessionStorage.getItem('currentScore');
+  let storedRound = sessionStorage.getItem('currentRound');
+  let storedGameActive = sessionStorage.getItem('gameActive');
+
+  if (storedScore === null || storedRound === null || storedGameActive === null) {
+      score = 0;  // Default starting score
+      roundNumber = 0;  // Starting at the first round
+      gameActive = false;  // Game starts as inactive
+  } else {
+      score = parseInt(storedScore, 10);
+      roundNumber = parseInt(storedRound, 10);
+      gameActive = (storedGameActive === 'true');
+  }
+
+  updateScoreDisplay();
+  updateRoundDisplay();
+}
+
+function updateScoreDisplay() {
+  const scoreElement = document.getElementById('score');
+  if (scoreElement) {
+      scoreElement.textContent = `Score: ${score}`;
+  }
+}
+
+function updateRoundDisplay() {
+  const roundCounterElement = document.getElementById('roundCounter');
+  if (roundCounterElement) {
+      roundCounterElement.textContent = `Round: ${roundNumber}`;
+  }
+}
+
+
+function loadHighScore() {
+  let storedHighScore = localStorage.getItem('highScore');
+  if (storedHighScore === null) {
+      highScore = 0;  // No high score yet, start from zero
+  } else {
+      highScore = parseInt(storedHighScore, 10);
+  }
+
+  //updateHighScoreDisplay();
+}
+
+function updateHighScoreDisplay() {
+  const highScoreElement = document.getElementById('highScoreDisplay');  // Assuming you have this element
+  if (highScoreElement) {
+      highScoreElement.textContent = `High Score: ${highScore}`;
+  }
+}
+
+function saveGameState() {
+  sessionStorage.setItem('currentScore', score.toString());
+  sessionStorage.setItem('currentRound', roundNumber.toString());
+  sessionStorage.setItem('gameActive', gameActive.toString());
+}
+
+function checkHighScore() {
+  const storedHighScore = parseInt(localStorage.getItem('highScore') || '0', 10);
+  if (score > storedHighScore) {
+      localStorage.setItem('highScore', score.toString());
+      //updateHighScoreDisplay();  // Update UI with new high score
+  }
+}
+
+
+document.addEventListener('DOMContentLoaded', initializeGameState);
+document.addEventListener('DOMContentLoaded', loadHighScore);
+
 
 
