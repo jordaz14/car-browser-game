@@ -45,7 +45,7 @@ function gameLoop() {
       stopGame();
     }
     if (collisionDetector(car, carRect, highwaySign, highwaySignRect)) {
-      console.log("SWITCH SCENE");
+      window.location.href = "index.html";
     }
     animationFrameId = requestAnimationFrame(gameLoop);
   }
@@ -100,7 +100,7 @@ function moveCar(e, movingObjRect, containerRect) {
 }
 
 function moveTraffic(movingObj, movingObjRect, containerRect) {
-  topPosition += 30;
+  topPosition += 10;
   movingObj.style.top = `${topPosition}px`;
 
   movingObjRect = movingObj.getBoundingClientRect();

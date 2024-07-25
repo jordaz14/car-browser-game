@@ -31,7 +31,7 @@ body {
 
 .road {
   display: flex;
-  width: 1000px;
+  width: 500px;
   position: relative;
   background-color: white;
   z-index: -2;
@@ -48,8 +48,8 @@ body {
 
 .car {
   position: absolute;
-  height: 300px;
-  width: 200px;
+  height: 120px;
+  width: 90px;
   top: 85%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -63,8 +63,8 @@ body {
 .obstacle {
   position: absolute;
   z-index: -1;
-  width: 200px;
-  height: 100px;
+  width: 80px;
+  height: 40px;
   top: 0%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -83,7 +83,7 @@ body {
   padding: 25px;
   justify-content: center;
   align-items: center;
-  font-size: 40px;
+  font-size: 20px;
   font-family: monospace;
   text-align: center;
 }
