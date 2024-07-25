@@ -21,6 +21,11 @@ var roundNumber = 0; //round variable
 const maxSignSize = 180; //limits the sign size (in pixels)
 let timer = 5; 
 let timerInterval;
+let score = 0 //game score 
+
+let highScore = 0;
+
+let gameEnded = false;
 
 //random int function
 function getRandomInt(min, max) {
@@ -263,7 +268,13 @@ async function populateGame() {
       console.log("MATCH FOUND");
       sign.style.zIndex = "100";
       sign.setAttribute('id', "WHERE")
-      sign.addEventListener("click", () => updateUI());
+      sign.addEventListener("click", () => {
+        updateUI();
+        const remainingTime = timer;
+        addPoints(remainingTime);
+      });
+    } else {
+      sign.addEventListener("click", () => losePoints(1));
     }
     
     // Create and position the pole element
@@ -288,6 +299,19 @@ async function populateGame() {
 
 
   numSigns += 3;
+}
+
+function losePoints(int) {
+  score -= int;
+  updateScoreDisplay();
+  if (score < 0) {
+    endGame();
+  }
+}
+
+function addPoints(int){
+  score += int;
+  updateScoreDisplay();
 }
 
 function calculateCentroid(positions, elements) {
@@ -333,6 +357,30 @@ function updateTimerDisplay() {
   }
 }
 
+function endGame() {
+  if (!gameEnded) {
+    gameEnded = true;
+    clearInterval(timerInterval);
+    showGameOverModal();
+    if (score > highScore) {
+      highScore = score;
+    }
+    console.log("Game ended, modal should be visible");
+  }
+}
+
+function showGameOverModal() {
+  const modal = document.getElementById('gameOverModal');
+  const signs = document.getElementById('play-container');
+  modal.style.display = 'block';
+  modal.addEventListener('click', () => {
+    signs.innerHTML = '';
+    poleContainer.innerHTML = '';
+    modal.style.display = 'none';
+  });
+}
+  
+
 function runTimer() {
   clearInterval(timerInterval); 
   timer = 5; 
@@ -344,12 +392,17 @@ function runTimer() {
     
     if (timer <= 0) {
       clearInterval(timerInterval);
-      playContainer.innerHTML = '';
-      poleContainer.innerHTML = '';
+      endGame();
     }
   }, 1000);
 }
 
+function updateScoreDisplay() {
+  const scoreElement = document.getElementById('score');
+  if (scoreElement) {
+    scoreElement.textContent = `Score: ${score}`;
+  }
+}
 
 //separated into a function so it can also include updates to the scenes as we implement them
 function updateUI() {

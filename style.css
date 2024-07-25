@@ -58,6 +58,17 @@ font-size: 25px;}
 
 .left {
   color: rgb(241, 59, 59);
+  border: solid;
+  border-radius: 10%;
+  padding: 5px;
+  border-color: rgb(241, 59, 59);
+  border-width: 2px;
+  padding-left: 8px;
+  padding-right: 8px;
+  max-height: 30px;
+  background-color: aliceblue;
+
+
 
 }
 #road-container {
@@ -97,4 +108,86 @@ font-size: 25px;}
 #instructions {
   font-size: large;
   margin-top: 10px;
+}
+
+
+/* Game Over Modal Styles */
+.game-over-modal {
+  position: fixed;    
+  max-width: 400px; 
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  top: 50%;        
+  left: 50%;
+  bottom: 50%;
+  transform: translate(-50%, -20%);
+}
+
+.modal-content {
+  width: 300px;
+  padding: 20px;
+  background-color: #4CAF50;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: "Highway Gothic", sans-serif;
+  color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.game-over-text {
+  margin-bottom: 20px;
+  font-size: 28px;
+}
+
+.exit-sign-container {
+  border: 2px solid white;
+  border-radius: 5px;
+  padding: 10px 20px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.exit-text {
+  font-size: 24px;
+  margin-bottom: 5px;
+}
+
+.highway-text {
+  font-size: 20px;
+}
+
+.arrow {
+  width: 40px;
+  height: 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+.arrow-body {
+  width: 20px;
+  height: 40px;
+  background-color: white;
+  position: absolute;
+  left: 10px;
+  top: 0;
+}
+
+.arrow-head {
+  width: 0;
+  height: 0;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-top: 20px solid white;
+  position: absolute;
+  bottom: 0;
+  left: 0;
 }
