@@ -411,7 +411,7 @@ function updateModal() {
   stateText.innerHTML = 'High Score: ' + highScore;
 
   const exit = document.querySelector('.exit-text');
-  exit.innerHTML = "PlAY";
+  exit.innerHTML = "PLAY";
 
   const highway = document.querySelector('.highway-text');
   highway.innerHTML = "AGAIN";
