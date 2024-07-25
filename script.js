@@ -48,7 +48,7 @@ function nextRound() {
 //get a new sign image 
 function newNotify() {
   //get a random image src to be the notify sign
-  notifySrc = `./assets/signs/image_${getRandomInt(1, 515)}.png`;
+  notifySrc = `./assets/signs/image_${getRandomInt(1, 611)}.png`;
   //set the notify-sign in the header to have that source
   signImageNotify.src = notifySrc;
   signImageNotify.alt = "Traffic sign";
@@ -232,7 +232,7 @@ async function populateGame() {
   //generate src for imgs
   let imgList = [];
   for (let i = 0; i < numSigns; i++) {
-    let newSignSrc = `./assets/signs/image_${getRandomInt(1, 515)}.png`;
+    let newSignSrc = `./assets/signs/image_${getRandomInt(1, 611)}.png`;
     if (newSignSrc !== notifySrc) {
       imgList.push(newSignSrc);
     }
