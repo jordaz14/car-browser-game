@@ -1,22 +1,27 @@
 function environmentObject(el, elType) {
   this.el = document.createElement(elType);
   this.el.className = el;
-  this.el.src = `./assets/${el}.png`;
+  elType == "img" ? (this.el.src = `./assets/${el}.png`) : (this.el.src = null);
   this.rect = this.el.getBoundingClientRect();
+
+  this.updateRect = function () {
+    this.rect = this.el.getBoundingClientRect();
+  };
 }
 
-const car2 = new environmentObject("car", "img");
-document.body.appendChild(car2.el);
-console.log(car2.el);
+const road = {
+  el: document.querySelector(".road"),
+  rect: document.querySelector(".road").getBoundingClientRect(),
+};
 
-const car = document.querySelector(".car");
-let carRect = car.getBoundingClientRect();
-const obstacle = document.querySelector(".obstacle");
-let obstacleRect = obstacle.getBoundingClientRect();
-const road = document.querySelector(".road");
-let roadRect = road.getBoundingClientRect();
-const highwaySign = document.querySelector(".highway-sign");
-let highwaySignRect = highwaySign.getBoundingClientRect();
+const car = new environmentObject("car", "img");
+road.el.appendChild(car.el);
+
+const hole = new environmentObject("hole", "img");
+road.el.appendChild(hole.el);
+
+const highwaySign = new environmentObject("highway-sign", "img");
+console.log(highwaySign);
 
 let gameActive = false;
 let animationFrameId;
@@ -36,7 +41,7 @@ function startGame(event) {
 
     gameStatusSign.style.display = "none";
 
-    randomStartPoint(obstacle, roadRect);
+    randomStartPoint(hole.el, road.rect);
     gameLoop();
   }
 }
@@ -44,18 +49,16 @@ function startGame(event) {
 function gameLoop() {
   if (gameActive == true) {
     if (trafficCounter % 5 == 0 && trafficCounter != 0) {
-      obstacle.style.display = "none";
-      highwaySign.style.display = "block";
-      moveEnvironmentItem(highwaySign, highwaySignRect, roadRect);
+      hole.el.style.display = "none";
+      moveEnvironmentItem(highwaySign.el, highwaySign.rect, road.rect);
     } else {
-      highwaySign.style.display = "none";
-      obstacle.style.display = "block";
-      moveEnvironmentItem(obstacle, obstacleRect, roadRect);
+      hole.el.style.display = "block";
+      moveEnvironmentItem(hole.el, hole.rect, road.rect);
     }
-    if (collisionDetector(car, carRect, obstacle, obstacleRect)) {
+    if (collisionDetector(car.el, car.rect, hole.el, hole.rect)) {
       stopGame();
     }
-    if (collisionDetector(car, carRect, highwaySign, highwaySignRect)) {
+    if (collisionDetector(car.el, car.rect, highwaySign.el, highwaySign.rect)) {
       window.location.href = "index.html";
     }
     animationFrameId = requestAnimationFrame(gameLoop);
@@ -72,12 +75,11 @@ function stopGame() {
 }
 
 function handleArrowKeys(event) {
-  carRect = car.getBoundingClientRect();
-  obstacleRect = obstacle.getBoundingClientRect();
+  car.updateRect();
 
-  car.style.transform = "none";
+  car.el.style.transform = "none";
 
-  moveUserItem(event, car, carRect, roadRect);
+  moveUserItem(event, car.el, car.rect, road.rect);
 }
 
 function moveUserItem(event, movingItem, movingItemRect, environmentRect) {
@@ -145,15 +147,20 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function collisionDetector(movingItem1, itemRect1, movingItem2, itemRect2) {
-  itemRect1 = movingItem1.getBoundingClientRect();
-  itemRect2 = movingItem2.getBoundingClientRect();
+function collisionDetector(
+  movingItem1,
+  movingItemRect1,
+  movingItem2,
+  movingItemRect2
+) {
+  movingItemRect1 = movingItem1.getBoundingClientRect();
+  movingItemRect2 = movingItem2.getBoundingClientRect();
 
   return !(
-    itemRect1.right < itemRect2.left ||
-    itemRect1.left > itemRect2.right ||
-    itemRect1.bottom < itemRect2.top ||
-    itemRect1.top > itemRect2.bottom
+    movingItemRect1.right < movingItemRect2.left ||
+    movingItemRect1.left > movingItemRect2.right ||
+    movingItemRect1.bottom < movingItemRect2.top ||
+    movingItemRect1.top > movingItemRect2.bottom
   );
 }
 

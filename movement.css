@@ -60,7 +60,7 @@ body {
   font-family: monospace;
 }
 
-.obstacle {
+.hole {
   position: absolute;
   z-index: -1;
   width: 80px;
@@ -96,7 +96,6 @@ body {
 .highway-sign {
   position: absolute;
   width: 100%;
-  display: none;
   z-index: 2;
 }
 
