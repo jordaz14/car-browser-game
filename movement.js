@@ -1,3 +1,14 @@
+function environmentObject(el, elType) {
+  this.el = document.createElement(elType);
+  this.el.className = el;
+  this.el.src = `./assets/${el}.png`;
+  this.rect = this.el.getBoundingClientRect();
+}
+
+const car2 = new environmentObject("car", "img");
+document.body.appendChild(car2.el);
+console.log(car2.el);
+
 const car = document.querySelector(".car");
 let carRect = car.getBoundingClientRect();
 const obstacle = document.querySelector(".obstacle");
@@ -13,15 +24,15 @@ let trafficCounter = 0;
 let topPosition = 0;
 
 const gameStatusSign = document.querySelector(".game-status-sign");
-gameStatusSign.addEventListener("keydown", (e) => startGame(e));
+gameStatusSign.addEventListener("keydown", (event) => startGame(event));
 gameStatusSign.tabIndex = 0;
 gameStatusSign.focus();
 
-function startGame(e) {
-  if (e.key == " ") {
+function startGame(event) {
+  if (event.key == " ") {
     gameActive = true;
     toggleAudio(gameActive);
-    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("keydown", handleArrowKeys);
 
     gameStatusSign.style.display = "none";
 
@@ -35,11 +46,11 @@ function gameLoop() {
     if (trafficCounter % 5 == 0 && trafficCounter != 0) {
       obstacle.style.display = "none";
       highwaySign.style.display = "block";
-      moveTraffic(highwaySign, highwaySignRect, roadRect);
+      moveEnvironmentItem(highwaySign, highwaySignRect, roadRect);
     } else {
       highwaySign.style.display = "none";
       obstacle.style.display = "block";
-      moveTraffic(obstacle, obstacleRect, roadRect);
+      moveEnvironmentItem(obstacle, obstacleRect, roadRect);
     }
     if (collisionDetector(car, carRect, obstacle, obstacleRect)) {
       stopGame();
@@ -55,65 +66,76 @@ function stopGame() {
   gameActive = false;
 
   toggleAudio(gameActive);
-  document.removeEventListener("keydown", handleKeyDown);
+  document.removeEventListener("keydown", handleArrowKeys);
   gameStatusSign.textContent = "GAME OVER";
   gameStatusSign.style.display = "flex";
 }
 
-function handleKeyDown(e) {
-  if (!gameActive) return;
-
+function handleArrowKeys(event) {
   carRect = car.getBoundingClientRect();
   obstacleRect = obstacle.getBoundingClientRect();
 
   car.style.transform = "none";
 
-  moveCar(e, carRect, roadRect);
+  moveUserItem(event, car, carRect, roadRect);
 }
 
-function moveCar(e, movingObjRect, containerRect) {
-  const step = 30;
+function moveUserItem(event, movingItem, movingItemRect, environmentRect) {
+  const movement = 30;
 
-  let newCarLeft = movingObjRect.left - containerRect.left;
-  let newCarTop = movingObjRect.top - containerRect.top;
+  let movingItemLeft = movingItemRect.left - environmentRect.left;
+  let movingItemTop = movingItemRect.top - environmentRect.top;
 
-  switch (e.key) {
+  switch (event.key) {
     case "ArrowLeft":
-      newCarLeft -= step;
+      movingItemLeft -= movement;
       break;
     case "ArrowRight":
-      newCarLeft += step;
+      movingItemLeft += movement;
       break;
   }
 
-  newCarLeft = Math.max(
+  movingItemLeft = Math.max(
     0,
-    Math.min(newCarLeft, containerRect.width - car.offsetWidth)
+    Math.min(movingItemLeft, environmentRect.width - movingItem.offsetWidth)
   );
-  newCarTop = Math.max(
+  movingItemTop = Math.max(
     0,
-    Math.min(newCarTop, containerRect.height - car.offsetHeight)
+    Math.min(movingItemTop, environmentRect.height - movingItem.offsetHeight)
   );
 
-  car.style.left = `${newCarLeft}px`;
-  car.style.top = `${newCarTop}px`;
+  movingItem.style.left = `${movingItemLeft}px`;
+  movingItem.style.top = `${movingItemTop}px`;
 }
 
-function moveTraffic(movingObj, movingObjRect, containerRect) {
+function moveEnvironment() {
+  moveObstacle();
+  moveScenery();
+}
+
+function moveObstacle(movingItem) {
+  let obstacle = document.createElement("img");
+  obstacle.style.src = "./asset/hole.png";
+  obstacle.className = "obstacle";
+  randomStartPoint(obstacle, roadRect);
+  moveEnvironmentItem();
+}
+
+function moveScenery() {}
+
+function moveEnvironmentItem(movingItem, movingItemRect, environmentRect) {
   topPosition += 10;
-  movingObj.style.top = `${topPosition}px`;
+  movingItem.style.top = `${topPosition}px`;
 
-  movingObjRect = movingObj.getBoundingClientRect();
+  movingItemRect = movingItem.getBoundingClientRect();
 
-  if (movingObjRect.bottom > containerRect.height + 200) {
+  if (movingItemRect.bottom > environmentRect.height + 200) {
     trafficCounter++;
-    console.log(trafficCounter);
-    topPosition = containerRect.top;
-    randomStartPoint(movingObj, containerRect);
+    topPosition = environmentRect.top;
+    randomStartPoint(movingItem, environmentRect);
 
-    // Update the car's position and bounding rectangle
-    movingObj.style.top = `${topPosition}px` + 200;
-    movingObjRect = movingObj.getBoundingClientRect();
+    movingItem.style.top = `${topPosition}px` + 200;
+    movingItemRect = movingItem.getBoundingClientRect();
   }
 }
 
@@ -123,22 +145,22 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function collisionDetector(movingObj1, rect1, movingObj2, rect2) {
-  rect1 = movingObj1.getBoundingClientRect();
-  rect2 = movingObj2.getBoundingClientRect();
+function collisionDetector(movingItem1, itemRect1, movingItem2, itemRect2) {
+  itemRect1 = movingItem1.getBoundingClientRect();
+  itemRect2 = movingItem2.getBoundingClientRect();
 
   return !(
-    rect1.right < rect2.left ||
-    rect1.left > rect2.right ||
-    rect1.bottom < rect2.top ||
-    rect1.top > rect2.bottom
+    itemRect1.right < itemRect2.left ||
+    itemRect1.left > itemRect2.right ||
+    itemRect1.bottom < itemRect2.top ||
+    itemRect1.top > itemRect2.bottom
   );
 }
 
-function randomStartPoint(movingObject, objectContainerRect) {
-  movingObject.style.left = `${getRandomInt(
+function randomStartPoint(movingItem, itemenvironmentRect) {
+  movingItem.style.left = `${getRandomInt(
     0,
-    objectContainerRect.width - movingObject.offsetWidth
+    itemenvironmentRect.width - movingItem.offsetWidth
   )}px`;
 }
 
