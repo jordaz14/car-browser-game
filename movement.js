@@ -3,7 +3,6 @@ const otherGameStatus = sessionStorage.getItem("gameStatus");
 let gameActive = false;
 let animationFrameId;
 let trafficCounter = 0;
-let topPosition = 0;
 
 const gameStatusSign = document.createElement("button");
 gameStatusSign.className = "game-status-sign";
@@ -15,7 +14,7 @@ const road = {
   rect: document.querySelector(".road").getBoundingClientRect(),
 };
 
-function sceneObject(el, elType) {
+function sceneObj(el, elType) {
   this.el = document.createElement(elType);
   this.el.className = el;
   elType == "img" ? (this.el.src = `./assets/${el}.png`) : (this.el.src = null);
@@ -26,13 +25,13 @@ function sceneObject(el, elType) {
   };
 }
 
-const car = new sceneObject("car", "img");
+const car = new sceneObj("car", "img");
 road.el.appendChild(car.el);
 
-const hole = new sceneObject("hole", "img");
+const hole = new sceneObj("hole", "img");
 road.el.appendChild(hole.el);
 
-const highwaySign = new sceneObject("hw-sign", "img");
+const highwaySign = new sceneObj("hw-sign", "img");
 road.el.appendChild(highwaySign.el);
 
 if (otherGameStatus === "true") {
@@ -45,7 +44,7 @@ function startGame() {
   toggleUserInput(gameActive);
   toggleStatusSign(gameActive);
   toggleAudio(gameActive);
-  randomStartPoint(hole.el, road.rect);
+  randomLeftPos(hole, road);
   gameLoop();
 }
 
@@ -57,9 +56,9 @@ function gameLoop() {
       console.log(highwaySign.el.style.display);
       highwaySign.el.style.display = "block";
       console.log(highwaySign.el.style.display);
-      moveEnvironmentItem(highwaySign.el, highwaySign.rect, road.rect);
+      moveSceneObj(highwaySign, road);
     } else {
-      moveEnvironmentItem(hole.el, hole.rect, road.rect);
+      moveSceneObj(hole, road);
     }
     if (collisionDetector(car, hole)) {
       stopGame();
@@ -80,17 +79,17 @@ function stopGame() {
 }
 
 function moveUserItem(event, movingItem, movingItemRect, environmentRect) {
-  const movement = 30;
+  const MOVEMENT = 30;
 
   let movingItemLeft = movingItemRect.left - environmentRect.left;
   let movingItemTop = movingItemRect.top - environmentRect.top;
 
   switch (event.key) {
     case "ArrowLeft":
-      movingItemLeft -= movement;
+      movingItemLeft -= MOVEMENT;
       break;
     case "ArrowRight":
-      movingItemLeft += movement;
+      movingItemLeft += MOVEMENT;
       break;
   }
 
@@ -107,20 +106,25 @@ function moveUserItem(event, movingItem, movingItemRect, environmentRect) {
   movingItem.style.top = `${movingItemTop}px`;
 }
 
-function moveEnvironmentItem(movingItem, movingItemRect, environmentRect) {
-  topPosition += 10;
-  movingItem.style.top = `${topPosition}px`;
+function moveSceneObj(movingObj, scene) {
+  const OFFSET = 200;
+  const MOVEMENT = 10;
 
-  movingItemRect = movingItem.getBoundingClientRect();
+  // Move object downwards
+  let currentTop = parseInt(movingObj.el.style.top) || 0;
+  currentTop += MOVEMENT;
+  movingObj.el.style.top = `${currentTop}px`;
+  movingObj.updateRect();
 
-  if (movingItemRect.bottom > environmentRect.height + 200) {
+  // Check if object is out of scene bounds
+  if (movingObj.rect.bottom > scene.rect.height + OFFSET) {
     trafficCounter++;
-    console.log(trafficCounter);
-    topPosition = environmentRect.top;
-    randomStartPoint(movingItem, environmentRect);
+    currentTop = scene.rect.top;
 
-    movingItem.style.top = `${topPosition}px` + 200;
-    movingItemRect = movingItem.getBoundingClientRect();
+    // Update position of object
+    randomLeftPos(movingObj, scene);
+    movingObj.el.style.top = `${currentTop - OFFSET}px`;
+    movingObj.updateRect();
   }
 }
 
@@ -142,10 +146,10 @@ function collisionDetector(movingObj1, movingObj2) {
   );
 }
 
-function randomStartPoint(movingItem, itemenvironmentRect) {
-  movingItem.style.left = `${getRandomInt(
+function randomLeftPos(movingObj, scene) {
+  movingObj.el.style.left = `${getRandomInt(
     0,
-    itemenvironmentRect.width - movingItem.offsetWidth
+    scene.rect.width - movingObj.el.offsetWidth
   )}px`;
 }
 
