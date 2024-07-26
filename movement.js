@@ -6,6 +6,8 @@ let trafficCounter = 0;
 let topPosition = 0;
 
 const gameStatusSign = document.createElement("button");
+gameStatusSign.className = "game-status-sign";
+gameStatusSign.addEventListener("keydown", (event) => handleSpacebar(event));
 toggleStatusSign();
 
 const road = {
@@ -36,12 +38,6 @@ road.el.appendChild(highwaySign.el);
 if (otherGameStatus === "true") {
   startGame();
 } else {
-}
-
-function handleSpacebar(event) {
-  if (event.key == " ") {
-    startGame();
-  }
 }
 
 function startGame() {
@@ -81,14 +77,6 @@ function stopGame() {
   toggleUserInput(gameActive);
   toggleStatusSign(gameActive);
   toggleAudio(gameActive);
-}
-
-function handleArrowKeys(event) {
-  car.updateRect();
-
-  car.el.style.transform = "none";
-
-  moveUserItem(event, car.el, car.rect, road.rect);
 }
 
 function moveUserItem(event, movingItem, movingItemRect, environmentRect) {
@@ -167,6 +155,14 @@ function toggleUserInput(gameActive) {
     : document.removeEventListener("keydown", handleArrowKeys);
 }
 
+function handleArrowKeys(event) {
+  car.updateRect();
+
+  car.el.style.transform = "none";
+
+  moveUserItem(event, car.el, car.rect, road.rect);
+}
+
 function toggleAudio(gameActive) {
   gameActive == true
     ? document.querySelector("#audio-player").play()
@@ -181,12 +177,14 @@ function toggleStatusSign(gameActive) {
     document.body.appendChild(gameStatusSign);
     gameStatusSign.focus();
   } else {
-    gameStatusSign.className = "game-status-sign";
-    gameStatusSign.addEventListener("keydown", (event) =>
-      handleSpacebar(event)
-    );
     gameStatusSign.textContent = `Press Space to Start`;
     document.body.appendChild(gameStatusSign);
     gameStatusSign.focus();
+  }
+}
+
+function handleSpacebar(event) {
+  if (event.key == " ") {
+    startGame();
   }
 }
