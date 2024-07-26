@@ -5,10 +5,8 @@ let animationFrameId;
 let trafficCounter = 0;
 let topPosition = 0;
 
-
-
-const gameStatusSign = document.querySelector(".game-status-sign");
-
+const gameStatusSign = document.createElement("button");
+toggleStatusSign();
 
 const road = {
   el: document.querySelector(".road"),
@@ -38,9 +36,6 @@ road.el.appendChild(highwaySign.el);
 if (otherGameStatus === "true") {
   startGame();
 } else {
-  gameStatusSign.addEventListener("keydown", (event) => startGame(event));
-  gameStatusSign.tabIndex = 0;
-  gameStatusSign.focus();
 }
 
 function handleSpacebar(event) {
@@ -51,10 +46,9 @@ function handleSpacebar(event) {
 
 function startGame() {
   gameActive = true;
-  toggleStatusSign(gameActive);
   toggleUserInput(gameActive);
+  toggleStatusSign(gameActive);
   toggleAudio(gameActive);
-
   randomStartPoint(hole.el, road.rect);
   gameLoop();
 }
@@ -84,8 +78,8 @@ function gameLoop() {
 function stopGame() {
   gameActive = false;
   sessionStorage.setItem("gameStatus", "false");
-  toggleStatusSign(gameActive);
   toggleUserInput(gameActive);
+  toggleStatusSign(gameActive);
   toggleAudio(gameActive);
 }
 
@@ -181,9 +175,18 @@ function toggleAudio(gameActive) {
 
 function toggleStatusSign(gameActive) {
   if (gameActive == true) {
-    gameStatusSign.style.display = "none";
+    document.body.removeChild(gameStatusSign);
+  } else if (gameActive == false) {
+    gameStatusSign.textContent = `Press Space to Restart`;
+    document.body.appendChild(gameStatusSign);
+    gameStatusSign.focus();
   } else {
-    gameStatusSign.textContent = "GAME OVER";
-    gameStatusSign.style.display = "flex";
+    gameStatusSign.className = "game-status-sign";
+    gameStatusSign.addEventListener("keydown", (event) =>
+      handleSpacebar(event)
+    );
+    gameStatusSign.textContent = `Press Space to Start`;
+    document.body.appendChild(gameStatusSign);
+    gameStatusSign.focus();
   }
 }
