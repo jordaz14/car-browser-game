@@ -54,21 +54,33 @@ function startGame() {
   gameLoop(gameActive);
 }
 
-function gameLoop() {
+let lastSpawnTime = 0;
+const spawnInterval = 1000;
+
+let obstacleList = [];
+
+function gameLoop(timestamp) {
   if (gameActive == true) {
     moveUser(car, road);
 
+    /*
     if (trafficCounter % 5 == 0 && trafficCounter != 0) {
-      console.log(highwaySign.el.style.display);
       highwaySign.el.style.display = "block";
-      console.log(highwaySign.el.style.display);
       moveSceneObj(highwaySign, road);
     } else {
       moveSceneObj(hole, road);
+    } */
+
+    if (timestamp - lastSpawnTime > spawnInterval) {
+      createObstacle();
+      console.log("TIME");
+      lastSpawnTime = timestamp;
     }
-    if (collisionDetector(car, hole)) {
-      stopGame();
-    }
+
+    moveSceneObj(hole, road);
+
+    collisionDetector(car, hole) ? stopGame() : null;
+
     if (collisionDetector(car, highwaySign)) {
       //window.location.href = "index.html";
     }
@@ -83,6 +95,12 @@ function stopGame() {
   toggleUserInput(gameActive);
   toggleStatusSign(gameActive);
   toggleAudio(gameActive);
+}
+
+function createObstacle() {
+  const newObstacle = new sceneObj("hole", "img");
+  randomLeftPos(newObstacle, road);
+  road.el.appendChild(newObstacle.el);
 }
 
 function moveUser(movingObj, scene) {
