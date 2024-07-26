@@ -8,16 +8,20 @@
     <title>Traffic Game</title>
   </head>
   <body>
-    <div class="dirt"></div>
+    <audio id="myAudio">
+      <source src="./assets/willie-road.mp3" type="audio/mp3" />
+    </audio>
+    <div class="dirt-left"></div>
     <div class="road">
       <div class="lane"></div>
       <div class="lane"></div>
-      <div class="lane"></div>
-      <div class="lane"></div>
-      <div class="car"></div>
-      <div class="other-car"></div>
+      <img src="./assets/car.png" class="car" />
+      <img src="./assets/hole.png" class="obstacle" />
+      <img src="./assets/highwayroad.png" class="highway-sign" />
     </div>
-    <div class="dirt"></div>
-    <div class="notify-sign">GAME OVER</div>
+    <div class="dirt-right"></div>
+    <div class="game-status-sign">
+      TRAFFIC TROUBLE <br />Press 'Spacebar' to Start
+    </div>
   </body>
 </html>

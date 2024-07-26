@@ -27,5 +27,5 @@ def rename_files(directory, total_files):
     print(f"All files have been renamed sequentially from image_1.png to image_{total_files}.png")
 
 directory_path = './assets/signs'
-total_files = 514
+total_files = 611
 rename_files(directory_path, total_files)

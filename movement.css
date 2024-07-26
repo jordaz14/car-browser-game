@@ -9,36 +9,38 @@ body {
   overflow: hidden;
 }
 
-.dirt {
-  background-color: rgb(0, 0, 0);
-  color: white;
+.dirt-left,
+.dirt-right {
+  background-color: rgb(255, 255, 255);
   flex: 1;
   height: 100%;
-  background-image: url(./assets/dirt.png);
+  position: relative;
 }
 
-.dirt:nth-child(1) {
-  border-right: white;
+.dirt-left {
+  border-right: black;
   border-right: double;
   border-width: 20px;
 }
 
-.dirt:nth-child(3) {
-  border-left: white;
+.dirt-right {
+  border-left: black;
   border-left: double;
   border-width: 20px;
 }
 
 .road {
   display: flex;
-  flex: 3;
+  width: 500px;
   position: relative;
+  background-color: white;
+  z-index: -2;
 }
 
 .lane {
-  background-color: white;
+  background-color: hsla(0, 78%, 48%, 0);
   border: dashed;
-  border-color: gray;
+  border-color: black;
   border-top: none;
   border-bottom: none;
   flex: 1;
@@ -46,31 +48,30 @@ body {
 
 .car {
   position: absolute;
-  background-color: black;
-  border: solid;
-  border-color: white;
-  border-radius: 25px;
-  width: 50px;
-  height: 50px;
-  top: 0;
-  left: 0;
+  height: 120px;
+  width: 90px;
+  top: 85%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
 }
 
-.other-car {
+.ascii-art {
+  font-family: monospace;
+}
+
+.obstacle {
   position: absolute;
-  background-color: white;
-  border: solid;
-  border-color: black;
-  border-radius: 25px;
-  width: 50px;
-  height: 50px;
+  z-index: -1;
+  width: 80px;
+  height: 40px;
   top: 0%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
-.notify-sign {
-  display: none;
+.game-status-sign {
+  display: flex;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -82,6 +83,28 @@ body {
   padding: 25px;
   justify-content: center;
   align-items: center;
-  font-size: 40px;
+  font-size: 20px;
   font-family: monospace;
+  text-align: center;
+}
+
+.game-status-sign:focus {
+  border: double;
+  border-width: 10px;
+}
+
+.highway-sign {
+  position: absolute;
+  width: 100%;
+  display: none;
+  z-index: 2;
+}
+
+.scenery {
+  background-color: black;
+  width: fit-content;
+  font-weight: bold;
+  padding: 20px;
+  color: white;
+  font-size: x-large;
 }
