@@ -1,7 +1,6 @@
 const otherGameStatus = sessionStorage.getItem("gameStatus");
-console.log(otherGameStatus);
 
-function environmentObject(el, elType) {
+function sceneObject(el, elType) {
   this.el = document.createElement(elType);
   this.el.className = el;
   elType == "img" ? (this.el.src = `./assets/${el}.png`) : (this.el.src = null);
@@ -12,18 +11,20 @@ function environmentObject(el, elType) {
   };
 }
 
+const gameStatusSign = document.querySelector(".game-status-sign");
+
 const road = {
   el: document.querySelector(".road"),
   rect: document.querySelector(".road").getBoundingClientRect(),
 };
 
-const car = new environmentObject("car", "img");
+const car = new sceneObject("car", "img");
 road.el.appendChild(car.el);
 
-const hole = new environmentObject("hole", "img");
+const hole = new sceneObject("hole", "img");
 road.el.appendChild(hole.el);
 
-const highwaySign = new environmentObject("hw-sign", "img");
+const highwaySign = new sceneObject("hw-sign", "img");
 road.el.appendChild(highwaySign.el);
 
 let gameActive = false;
@@ -31,12 +32,9 @@ let animationFrameId;
 let trafficCounter = 0;
 let topPosition = 0;
 
-const gameStatusSign = document.querySelector(".game-status-sign");
 if (otherGameStatus === "true") {
-  console.log("true path");
   startGame();
 } else {
-  console.log("false path");
   gameStatusSign.addEventListener("keydown", (event) => startGame(event));
   gameStatusSign.tabIndex = 0;
   gameStatusSign.focus();
@@ -70,11 +68,11 @@ function gameLoop() {
     } else {
       moveEnvironmentItem(hole.el, hole.rect, road.rect);
     }
-    if (collisionDetector(car.el, car.rect, hole.el, hole.rect)) {
+    if (collisionDetector(car, hole)) {
       stopGame();
     }
-    if (collisionDetector(car.el, car.rect, highwaySign.el, highwaySign.rect)) {
-      window.location.href = "index.html";
+    if (collisionDetector(car, highwaySign)) {
+      //window.location.href = "index.html";
     }
     animationFrameId = requestAnimationFrame(gameLoop);
   }
@@ -125,21 +123,6 @@ function moveUserItem(event, movingItem, movingItemRect, environmentRect) {
   movingItem.style.top = `${movingItemTop}px`;
 }
 
-function moveEnvironment() {
-  moveObstacle();
-  moveScenery();
-}
-
-function moveObstacle(movingItem) {
-  let obstacle = document.createElement("img");
-  obstacle.style.src = "./asset/hole.png";
-  obstacle.className = "obstacle";
-  randomStartPoint(obstacle, roadRect);
-  moveEnvironmentItem();
-}
-
-function moveScenery() {}
-
 function moveEnvironmentItem(movingItem, movingItemRect, environmentRect) {
   topPosition += 10;
   movingItem.style.top = `${topPosition}px`;
@@ -163,20 +146,15 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function collisionDetector(
-  movingItem1,
-  movingItemRect1,
-  movingItem2,
-  movingItemRect2
-) {
-  movingItemRect1 = movingItem1.getBoundingClientRect();
-  movingItemRect2 = movingItem2.getBoundingClientRect();
+function collisionDetector(movingObj1, movingObj2) {
+  movingObj1.updateRect();
+  movingObj2.updateRect();
 
   return !(
-    movingItemRect1.right < movingItemRect2.left ||
-    movingItemRect1.left > movingItemRect2.right ||
-    movingItemRect1.bottom < movingItemRect2.top ||
-    movingItemRect1.top > movingItemRect2.bottom
+    movingObj1.rect.right < movingObj2.rect.left ||
+    movingObj1.rect.left > movingObj2.rect.right ||
+    movingObj1.rect.bottom < movingObj2.rect.top ||
+    movingObj1.rect.top > movingObj2.rect.bottom
   );
 }
 
@@ -189,8 +167,8 @@ function randomStartPoint(movingItem, itemenvironmentRect) {
 
 function toggleAudio(gameActive) {
   if (gameActive == true) {
-    document.getElementById("myAudio").play();
+    document.querySelector("#audio-player").play();
   } else {
-    document.getElementById("myAudio").pause();
+    document.querySelector("#audio-player").pause();
   }
 }
