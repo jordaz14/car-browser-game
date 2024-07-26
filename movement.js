@@ -20,8 +20,8 @@ road.el.appendChild(car.el);
 const hole = new environmentObject("hole", "img");
 road.el.appendChild(hole.el);
 
-const highwaySign = new environmentObject("highway-sign", "img");
-console.log(highwaySign);
+const highwaySign = new environmentObject("hw-sign", "img");
+road.el.appendChild(highwaySign.el);
 
 let gameActive = false;
 let animationFrameId;
@@ -51,6 +51,9 @@ function gameLoop() {
     animationFrameId == 1 ? console.log("START") : null;
 
     if (trafficCounter % 5 == 0 && trafficCounter != 0) {
+      console.log(highwaySign.el.style.display);
+      highwaySign.el.style.display = "block";
+      console.log(highwaySign.el.style.display);
       moveEnvironmentItem(highwaySign.el, highwaySign.rect, road.rect);
     } else {
       moveEnvironmentItem(hole.el, hole.rect, road.rect);
@@ -133,6 +136,7 @@ function moveEnvironmentItem(movingItem, movingItemRect, environmentRect) {
 
   if (movingItemRect.bottom > environmentRect.height + 200) {
     trafficCounter++;
+    console.log(trafficCounter);
     topPosition = environmentRect.top;
     randomStartPoint(movingItem, environmentRect);
 

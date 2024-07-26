@@ -93,9 +93,10 @@ body {
   border-width: 10px;
 }
 
-.highway-sign {
+.hw-sign {
   position: absolute;
   width: 100%;
+  display: none;
   z-index: 2;
 }
 
