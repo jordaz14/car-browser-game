@@ -1,3 +1,6 @@
+const otherGameStatus = sessionStorage.getItem("gameStatus");
+console.log(otherGameStatus);
+
 function environmentObject(el, elType) {
   this.el = document.createElement(elType);
   this.el.className = el;
@@ -29,21 +32,30 @@ let trafficCounter = 0;
 let topPosition = 0;
 
 const gameStatusSign = document.querySelector(".game-status-sign");
-gameStatusSign.addEventListener("keydown", (event) => startGame(event));
-gameStatusSign.tabIndex = 0;
-gameStatusSign.focus();
+if (otherGameStatus === "true") {
+  console.log("true path");
+  startGame();
+} else {
+  console.log("false path");
+  gameStatusSign.addEventListener("keydown", (event) => startGame(event));
+  gameStatusSign.tabIndex = 0;
+  gameStatusSign.focus();
+}
 
-function startGame(event) {
+function handleSpacebar(event) {
   if (event.key == " ") {
-    gameActive = true;
-    toggleAudio(gameActive);
-    document.addEventListener("keydown", handleArrowKeys);
-
-    gameStatusSign.style.display = "none";
-
-    randomStartPoint(hole.el, road.rect);
-    gameLoop();
+    startGame();
   }
+}
+
+function startGame() {
+  gameStatusSign.style.display = "none";
+  gameActive = true;
+  toggleAudio(gameActive);
+  document.addEventListener("keydown", handleArrowKeys);
+
+  randomStartPoint(hole.el, road.rect);
+  gameLoop();
 }
 
 function gameLoop() {
@@ -70,7 +82,7 @@ function gameLoop() {
 
 function stopGame() {
   gameActive = false;
-
+  sessionStorage.setItem("gameStatus", "false");
   toggleAudio(gameActive);
   document.removeEventListener("keydown", handleArrowKeys);
   gameStatusSign.textContent = "GAME OVER";

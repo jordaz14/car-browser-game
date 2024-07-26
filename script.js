@@ -8,36 +8,46 @@ console.log(playContainer);
 const notifySign = document.querySelector(".notify-sign");
 //created an image element
 const signImageNotify = document.createElement("img");
-//appends it to the notify-sign div 
+//appends it to the notify-sign div
 notifySign.appendChild(signImageNotify);
 
 //container for poles
 let poleContainer;
 
-const maxSignSize = 180;  // Limits the sign size in pixels
-let timer = 5; 
+const maxSignSize = 180; // Limits the sign size in pixels
+let timer = 5;
 let timerInterval;
-let notifySrc = ""; 
+let notifySrc = "";
 
-function initializeGameState() {
-    // Retrieve game state from storage or set default values
-    const storedNumSigns = sessionStorage.getItem('numSigns');
-    const storedRoundNumber = sessionStorage.getItem('currentRound');
-    const storedScore = sessionStorage.getItem('currentScore');
-    const storedGameEnded = sessionStorage.getItem('gameEnded');
-    const storedHighScore = localStorage.getItem('highScore');
+//INITIALIZE GAME STATE
 
-    // Initialize game variables
-    let numSigns = storedNumSigns ? parseInt(storedNumSigns, 10) : 10;
-    let roundNumber = storedRoundNumber ? parseInt(storedRoundNumber, 10) : 0;
-    let score = storedScore ? parseInt(storedScore, 10) : 0;
-    let highScore = storedHighScore ? parseInt(storedHighScore, 10) : 0;
-    let gameEnded = storedGameEnded ? (storedGameEnded === 'true') : false;
+// Retrieve game state from storage or set default values
+const storedNumSigns = sessionStorage.getItem("numSigns");
+const storedRoundNumber = sessionStorage.getItem("currentRound");
+const storedScore = sessionStorage.getItem("currentScore");
+const storedHighScore = localStorage.getItem("highScore");
 
-    // Update UI based on the retrieved values
-    updateScoreDisplay();
-    updateRoundDisplay();
-}
+let gameStatus = true;
+sessionStorage.setItem("gameStatus", gameStatus.toString());
+
+console.log("SESSION STORAGE");
+console.log(
+  storedNumSigns,
+  storedRoundNumber,
+  storedScore,
+  gameStatus,
+  storedHighScore
+);
+
+// Initialize game variables
+let numSigns = storedNumSigns ? parseInt(storedNumSigns, 10) : 10;
+let roundNumber = storedRoundNumber ? parseInt(storedRoundNumber, 10) : 0;
+let score = storedScore ? parseInt(storedScore, 10) : 0;
+let highScore = storedHighScore ? parseInt(storedHighScore, 10) : 0;
+
+// Update UI based on the retrieved values
+updateScoreDisplay();
+updateRoundDisplay(roundNumber);
 
 //random int function
 function getRandomInt(min, max) {
@@ -50,16 +60,16 @@ function getRandomInt(min, max) {
 function nextRound() {
   //update round number UI
   roundNumber++;
-  sessionStorage.setItem('currentRound', roundNumber.toString());
+  sessionStorage.setItem("currentRound", roundNumber.toString());
 
   document.getElementById("roundCounter").textContent = "Round " + roundNumber;
   //get new notify sign
   newNotify();
-  //fill up play container div with new random signs 
+  //fill up play container div with new random signs
   populateGame();
 }
 
-//get a new sign image 
+//get a new sign image
 function newNotify() {
   //get a random image src to be the notify sign
   notifySrc = `./assets/signs/image_${getRandomInt(1, 611)}.png`;
@@ -67,7 +77,6 @@ function newNotify() {
   signImageNotify.src = notifySrc;
   signImageNotify.alt = "Traffic sign";
 }
-
 
 //beta distribution function for placing signs
 function betaDistribution(alpha, beta) {
@@ -109,7 +118,7 @@ async function createScaledSignElement(src) {
   //creates a scale factor by dividing existing dimentions
   const scaleFactor = Math.min(maxSignSize / width, maxSignSize / height, 1);
 
-  //multiplies each by scale factor 
+  //multiplies each by scale factor
   width *= scaleFactor;
   height *= scaleFactor;
 
@@ -120,13 +129,17 @@ async function createScaledSignElement(src) {
   return img;
 }
 
-
-//2D packing greedy algorithm 
-function packSigns(signs, containerWidth, containerHeight, allowOverflow = false) {
+//2D packing greedy algorithm
+function packSigns(
+  signs,
+  containerWidth,
+  containerHeight,
+  allowOverflow = false
+) {
   //list of positons
   const positions = [];
-  //makes an array where each item has object literals 
-  const spaces = [{x: 0, y: 0, w: containerWidth, h: containerHeight}];
+  //makes an array where each item has object literals
+  const spaces = [{ x: 0, y: 0, w: containerWidth, h: containerHeight }];
   //defines the center of play container as an x value
   const centerX = containerWidth / 2;
   //defines the center of play container as a y value
@@ -137,37 +150,55 @@ function packSigns(signs, containerWidth, containerHeight, allowOverflow = false
 
   //for loop goes through each image element in signs
   for (const sign of signs) {
-      let bestSpace = null;//no existing best space yet
-      let bestScore = Infinity; //infinite best score
+    let bestSpace = null; //no existing best space yet
+    let bestScore = Infinity; //infinite best score
 
-      //runs through number of spaces, which will initially not run
-      for (let i = spaces.length - 1; i >= 0; i--) {
-          //defines space as what is empty of the container
-          const space = spaces[i];
-          //sees if the sign is less wide than the space and less tall than the space
-          if (space.w >= sign.width && space.h >= sign.height) {
-              //assigns a fitscore dependding on difference between space w and sign w, and diff between spcace h and sign h
-              const fitScore = Math.max(space.w - sign.width, space.h - sign.height);
-              //assigns a centrality score 
-              const centralityScore = calculateDistance(space, sign, centerX, centerY, containerWidth, containerHeight);
-              const score = fitScore + centralityScore * 50;
+    //runs through number of spaces, which will initially not run
+    for (let i = spaces.length - 1; i >= 0; i--) {
+      //defines space as what is empty of the container
+      const space = spaces[i];
+      //sees if the sign is less wide than the space and less tall than the space
+      if (space.w >= sign.width && space.h >= sign.height) {
+        //assigns a fitscore dependding on difference between space w and sign w, and diff between spcace h and sign h
+        const fitScore = Math.max(space.w - sign.width, space.h - sign.height);
+        //assigns a centrality score
+        const centralityScore = calculateDistance(
+          space,
+          sign,
+          centerX,
+          centerY,
+          containerWidth,
+          containerHeight
+        );
+        const score = fitScore + centralityScore * 50;
 
-              //updates best spaces and scores
-              if (score < bestScore) {
-                  bestSpace = space;
-                  bestScore = score;
-              }
-          }
+        //updates best spaces and scores
+        if (score < bestScore) {
+          bestSpace = space;
+          bestScore = score;
+        }
       }
+    }
 
-      //if there is a best space, push x positions there
-      if (bestSpace) {
-          positions.push({x: bestSpace.x, y: bestSpace.y, width: sign.width, height: sign.height});
-          updateSpaces(bestSpace, sign, spaces);
-      } else {
-          const position = randomPosition(sign, centerX, centerY, containerWidth, containerHeight);
-          positions.push(position);
-      }
+    //if there is a best space, push x positions there
+    if (bestSpace) {
+      positions.push({
+        x: bestSpace.x,
+        y: bestSpace.y,
+        width: sign.width,
+        height: sign.height,
+      });
+      updateSpaces(bestSpace, sign, spaces);
+    } else {
+      const position = randomPosition(
+        sign,
+        centerX,
+        centerY,
+        containerWidth,
+        containerHeight
+      );
+      positions.push(position);
+    }
   }
 
   return positions;
@@ -175,35 +206,53 @@ function packSigns(signs, containerWidth, containerHeight, allowOverflow = false
 
 function updateSpaces(bestSpace, sign, spaces) {
   if (bestSpace.w - sign.width > 0) {
-      spaces.push({
-          x: bestSpace.x + sign.width,
-          y: bestSpace.y,
-          w: bestSpace.w - sign.width,
-          h: sign.height
-      });
+    spaces.push({
+      x: bestSpace.x + sign.width,
+      y: bestSpace.y,
+      w: bestSpace.w - sign.width,
+      h: sign.height,
+    });
   }
   if (bestSpace.h - sign.height > 0) {
-      spaces.push({
-          x: bestSpace.x,
-          y: bestSpace.y + sign.height,
-          w: bestSpace.w,
-          h: bestSpace.h - sign.height
-      });
+    spaces.push({
+      x: bestSpace.x,
+      y: bestSpace.y + sign.height,
+      w: bestSpace.w,
+      h: bestSpace.h - sign.height,
+    });
   }
   spaces.splice(spaces.indexOf(bestSpace), 1);
 }
 
-
-function calculateDistance(space, sign, centerX, centerY, containerWidth, containerHeight) {
+function calculateDistance(
+  space,
+  sign,
+  centerX,
+  centerY,
+  containerWidth,
+  containerHeight
+) {
   const spaceCenterX = space.x + space.w / 2;
   const spaceCenterY = space.y + space.h / 2;
-  return Math.sqrt(Math.pow(spaceCenterX - centerX, 2) + Math.pow(spaceCenterY - centerY, 2)) /
-         Math.sqrt(containerWidth * containerWidth + containerHeight * containerHeight);
+  return (
+    Math.sqrt(
+      Math.pow(spaceCenterX - centerX, 2) + Math.pow(spaceCenterY - centerY, 2)
+    ) /
+    Math.sqrt(
+      containerWidth * containerWidth + containerHeight * containerHeight
+    )
+  );
 }
 
-function randomPosition(sign, centerX, centerY, containerWidth, containerHeight) {
-  const angle = Math.random() * 2 * Math.PI; 
-  const distance = Math.random() * Math.min(containerWidth, containerHeight); 
+function randomPosition(
+  sign,
+  centerX,
+  centerY,
+  containerWidth,
+  containerHeight
+) {
+  const angle = Math.random() * 2 * Math.PI;
+  const distance = Math.random() * Math.min(containerWidth, containerHeight);
 
   // Dynamic bias for more variance
   let biasX = 50 + Math.random() * 30; // Adds 50 to 80 pixels bias to the right
@@ -218,10 +267,10 @@ function randomPosition(sign, centerX, centerY, containerWidth, containerHeight)
   y = Math.max(0, Math.min(containerHeight - sign.height, y));
 
   return {
-      x: x,
-      y: y,
-      width: sign.width,
-      height: sign.height
+    x: x,
+    y: y,
+    width: sign.width,
+    height: sign.height,
   };
 }
 
@@ -229,11 +278,11 @@ baseURL = window.location.origin;
 
 function initializePoleContainer() {
   if (!poleContainer) {
-    poleContainer = document.createElement('div');
-    poleContainer.className = 'pole-container';
+    poleContainer = document.createElement("div");
+    poleContainer.className = "pole-container";
     document.body.appendChild(poleContainer);
   } else {
-    poleContainer.innerHTML = ''; // Clear existing poles
+    poleContainer.innerHTML = ""; // Clear existing poles
   }
 }
 
@@ -281,19 +330,20 @@ async function populateGame() {
     if (fixedSign === notifySrc) {
       console.log("MATCH FOUND");
       sign.style.zIndex = "100";
-      sign.setAttribute('id', "WHERE")
+      sign.setAttribute("id", "WHERE");
       sign.addEventListener("click", () => {
         updateUI();
         const remainingTime = timer;
         addPoints(remainingTime);
+        window.location.href = "movement.html";
       });
     } else {
       sign.addEventListener("click", () => losePoints(1));
     }
-    
+
     // Create and position the pole element
-    const pole = document.createElement('div');
-    pole.className = 'pole';
+    const pole = document.createElement("div");
+    pole.className = "pole";
     const playContainerOffset = playContainer.getBoundingClientRect();
     const poleX = playContainerOffset.left + position.x + sign.width / 2;
     const poleY = playContainerOffset.top + position.y;
@@ -305,28 +355,27 @@ async function populateGame() {
     playContainer.appendChild(sign);
   });
 
-  const roadContainer = document.getElementById('road-container');
+  const roadContainer = document.getElementById("road-container");
   if (roadContainer) {
-    roadContainer.style.position = 'relative';
+    roadContainer.style.position = "relative";
     roadContainer.style.zIndex = "2";
   }
-
 
   numSigns += 3;
 }
 
 function losePoints(int) {
   score -= int;
-  sessionStorage.setItem('currentScore', score.toString()); 
+  sessionStorage.setItem("currentScore", score.toString());
   updateScoreDisplay();
   if (score < 0) {
     endGame();
   }
 }
 
-function addPoints(int){
+function addPoints(int) {
   score += int;
-  sessionStorage.setItem('currentScore', score.toString());
+  sessionStorage.setItem("currentScore", score.toString());
   updateScoreDisplay();
 }
 
@@ -367,97 +416,92 @@ function calculateBoundingBox(positions, elements) {
 }
 
 function updateTimerDisplay() {
-  const timerElement = document.querySelector('.left');
+  const timerElement = document.querySelector(".left");
   if (timerElement) {
     timerElement.textContent = `Timer: ${timer}`;
   }
 }
 
 function endGame() {
-  if (!gameEnded) {
-    gameEnded = true;
-    gameActive = false;
-    saveGameState();
-    checkHighScore();
-    clearInterval(timerInterval);
-    showGameOverModal();
-    if (score > highScore) {
-      highScore = score;
-    }
-    console.log("Game ended, modal should be visible");
+  endGameState();
+  checkHighScore();
+  clearInterval(timerInterval);
+  showGameOverModal();
+  if (score > highScore) {
+    highScore = score;
   }
+  console.log("Game ended, modal should be visible");
 }
 
 function showGameOverModal() {
-  const modal = document.getElementById('gameOverModal');
-  const signs = document.querySelector('.play-container');
-  const notify = document.querySelector('.notify-sign');
-  const instr = document.querySelector('#instructions');
+  const modal = document.getElementById("gameOverModal");
+  const signs = document.querySelector(".play-container");
+  const notify = document.querySelector(".notify-sign");
+  const instr = document.querySelector("#instructions");
 
   //clear gameplay
-  notify.innerHTML = '';
-  notify.style.border = 'none';
-  instr.innerHTML = '';
-  poleContainer.innerHTML = '';
-  signs.innerHTML = '';
+  notify.innerHTML = "";
+  notify.style.border = "none";
+  instr.innerHTML = "";
+  poleContainer.innerHTML = "";
+  signs.innerHTML = "";
 
+  console.log(signs);
+  const stateText = document.querySelector(".game-over-text");
+  stateText.innerHTML = "Game Over!";
 
-  console.log(signs)
-  const stateText = document.querySelector('.game-over-text');
-  stateText.innerHTML = 'Game Over!';
-
-  const exit = document.querySelector('.exit-text');
+  const exit = document.querySelector(".exit-text");
   exit.innerHTML = "EXIT";
 
-  const highway = document.querySelector('.highway-text');
+  const highway = document.querySelector(".highway-text");
   highway.innerHTML = "HIGHWAY";
 
-
-  modal.style.display = 'block';
-  modal.addEventListener('click', () => {
+  modal.style.display = "block";
+  modal.addEventListener("click", () => {
     updateModal();
   });
 }
 
 function updateModal() {
-  const arrowhead = document.querySelector('.arrow-head');
-  arrowhead.style.display = 'none';
+  const arrowhead = document.querySelector(".arrow-head");
+  arrowhead.style.display = "none";
 
-  const arrow = document.querySelector('.arrow-body');
-  arrow.style.display = 'none';
+  const arrow = document.querySelector(".arrow-body");
+  arrow.style.display = "none";
 
-  const stateText = document.querySelector('.game-over-text');
-  stateText.innerHTML = 'High Score: ' + highScore;
+  const stateText = document.querySelector(".game-over-text");
+  stateText.innerHTML = "High Score: " + highScore;
 
-  const exit = document.querySelector('.exit-text');
+  const exit = document.querySelector(".exit-text");
   exit.innerHTML = "PLAY";
 
-  const highway = document.querySelector('.highway-text');
+  const highway = document.querySelector(".highway-text");
   highway.innerHTML = "AGAIN";
 
-  const actionContainer = document.querySelector('.exit-sign-container');
-  actionContainer.style.height = '60px';
+  const actionContainer = document.querySelector(".exit-sign-container");
+  actionContainer.style.height = "60px";
   // Update for high score and play again
 
   // Add event listener to PLAY AGAIN text
-  actionContainer.addEventListener('click', function() {
-      console.log('Restarting game...');
-      //modal.style.display = 'none';
-      //restartGame();  
+  actionContainer.addEventListener("click", function () {
+    console.log("Restarting game...");
+    window.location.href = "movement.html";
+    //modal.style.display = 'none';
+    //restartGame();
   });
 
-  console.log(actionContainer);  // Log to ensure updates are made
+  console.log(actionContainer); // Log to ensure updates are made
 }
 
 function runTimer() {
-  clearInterval(timerInterval); 
-  timer = 5; 
-  updateTimerDisplay(); 
-  
+  clearInterval(timerInterval);
+  timer = 5;
+  updateTimerDisplay();
+
   timerInterval = setInterval(() => {
     timer--;
     updateTimerDisplay();
-    
+
     if (timer <= 0) {
       clearInterval(timerInterval);
       endGame();
@@ -466,12 +510,11 @@ function runTimer() {
 }
 
 function updateScoreDisplay() {
-  const scoreElement = document.getElementById('score');
+  const scoreElement = document.getElementById("score");
   if (scoreElement) {
     scoreElement.textContent = `Score: ${score}`;
   }
 }
-
 
 //separated into a function so it can also include updates to the scenes as we implement them
 function updateUI() {
@@ -479,88 +522,92 @@ function updateUI() {
   runTimer();
 }
 
+updateUI();
 
 function switchToMovement() {
-  document.getElementById('signPart').style.display = 'none';
-  document.getElementById('movementPart').style.display = 'block';
+  document.getElementById("signPart").style.display = "none";
+  document.getElementById("movementPart").style.display = "block";
 }
 
 function switchToSigns() {
-  document.getElementById('movementPart').style.display = 'none';
-  document.getElementById('signPart').style.display = 'block';
+  document.getElementById("movementPart").style.display = "none";
+  document.getElementById("signPart").style.display = "block";
 }
 
-
-//initializing game state 
+//initializing game state
+/*
 function initializeGameState() {
-  let storedScore = sessionStorage.getItem('currentScore');
-  let storedRound = sessionStorage.getItem('currentRound');
-  let storedGameActive = sessionStorage.getItem('gameActive');
+  let storedScore = sessionStorage.getItem("currentScore");
+  let storedRound = sessionStorage.getItem("currentRound");
+  let storedGameActive = sessionStorage.getItem("gameActive");
 
-  if (storedScore === null || storedRound === null || storedGameActive === null) {
-      score = 0;  // Default starting score
-      roundNumber = 0;  // Starting at the first round
-      gameActive = false;  // Game starts as inactive
+  if (
+    storedScore === null ||
+    storedRound === null ||
+    storedGameActive === null
+  ) {
+    score = 0; // Default starting score
+    roundNumber = 0; // Starting at the first round
+    gameActive = false; // Game starts as inactive
   } else {
-      score = parseInt(storedScore, 10);
-      roundNumber = parseInt(storedRound, 10);
-      gameActive = (storedGameActive === 'true');
+    score = parseInt(storedScore, 10);
+    roundNumber = parseInt(storedRound, 10);
+    gameActive = storedGameActive === "true";
   }
 
   updateScoreDisplay();
   updateRoundDisplay();
 }
+  */
 
 function updateScoreDisplay() {
-  const scoreElement = document.getElementById('score');
+  const scoreElement = document.getElementById("score");
   if (scoreElement) {
-      scoreElement.textContent = `Score: ${score}`;
+    scoreElement.textContent = `Score: ${score}`;
   }
 }
 
-function updateRoundDisplay() {
-  const roundCounterElement = document.getElementById('roundCounter');
+function updateRoundDisplay(roundNumber) {
+  const roundCounterElement = document.getElementById("roundCounter");
   if (roundCounterElement) {
-      roundCounterElement.textContent = `Round: ${roundNumber}`;
+    roundCounterElement.textContent = `Round: ${roundNumber}`;
   }
 }
-
 
 function loadHighScore() {
-  let storedHighScore = localStorage.getItem('highScore');
+  let storedHighScore = localStorage.getItem("highScore");
   if (storedHighScore === null) {
-      highScore = 0;  // No high score yet, start from zero
+    highScore = 0; // No high score yet, start from zero
   } else {
-      highScore = parseInt(storedHighScore, 10);
+    highScore = parseInt(storedHighScore, 10);
   }
 
   //updateHighScoreDisplay();
 }
 
 function updateHighScoreDisplay() {
-  const highScoreElement = document.getElementById('highScoreDisplay');  // Assuming you have this element
+  const highScoreElement = document.getElementById("highScoreDisplay"); // Assuming you have this element
   if (highScoreElement) {
-      highScoreElement.textContent = `High Score: ${highScore}`;
+    highScoreElement.textContent = `High Score: ${highScore}`;
   }
 }
 
-function saveGameState() {
-  sessionStorage.setItem('currentScore', score.toString());
-  sessionStorage.setItem('currentRound', roundNumber.toString());
-  sessionStorage.setItem('gameActive', gameActive.toString());
+function endGameState() {
+  gameStatus = false;
+  sessionStorage.setItem("currentScore", "0");
+  sessionStorage.setItem("currentRound", "0");
+  sessionStorage.setItem("gameStatus", gameStatus.toString());
 }
 
 function checkHighScore() {
-  const storedHighScore = parseInt(localStorage.getItem('highScore') || '0', 10);
+  const storedHighScore = parseInt(
+    localStorage.getItem("highScore") || "0",
+    10
+  );
   if (score > storedHighScore) {
-      localStorage.setItem('highScore', score.toString());
-      //updateHighScoreDisplay();  // Update UI with new high score
+    localStorage.setItem("highScore", score.toString());
+    //updateHighScoreDisplay();  // Update UI with new high score
   }
 }
 
-
-document.addEventListener('DOMContentLoaded', initializeGameState);
-document.addEventListener('DOMContentLoaded', loadHighScore);
-
-
-
+document.addEventListener("DOMContentLoaded", loadHighScore());
