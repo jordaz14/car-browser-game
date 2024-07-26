@@ -48,11 +48,11 @@ function startGame(event) {
 
 function gameLoop() {
   if (gameActive == true) {
+    animationFrameId == 1 ? console.log("START") : null;
+
     if (trafficCounter % 5 == 0 && trafficCounter != 0) {
-      hole.el.style.display = "none";
       moveEnvironmentItem(highwaySign.el, highwaySign.rect, road.rect);
     } else {
-      hole.el.style.display = "block";
       moveEnvironmentItem(hole.el, hole.rect, road.rect);
     }
     if (collisionDetector(car.el, car.rect, hole.el, hole.rect)) {
