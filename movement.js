@@ -1,5 +1,20 @@
 const otherGameStatus = sessionStorage.getItem("gameStatus");
 
+let gameActive = false;
+let animationFrameId;
+let trafficCounter = 0;
+let topPosition = 0;
+
+
+
+const gameStatusSign = document.querySelector(".game-status-sign");
+
+
+const road = {
+  el: document.querySelector(".road"),
+  rect: document.querySelector(".road").getBoundingClientRect(),
+};
+
 function sceneObject(el, elType) {
   this.el = document.createElement(elType);
   this.el.className = el;
@@ -11,13 +26,6 @@ function sceneObject(el, elType) {
   };
 }
 
-const gameStatusSign = document.querySelector(".game-status-sign");
-
-const road = {
-  el: document.querySelector(".road"),
-  rect: document.querySelector(".road").getBoundingClientRect(),
-};
-
 const car = new sceneObject("car", "img");
 road.el.appendChild(car.el);
 
@@ -26,11 +34,6 @@ road.el.appendChild(hole.el);
 
 const highwaySign = new sceneObject("hw-sign", "img");
 road.el.appendChild(highwaySign.el);
-
-let gameActive = false;
-let animationFrameId;
-let trafficCounter = 0;
-let topPosition = 0;
 
 if (otherGameStatus === "true") {
   startGame();
@@ -47,10 +50,10 @@ function handleSpacebar(event) {
 }
 
 function startGame() {
-  gameStatusSign.style.display = "none";
   gameActive = true;
+  toggleStatusSign(gameActive);
+  toggleUserInput(gameActive);
   toggleAudio(gameActive);
-  document.addEventListener("keydown", handleArrowKeys);
 
   randomStartPoint(hole.el, road.rect);
   gameLoop();
@@ -81,10 +84,9 @@ function gameLoop() {
 function stopGame() {
   gameActive = false;
   sessionStorage.setItem("gameStatus", "false");
+  toggleStatusSign(gameActive);
+  toggleUserInput(gameActive);
   toggleAudio(gameActive);
-  document.removeEventListener("keydown", handleArrowKeys);
-  gameStatusSign.textContent = "GAME OVER";
-  gameStatusSign.style.display = "flex";
 }
 
 function handleArrowKeys(event) {
@@ -165,10 +167,23 @@ function randomStartPoint(movingItem, itemenvironmentRect) {
   )}px`;
 }
 
+function toggleUserInput(gameActive) {
+  gameActive == true
+    ? document.addEventListener("keydown", handleArrowKeys)
+    : document.removeEventListener("keydown", handleArrowKeys);
+}
+
 function toggleAudio(gameActive) {
+  gameActive == true
+    ? document.querySelector("#audio-player").play()
+    : document.querySelector("#audio-player").pause();
+}
+
+function toggleStatusSign(gameActive) {
   if (gameActive == true) {
-    document.querySelector("#audio-player").play();
+    gameStatusSign.style.display = "none";
   } else {
-    document.querySelector("#audio-player").pause();
+    gameStatusSign.textContent = "GAME OVER";
+    gameStatusSign.style.display = "flex";
   }
 }
