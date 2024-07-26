@@ -1,5 +1,10 @@
 const otherGameStatus = sessionStorage.getItem("gameStatus");
 
+const arrowKeys = {
+  ArrowLeft: false,
+  ArrowRight: false,
+};
+
 let gameActive = false;
 let animationFrameId;
 let trafficCounter = 0;
@@ -7,7 +12,6 @@ let trafficCounter = 0;
 const gameStatusSign = document.createElement("button");
 gameStatusSign.className = "game-status-sign";
 gameStatusSign.addEventListener("keydown", (event) => handleSpacebar(event));
-toggleStatusSign();
 
 const road = {
   el: document.querySelector(".road"),
@@ -34,6 +38,8 @@ road.el.appendChild(hole.el);
 const highwaySign = new sceneObj("hw-sign", "img");
 road.el.appendChild(highwaySign.el);
 
+toggleStatusSign();
+
 if (otherGameStatus === "true") {
   startGame();
 } else {
@@ -45,12 +51,12 @@ function startGame() {
   toggleStatusSign(gameActive);
   toggleAudio(gameActive);
   randomLeftPos(hole, road);
-  gameLoop();
+  gameLoop(gameActive);
 }
 
 function gameLoop() {
   if (gameActive == true) {
-    animationFrameId == 1 ? console.log("START") : null;
+    moveUser(car, road);
 
     if (trafficCounter % 5 == 0 && trafficCounter != 0) {
       console.log(highwaySign.el.style.display);
@@ -66,6 +72,7 @@ function gameLoop() {
     if (collisionDetector(car, highwaySign)) {
       //window.location.href = "index.html";
     }
+
     animationFrameId = requestAnimationFrame(gameLoop);
   }
 }
@@ -78,32 +85,37 @@ function stopGame() {
   toggleAudio(gameActive);
 }
 
-function moveUserItem(event, movingItem, movingItemRect, environmentRect) {
-  const MOVEMENT = 30;
+function moveUser(movingObj, scene) {
+  const MOVEMENT = 10;
 
-  let movingItemLeft = movingItemRect.left - environmentRect.left;
-  let movingItemTop = movingItemRect.top - environmentRect.top;
+  // Get the current position from the object's rect
+  movingObj.updateRect();
 
-  switch (event.key) {
-    case "ArrowLeft":
-      movingItemLeft -= MOVEMENT;
-      break;
-    case "ArrowRight":
-      movingItemLeft += MOVEMENT;
-      break;
+  // Calculate object width
+  const objWidth = movingObj.rect.width;
+
+  if (arrowKeys.ArrowLeft) {
+    // Move left
+    if (movingObj.rect.left - MOVEMENT >= scene.rect.left) {
+      movingObj.el.style.left = `${
+        movingObj.rect.left - scene.rect.left - MOVEMENT
+      }px`;
+    } else {
+      movingObj.el.style.left = `${0}px`;
+    }
   }
-
-  movingItemLeft = Math.max(
-    0,
-    Math.min(movingItemLeft, environmentRect.width - movingItem.offsetWidth)
-  );
-  movingItemTop = Math.max(
-    0,
-    Math.min(movingItemTop, environmentRect.height - movingItem.offsetHeight)
-  );
-
-  movingItem.style.left = `${movingItemLeft}px`;
-  movingItem.style.top = `${movingItemTop}px`;
+  if (arrowKeys.ArrowRight) {
+    // Move right
+    if (movingObj.rect.right + MOVEMENT <= scene.rect.right) {
+      movingObj.el.style.left = `${
+        movingObj.rect.left - scene.rect.left + MOVEMENT
+      }px`;
+    } else {
+      movingObj.el.style.left = `${
+        scene.rect.right - objWidth - scene.rect.left
+      }px`;
+    }
+  }
 }
 
 function moveSceneObj(movingObj, scene) {
@@ -119,19 +131,13 @@ function moveSceneObj(movingObj, scene) {
   // Check if object is out of scene bounds
   if (movingObj.rect.bottom > scene.rect.height + OFFSET) {
     trafficCounter++;
-    currentTop = scene.rect.top;
 
     // Update position of object
+    currentTop = scene.rect.top;
     randomLeftPos(movingObj, scene);
     movingObj.el.style.top = `${currentTop - OFFSET}px`;
     movingObj.updateRect();
   }
-}
-
-function getRandomInt(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 function collisionDetector(movingObj1, movingObj2) {
@@ -153,18 +159,36 @@ function randomLeftPos(movingObj, scene) {
   )}px`;
 }
 
-function toggleUserInput(gameActive) {
-  gameActive == true
-    ? document.addEventListener("keydown", handleArrowKeys)
-    : document.removeEventListener("keydown", handleArrowKeys);
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function handleArrowKeys(event) {
-  car.updateRect();
-
-  car.el.style.transform = "none";
-
-  moveUserItem(event, car.el, car.rect, road.rect);
+function toggleUserInput(gameActive) {
+  if (gameActive) {
+    document.addEventListener("keydown", (event) => {
+      if (arrowKeys.hasOwnProperty(event.key)) {
+        arrowKeys[event.key] = true;
+      }
+    });
+    document.addEventListener("keyup", (event) => {
+      if (arrowKeys.hasOwnProperty(event.key)) {
+        arrowKeys[event.key] = false;
+      }
+    });
+  } else {
+    document.removeEventListener("keydown", (event) => {
+      if (arrowKeys.hasOwnPropert(event.key)) {
+        arrowKeys[event.key] = true;
+      }
+    });
+    document.removeEventListener("keyup", (event) => {
+      if (arrowKeys.hasOwnProperty(event.key)) {
+        arrowKeys[event.key] = false;
+      }
+    });
+  }
 }
 
 function toggleAudio(gameActive) {
@@ -174,7 +198,7 @@ function toggleAudio(gameActive) {
 }
 
 function toggleStatusSign(gameActive) {
-  if (gameActive == true) {
+  if (gameActive) {
     document.body.removeChild(gameStatusSign);
   } else if (gameActive == false) {
     gameStatusSign.textContent = `Press Space to Restart`;

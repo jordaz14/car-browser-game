@@ -50,9 +50,8 @@ body {
   position: absolute;
   height: 120px;
   width: 90px;
-  top: 85%;
+  top: 70%;
   left: 50%;
-  transform: translate(-50%, -50%);
   z-index: 2;
 }
 
