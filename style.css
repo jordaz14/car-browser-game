@@ -1,6 +1,7 @@
 * {
   margin: 0px;
   padding: 0px;
+  font-family: monospace;
 }
 
 body {
@@ -21,6 +22,10 @@ body {
   border-right: black;
   border-right: double;
   border-width: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .dirt-right {
@@ -116,4 +121,15 @@ body {
   padding: 20px;
   color: white;
   font-size: x-large;
+}
+
+.scoreboard {
+  padding: 20px;
+  background-color: black;
+  color: white;
+  width: 75%;
+  border-radius: 20px;
+  text-align: center;
+  border: double;
+  border-width: 10px;
 }
