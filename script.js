@@ -1,5 +1,3 @@
-const otherGameStatus = sessionStorage.getItem("gameStatus");
-
 const arrowKeys = {
   ArrowLeft: false,
   ArrowRight: false,
@@ -67,14 +65,6 @@ function gameLoop(timestamp) {
   if (gameActive == true) {
     moveUser(car, road);
 
-    /*
-    if (trafficCounter % 5 == 0 && trafficCounter != 0) {
-      highwaySign.el.style.display = "block";
-      moveSceneObj(highwaySign, road);
-    } else {
-      moveSceneObj(hole, road);
-    } */
-
     if (timestamp - lastSpawnTime > spawnInterval) {
       createObstacle();
       console.log("TIME");
@@ -85,17 +75,12 @@ function gameLoop(timestamp) {
 
     collisionDetector(car, hole) ? stopGame() : null;
 
-    if (collisionDetector(car, highwaySign)) {
-      //window.location.href = "index.html";
-    }
-
     animationFrameId = requestAnimationFrame(gameLoop);
   }
 }
 
 function stopGame() {
   gameActive = false;
-  sessionStorage.setItem("gameStatus", "false");
   toggleUserInput(gameActive);
   toggleStatusSign(gameActive);
   toggleAudio(gameActive);
