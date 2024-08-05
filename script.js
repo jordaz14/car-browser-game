@@ -18,15 +18,19 @@ const road = {
   rect: document.querySelector(".road").getBoundingClientRect(),
 };
 
-function sceneObj(el, elType) {
-  this.el = document.createElement(elType);
-  this.el.className = el;
-  elType == "img" ? (this.el.src = `./assets/${el}.png`) : (this.el.src = null);
-  this.rect = this.el.getBoundingClientRect();
-
-  this.updateRect = function () {
+class sceneObj {
+  constructor(el, elType) {
+    this.el = document.createElement(elType);
+    this.el.className = el;
+    elType == "img"
+      ? (this.el.src = `./assets/${el}.png`)
+      : (this.el.src = null);
     this.rect = this.el.getBoundingClientRect();
-  };
+  }
+
+  updateRect() {
+    this.rect = this.el.getBoundingClientRect();
+  }
 }
 
 const car = new sceneObj("car", "img");
