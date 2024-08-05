@@ -15,14 +15,21 @@ const gameStatusSign = document.createElement("button");
 gameStatusSign.className = "game-status-sign";
 gameStatusSign.addEventListener("keydown", (event) => handleSpacebar(event));
 
-const score = {
+const scores = {
   active: {
     el: document.querySelector("#active-score"),
   },
   high: {
     el: document.querySelector("#high-score"),
+    score: sessionStorage.getItem("highScore"),
+
+    setHighScore() {
+      this.el.textContent = `HIGH SCORE: ${this.score}`;
+    },
   },
 };
+
+scores.high.setHighScore();
 
 const road = {
   el: document.querySelector(".road"),
@@ -253,5 +260,9 @@ function resetGame() {}
 
 function updateScore(activeScore) {
   console.log(activeScore);
-  score.active.el.textContent = `Score: ${activeScore}`;
+  scores.active.el.textContent = `SCORE: ${activeScore}`;
+  if (activeScore > scores.high.score) {
+    sessionStorage.setItem("highScore", activeScore);
+    scores.high.el.textContent = `High Score: ${activeScore}`;
+  }
 }
