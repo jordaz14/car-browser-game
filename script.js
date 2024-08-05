@@ -9,6 +9,10 @@ const spawnInterval = 4000;
 const arrowKeys = {
   ArrowLeft: false,
   ArrowRight: false,
+  el: {
+    ArrowLeft: document.querySelector("#left-arrow"),
+    ArrowRight: document.querySelector("#right-arrow"),
+  },
 };
 
 const gameStatusSign = document.createElement("button");
@@ -205,18 +209,25 @@ function getRandomInt(min, max) {
 }
 
 function toggleUserInput(gameActive) {
+  // Add keyboard input if game active
   if (gameActive) {
     document.addEventListener("keydown", (event) => {
       if (arrowKeys.hasOwnProperty(event.key)) {
         arrowKeys[event.key] = true;
+        arrowKeys.el[event.key].style.backgroundColor = "black";
+        arrowKeys.el[event.key].style.color = "white";
       }
     });
     document.addEventListener("keyup", (event) => {
       if (arrowKeys.hasOwnProperty(event.key)) {
         arrowKeys[event.key] = false;
+        arrowKeys.el[event.key].style.backgroundColor = "white";
+        arrowKeys.el[event.key].style.color = "black";
       }
     });
-  } else {
+  }
+  // Remove keyboard input if game over
+  else {
     document.removeEventListener("keydown", (event) => {
       if (arrowKeys.hasOwnPropert(event.key)) {
         arrowKeys[event.key] = true;
