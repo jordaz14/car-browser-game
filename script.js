@@ -6,6 +6,7 @@ const arrowKeys = {
 let gameActive = false;
 let animationFrameId;
 let trafficCounter = 0;
+let activeObstacles = [];
 
 const gameStatusSign = document.createElement("button");
 gameStatusSign.className = "game-status-sign";
@@ -36,16 +37,12 @@ road.el.appendChild(car.el);
 
 const hole = new sceneObj("hole", "img");
 road.el.appendChild(hole.el);
+activeObstacles.push(hole);
 
 const highwaySign = new sceneObj("hw-sign", "img");
 road.el.appendChild(highwaySign.el);
 
 toggleStatusSign();
-
-if (otherGameStatus === "true") {
-  startGame();
-} else {
-}
 
 function startGame() {
   gameActive = true;
@@ -67,13 +64,12 @@ function gameLoop(timestamp) {
 
     if (timestamp - lastSpawnTime > spawnInterval) {
       createObstacle();
-      console.log("TIME");
       lastSpawnTime = timestamp;
     }
 
-    moveSceneObj(hole, road);
+    moveSceneObj(activeObstacles, road);
 
-    collisionDetector(car, hole) ? stopGame() : null;
+    collisionDetector(car, activeObstacles) ? stopGame() : null;
 
     animationFrameId = requestAnimationFrame(gameLoop);
   }
@@ -90,6 +86,8 @@ function createObstacle() {
   const newObstacle = new sceneObj("hole", "img");
   randomLeftPos(newObstacle, road);
   road.el.appendChild(newObstacle.el);
+  activeObstacles.push(newObstacle);
+  console.log(activeObstacles);
 }
 
 function moveUser(movingObj, scene) {
@@ -125,28 +123,32 @@ function moveUser(movingObj, scene) {
   }
 }
 
-function moveSceneObj(movingObj, scene) {
+function moveSceneObj(activeObjsArr, scene) {
   const OFFSET = 200;
   const MOVEMENT = 10;
 
-  // Move object downwards
-  let currentTop = parseInt(movingObj.el.style.top) || 0;
-  currentTop += MOVEMENT;
-  movingObj.el.style.top = `${currentTop}px`;
-  movingObj.updateRect();
+  // Iterate over every object in environment
+  for (const activeObj of activeObjsArr) {
+    // Move object downwards
+    let currentTop = parseInt(activeObj.el.style.top) || 0;
+    currentTop += MOVEMENT;
+    activeObj.el.style.top = `${currentTop}px`;
+    activeObj.updateRect();
 
-  // Check if object is out of scene bounds
-  if (movingObj.rect.bottom > scene.rect.height + OFFSET) {
-    trafficCounter++;
+    // Check if object is out of scene bounds
+    if (activeObj.rect.bottom > scene.rect.height + OFFSET) {
+      trafficCounter++;
 
-    // Update position of object
-    currentTop = scene.rect.top;
-    randomLeftPos(movingObj, scene);
-    movingObj.el.style.top = `${currentTop - OFFSET}px`;
-    movingObj.updateRect();
+      // Update position of object
+      currentTop = scene.rect.top;
+      randomLeftPos(activeObj, scene);
+      activeObj.el.style.top = `${currentTop - OFFSET}px`;
+      activeObj.updateRect();
+    }
   }
 }
 
+/*
 function collisionDetector(movingObj1, movingObj2) {
   movingObj1.updateRect();
   movingObj2.updateRect();
@@ -157,6 +159,27 @@ function collisionDetector(movingObj1, movingObj2) {
     movingObj1.rect.bottom < movingObj2.rect.top ||
     movingObj1.rect.top > movingObj2.rect.bottom
   );
+}*/
+
+function collisionDetector(movingObj, activeObjsArr) {
+  movingObj.updateRect();
+
+  for (const activeObj of activeObjsArr) {
+    activeObj.updateRect();
+
+    const isColliding = !(
+      movingObj.rect.right < activeObj.rect.left ||
+      movingObj.rect.left > activeObj.rect.right ||
+      movingObj.rect.bottom < activeObj.rect.top ||
+      movingObj.rect.top > activeObj.rect.bottom
+    );
+
+    if (isColliding) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 function randomLeftPos(movingObj, scene) {
