@@ -1,12 +1,15 @@
-const arrowKeys = {
-  ArrowLeft: false,
-  ArrowRight: false,
-};
-
 let gameActive = false;
 let animationFrameId;
 let trafficCounter = 0;
 let activeObstacles = [];
+let activeScenery = [];
+let lastSpawnTime = 0;
+const spawnInterval = 4000;
+
+const arrowKeys = {
+  ArrowLeft: false,
+  ArrowRight: false,
+};
 
 const gameStatusSign = document.createElement("button");
 gameStatusSign.className = "game-status-sign";
@@ -18,10 +21,14 @@ const road = {
 };
 
 const dirt = {
-  elLeft: document.querySelector(".dirt-left"),
-  elLeftRect: document.querySelector(".dirt-left").getBoundingClientRect(),
-  elRight: document.querySelector(".dirt-right"),
-  elRightRect: document.querySelector(".dirt-right").getBoundingClientRect(),
+  left: {
+    el: document.querySelector(".dirt-left"),
+    rect: document.querySelector(".dirt-left").getBoundingClientRect(),
+  },
+  right: {
+    el: document.querySelector(".dirt-right"),
+    rect: document.querySelector(".dirt-right").getBoundingClientRect(),
+  },
 };
 
 class sceneObj {
@@ -42,6 +49,10 @@ class sceneObj {
 const car = new sceneObj("car", "img");
 road.el.appendChild(car.el);
 
+const cactus = new sceneObj("cactus", "img");
+dirt.left.el.append(cactus.el);
+activeScenery.push(cactus);
+
 toggleStatusSign();
 
 function startGame() {
@@ -51,11 +62,6 @@ function startGame() {
   toggleAudio(gameActive);
   gameLoop(gameActive);
 }
-
-let lastSpawnTime = 0;
-const spawnInterval = 1000;
-
-let obstacleList = [];
 
 function gameLoop(timestamp) {
   if (gameActive == true) {
@@ -67,6 +73,7 @@ function gameLoop(timestamp) {
     }
 
     moveSceneObj(activeObstacles, road);
+    moveSceneObj(activeScenery, dirt.left);
 
     collisionDetector(car, activeObstacles) ? stopGame() : null;
 

@@ -55,6 +55,15 @@ body {
   z-index: 2;
 }
 
+.cactus {
+  position: absolute;
+  height: 120px;
+  width: 90px;
+  top: 30%;
+  left: 30%;
+  z-index: 2;
+}
+
 .ascii-art {
   font-family: monospace;
 }
