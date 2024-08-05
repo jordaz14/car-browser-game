@@ -17,6 +17,13 @@ const road = {
   rect: document.querySelector(".road").getBoundingClientRect(),
 };
 
+const dirt = {
+  elLeft: document.querySelector(".dirt-left"),
+  elLeftRect: document.querySelector(".dirt-left").getBoundingClientRect(),
+  elRight: document.querySelector(".dirt-right"),
+  elRightRect: document.querySelector(".dirt-right").getBoundingClientRect(),
+};
+
 class sceneObj {
   constructor(el, elType) {
     this.el = document.createElement(elType);
@@ -35,13 +42,6 @@ class sceneObj {
 const car = new sceneObj("car", "img");
 road.el.appendChild(car.el);
 
-const hole = new sceneObj("hole", "img");
-road.el.appendChild(hole.el);
-activeObstacles.push(hole);
-
-const highwaySign = new sceneObj("hw-sign", "img");
-road.el.appendChild(highwaySign.el);
-
 toggleStatusSign();
 
 function startGame() {
@@ -49,7 +49,6 @@ function startGame() {
   toggleUserInput(gameActive);
   toggleStatusSign(gameActive);
   toggleAudio(gameActive);
-  randomLeftPos(hole, road);
   gameLoop(gameActive);
 }
 
@@ -87,7 +86,6 @@ function createObstacle() {
   randomLeftPos(newObstacle, road);
   road.el.appendChild(newObstacle.el);
   activeObstacles.push(newObstacle);
-  console.log(activeObstacles);
 }
 
 function moveUser(movingObj, scene) {
@@ -147,19 +145,6 @@ function moveSceneObj(activeObjsArr, scene) {
     }
   }
 }
-
-/*
-function collisionDetector(movingObj1, movingObj2) {
-  movingObj1.updateRect();
-  movingObj2.updateRect();
-
-  return !(
-    movingObj1.rect.right < movingObj2.rect.left ||
-    movingObj1.rect.left > movingObj2.rect.right ||
-    movingObj1.rect.bottom < movingObj2.rect.top ||
-    movingObj1.rect.top > movingObj2.rect.bottom
-  );
-}*/
 
 function collisionDetector(movingObj, activeObjsArr) {
   movingObj.updateRect();
