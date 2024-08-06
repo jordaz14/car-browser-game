@@ -4,7 +4,49 @@ let trafficCounter = 0;
 let activeObstacles = [];
 let activeScenery = [];
 let lastSpawnTime = 0;
-const spawnInterval = 4000;
+let spawnInterval = 4000;
+let movement = 2;
+
+const difficulty = {
+  easy: {
+    el: document.querySelector("#easy-button"),
+    handleClick: function () {
+      console.log("easy clicked");
+      spawnInterval = 5000;
+      movement = 1;
+    },
+  },
+  normal: {
+    el: document.querySelector("#normal-button"),
+    handleClick: function () {
+      console.log("normal clicked");
+      this.el.style.backgroundColor = "red";
+      spawnInterval = 4000;
+      movement = 2;
+    },
+  },
+  hard: {
+    el: document.querySelector("#hard-button"),
+    handleClick: function () {
+      console.log("hard clicked");
+      spawnInterval = 3000;
+      movement = 3;
+    },
+  },
+
+  setDifficultyLevel() {
+    for (const level in difficulty) {
+      if (difficulty[level].el) {
+        difficulty[level].el.addEventListener(
+          "click",
+          difficulty[level].handleClick.bind(difficulty[level])
+        );
+      }
+    }
+  },
+};
+
+difficulty.setDifficultyLevel();
 
 const arrowKeys = {
   ArrowLeft: false,
@@ -151,14 +193,14 @@ function moveUser(movingObj, scene) {
 
 function moveSceneObj(activeObjsArr, scene) {
   const OFFSET = 200;
-  const MOVEMENT = 10;
+  const MOVEMENT = movement;
 
   // Iterate over every object in environment
   for (const activeObj of activeObjsArr) {
     // Move object downwards
     let currentTop = parseInt(activeObj.el.style.top) || 0;
     currentTop += MOVEMENT;
-    activeObj.el.style.top = `${currentTop}px`;
+    activeObj.el.style.top = `${currentTop}%`;
     activeObj.updateRect();
 
     // Check if object is out of scene bounds
@@ -270,7 +312,6 @@ function handleSpacebar(event) {
 function resetGame() {}
 
 function updateScore(activeScore) {
-  console.log(activeScore);
   scores.active.el.textContent = `SCORE: ${activeScore}`;
   if (activeScore > scores.high.score) {
     sessionStorage.setItem("highScore", activeScore);

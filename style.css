@@ -155,7 +155,7 @@ body {
   font-size: x-large;
 }
 
-.scoreboard {
+.game-card {
   padding: 20px;
   background-color: black;
   color: white;
@@ -164,4 +164,12 @@ body {
   text-align: center;
   border: double;
   border-width: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+button {
+  color: black;
+  padding: 4px;
 }
