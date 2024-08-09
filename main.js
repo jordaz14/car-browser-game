@@ -143,7 +143,11 @@ function gameLoop(timestamp) {
     moveSceneObj(activeObstacles, road);
     moveSceneObj(activeScenery, dirt.left);
 
-    collisionDetector(car, activeObstacles) ? stopGame() : null;
+    if (collisionDetector(car, activeObstacles)) {
+      car.el.className = "dead";
+      car.el.src = "./assets/skull.png";
+      stopGame();
+    }
 
     updateScore(animationFrameId);
     animationFrameId = requestAnimationFrame(gameLoop);

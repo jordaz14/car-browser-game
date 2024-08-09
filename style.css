@@ -178,3 +178,12 @@ button {
   color: black;
   padding: 4px;
 }
+
+.dead {
+  position: absolute;
+  height: 120px;
+  width: 160px;
+  top: 70%;
+  left: 50%;
+  z-index: 2;
+}
