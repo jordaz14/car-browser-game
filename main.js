@@ -1,5 +1,6 @@
 import { getRandomInt } from "./helper.js";
 import { collisionDetector, randomLeftPos } from "./motion.js";
+import { toggleAudio, setAudioSpeed, playSoundEffect } from "./audio.js";
 
 let gameActive = false;
 let gameDifficulty = "normal";
@@ -18,6 +19,7 @@ const difficulty = {
     handleClick: function () {
       difficulty.toggleDifficultyStatus(this);
       difficulty.toggleDifficultyUI();
+      playSoundEffect();
       setAudioSpeed("slow");
       spawnInterval = 5000;
       movement = 1;
@@ -30,6 +32,7 @@ const difficulty = {
     handleClick: function () {
       difficulty.toggleDifficultyStatus(this);
       difficulty.toggleDifficultyUI();
+      playSoundEffect();
       setAudioSpeed("normal");
       spawnInterval = 4000;
       movement = 2;
@@ -42,7 +45,7 @@ const difficulty = {
     handleClick: function () {
       difficulty.toggleDifficultyStatus(this);
       difficulty.toggleDifficultyUI();
-      let audio = document.querySelector("#audio-player");
+      playSoundEffect();
       setAudioSpeed("fast");
       spawnInterval = 3000;
       movement = 3;
@@ -304,28 +307,6 @@ function toggleUserInput(gameActive) {
         arrowKeys[event.key] = false;
       }
     });
-  }
-}
-
-function toggleAudio() {
-  let audio = document.querySelector("#audio-player");
-
-  gameActive == true ? audio.play() : audio.pause();
-}
-
-function setAudioSpeed(speed) {
-  let audio = document.querySelector("#audio-player");
-
-  switch (speed) {
-    case "slow":
-      audio.playbackRate = 0.75;
-      break;
-    case "normal":
-      audio.playbackRate = 1;
-      break;
-    case "fast":
-      audio.playbackRate = 1.25;
-      break;
   }
 }
 
