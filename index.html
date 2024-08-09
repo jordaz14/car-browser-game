@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./style.css" />
-    <script src="./script.js" async></script>
+    <script type="module" src="./main.js" async></script>
     <title>Highway Headache</title>
     <link
       rel="shortcut icon"
@@ -14,7 +14,7 @@
   </head>
   <body>
     <audio id="audio-player">
-      <source src="./assets/willie-road.mp3" type="audio/mp3" />
+      <source src="./assets/dirt-road.mp3" type="audio/mp3" />
     </audio>
     <div class="dirt-left">
       <div class="game-card">
@@ -27,14 +27,15 @@
         </div>
         <div>
           <p>DIFFICULTY:</p>
-          <button id="easy-button">Easy</button>
-          <button id="normal-button">Normal</button>
-          <button id="hard-button">Hard</button>
+          <button id="easy-button" class="difficulty-buttons">Easy</button>
+          <button id="normal-button" class="difficulty-buttons">Normal</button>
+          <button id="hard-button" class="difficulty-buttons">Hard</button>
         </div>
         <div>
           <p id="active-score">SCORE: 0</p>
           <p id="high-score">HIGH SCORE:</p>
         </div>
+        <button class="game-status-sign">Press to Start Game</button>
       </div>
     </div>
     <div class="road">

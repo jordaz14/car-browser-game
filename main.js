@@ -64,9 +64,8 @@ const arrowKeys = {
   },
 };
 
-const gameStatusSign = document.createElement("button");
-gameStatusSign.className = "game-status-sign";
-gameStatusSign.addEventListener("keydown", (event) => handleSpacebar(event));
+let gameStatusSign = document.querySelector(".game-status-sign");
+gameStatusSign.addEventListener("click", startGame);
 
 const scores = {
   active: {
@@ -264,25 +263,15 @@ function toggleAudio(gameActive) {
 
 function toggleStatusSign(gameActive) {
   if (gameActive) {
-    document.body.removeChild(gameStatusSign);
-  } else if (gameActive == false) {
-    gameStatusSign.textContent = `PRESS SPACE TO RESTART`;
-    document.body.appendChild(gameStatusSign);
-    gameStatusSign.focus();
-  } else {
-    gameStatusSign.textContent = `PRESS SPACE TO START`;
-    document.body.appendChild(gameStatusSign);
-    gameStatusSign.focus();
+    gameStatusSign.textContent = `Press to Restart Game`;
+    gameStatusSign.removeEventListener("click", startGame);
+    gameStatusSign.addEventListener("click", resetGame);
   }
 }
 
-function handleSpacebar(event) {
-  if (event.key == " ") {
-    startGame();
-  }
+function resetGame() {
+  window.location.reload();
 }
-
-function resetGame() {}
 
 function updateScore(scoreInput) {
   let activeScore = scoreInput;
