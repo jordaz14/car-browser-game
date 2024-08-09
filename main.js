@@ -18,6 +18,7 @@ const difficulty = {
     handleClick: function () {
       difficulty.toggleDifficultyStatus(this);
       difficulty.toggleDifficultyUI();
+      setAudioSpeed("slow");
       spawnInterval = 5000;
       movement = 1;
       gameDifficulty = "easy";
@@ -29,6 +30,7 @@ const difficulty = {
     handleClick: function () {
       difficulty.toggleDifficultyStatus(this);
       difficulty.toggleDifficultyUI();
+      setAudioSpeed("normal");
       spawnInterval = 4000;
       movement = 2;
       gameDifficulty = "normal";
@@ -40,6 +42,8 @@ const difficulty = {
     handleClick: function () {
       difficulty.toggleDifficultyStatus(this);
       difficulty.toggleDifficultyUI();
+      let audio = document.querySelector("#audio-player");
+      setAudioSpeed("fast");
       spawnInterval = 3000;
       movement = 3;
       gameDifficulty = "hard";
@@ -303,10 +307,26 @@ function toggleUserInput(gameActive) {
   }
 }
 
-function toggleAudio(gameActive) {
-  gameActive == true
-    ? document.querySelector("#audio-player").play()
-    : document.querySelector("#audio-player").pause();
+function toggleAudio() {
+  let audio = document.querySelector("#audio-player");
+
+  gameActive == true ? audio.play() : audio.pause();
+}
+
+function setAudioSpeed(speed) {
+  let audio = document.querySelector("#audio-player");
+
+  switch (speed) {
+    case "slow":
+      audio.playbackRate = 0.75;
+      break;
+    case "normal":
+      audio.playbackRate = 1;
+      break;
+    case "fast":
+      audio.playbackRate = 1.25;
+      break;
+  }
 }
 
 function toggleStatusSign(gameActive) {
