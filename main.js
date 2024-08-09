@@ -289,17 +289,17 @@ function updateScore(scoreInput) {
 
   switch (gameDifficulty) {
     case "easy":
-      console.log("case easy");
-      activeScore = activeScore * (1 / 2);
+      activeScore *= 1 / 2;
       break;
     case "normal":
-      console.log("case normal");
+      activeScore;
       break;
     case "hard":
-      console.log("case hard");
-      activeScore = activeScore * 2;
+      activeScore *= 2;
       break;
   }
+
+  activeScore = Math.round(activeScore);
 
   scores.active.el.textContent = `SCORE: ${activeScore}`;
 
