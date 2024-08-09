@@ -14,8 +14,10 @@ let movement = 2;
 const difficulty = {
   easy: {
     el: document.querySelector("#easy-button"),
+    status: false,
     handleClick: function () {
-      console.log("easy clicked");
+      difficulty.toggleDifficultyStatus(this);
+      difficulty.toggleDifficultyUI();
       spawnInterval = 5000;
       movement = 1;
       gameDifficulty = "easy";
@@ -23,9 +25,10 @@ const difficulty = {
   },
   normal: {
     el: document.querySelector("#normal-button"),
+    status: true,
     handleClick: function () {
-      console.log("normal clicked");
-      this.el.style.backgroundColor = "red";
+      difficulty.toggleDifficultyStatus(this);
+      difficulty.toggleDifficultyUI();
       spawnInterval = 4000;
       movement = 2;
       gameDifficulty = "normal";
@@ -33,8 +36,10 @@ const difficulty = {
   },
   hard: {
     el: document.querySelector("#hard-button"),
+    status: false,
     handleClick: function () {
-      console.log("hard clicked");
+      difficulty.toggleDifficultyStatus(this);
+      difficulty.toggleDifficultyUI();
       spawnInterval = 3000;
       movement = 3;
       gameDifficulty = "hard";
@@ -44,16 +49,54 @@ const difficulty = {
   setDifficultyLevel() {
     for (const level in difficulty) {
       if (difficulty[level].el) {
+        difficulty[level].boundHandleClick = difficulty[level].handleClick.bind(
+          difficulty[level]
+        );
         difficulty[level].el.addEventListener(
           "click",
-          difficulty[level].handleClick.bind(difficulty[level])
+          difficulty[level].boundHandleClick
         );
+      }
+    }
+  },
+
+  removeDifficultySelect() {
+    console.log("Attempt Started");
+    for (const level in difficulty) {
+      if (difficulty[level].el) {
+        difficulty[level].el.removeEventListener(
+          "click",
+          difficulty[level].boundHandleClick
+        );
+      }
+    }
+  },
+
+  toggleDifficultyStatus(difficultyLevel) {
+    for (const level in difficulty) {
+      if (difficulty[level] == difficultyLevel) {
+        difficulty[level].status = true;
+      } else if (difficulty[level].el) {
+        difficulty[level].status = false;
+      }
+    }
+  },
+
+  toggleDifficultyUI() {
+    for (const level in difficulty) {
+      if (difficulty[level].status) {
+        difficulty[level].el.style.backgroundColor = "white";
+        difficulty[level].el.style.color = "black";
+      } else if (difficulty[level].el) {
+        difficulty[level].el.style.backgroundColor = "black";
+        difficulty[level].el.style.color = "white";
       }
     }
   },
 };
 
 difficulty.setDifficultyLevel();
+difficulty.toggleDifficultyUI();
 
 const arrowKeys = {
   ArrowLeft: false,
@@ -125,6 +168,7 @@ toggleStatusSign();
 
 function startGame() {
   gameActive = true;
+  difficulty.removeDifficultySelect();
   toggleUserInput(gameActive);
   toggleStatusSign(gameActive);
   toggleAudio(gameActive);
@@ -267,7 +311,7 @@ function toggleAudio(gameActive) {
 
 function toggleStatusSign(gameActive) {
   if (gameActive) {
-    gameStatusSign.textContent = `Press to Restart Game`;
+    gameStatusSign.textContent = `RESTART GAME`;
     gameStatusSign.removeEventListener("click", startGame);
     gameStatusSign.addEventListener("click", resetGame);
   }
