@@ -139,7 +139,6 @@ body {
   padding: 10px;
   justify-content: center;
   align-items: center;
-
   font-family: monospace;
   text-align: center;
 }
@@ -171,7 +170,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  width: clamp(150px, 50%, 300px);
+  width: clamp(250px, 50%, 300px);
 }
 
 button {
