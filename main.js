@@ -2,7 +2,8 @@ import { getRandomInt } from "./helper.js";
 import { collisionDetector, randomLeftPos } from "./motion.js";
 import { toggleAudio, setAudioSpeed, playSoundEffect } from "./audio.js";
 
-let gameActive = false;
+export const gameState = { active: false, muted: false };
+
 let gameDifficulty = "normal";
 let animationFrameId = 0;
 let trafficCounter = 0;
@@ -19,7 +20,7 @@ const difficulty = {
     handleClick: function () {
       difficulty.toggleDifficultyStatus(this);
       difficulty.toggleDifficultyUI();
-      playSoundEffect();
+      playSoundEffect("select");
       setAudioSpeed("slow");
       spawnInterval = 5000;
       movement = 1;
@@ -32,7 +33,7 @@ const difficulty = {
     handleClick: function () {
       difficulty.toggleDifficultyStatus(this);
       difficulty.toggleDifficultyUI();
-      playSoundEffect();
+      playSoundEffect("select");
       setAudioSpeed("normal");
       spawnInterval = 4000;
       movement = 2;
@@ -45,7 +46,7 @@ const difficulty = {
     handleClick: function () {
       difficulty.toggleDifficultyStatus(this);
       difficulty.toggleDifficultyUI();
-      playSoundEffect();
+      playSoundEffect("select");
       setAudioSpeed("fast");
       spawnInterval = 3000;
       movement = 3;
@@ -174,16 +175,16 @@ activeScenery.push(cactus);
 toggleStatusSign();
 
 function startGame() {
-  gameActive = true;
+  gameState.active = true;
   difficulty.removeDifficultySelect();
-  toggleUserInput(gameActive);
-  toggleStatusSign(gameActive);
-  toggleAudio(gameActive);
-  gameLoop(gameActive);
+  toggleUserInput(gameState.active);
+  toggleStatusSign(gameState.active);
+  toggleAudio(gameState.active);
+  gameLoop(gameState.active);
 }
 
 function gameLoop(timestamp) {
-  if (gameActive == true) {
+  if (gameState.active) {
     moveUser(car, road);
 
     if (timestamp - lastSpawnTime > spawnInterval) {
@@ -195,6 +196,7 @@ function gameLoop(timestamp) {
     moveSceneObj(activeScenery, dirt.left);
 
     if (collisionDetector(car, activeObstacles)) {
+      playSoundEffect("death");
       car.el.className = "dead";
       car.el.src = "./assets/skull.png";
       stopGame();
@@ -206,10 +208,10 @@ function gameLoop(timestamp) {
 }
 
 function stopGame() {
-  gameActive = false;
-  toggleUserInput(gameActive);
-  toggleStatusSign(gameActive);
-  toggleAudio(gameActive);
+  gameState.active = false;
+  toggleUserInput(gameState.active);
+  toggleStatusSign(gameState.active);
+  toggleAudio(gameState.active);
 }
 
 function createObstacle() {
@@ -312,7 +314,7 @@ function toggleUserInput(gameActive) {
 
 function toggleStatusSign(gameActive) {
   if (gameActive) {
-    gameStatusSign.textContent = `RESTART GAME`;
+    gameStatusSign.textContent = `RESTART`;
     gameStatusSign.removeEventListener("click", startGame);
     gameStatusSign.addEventListener("click", resetGame);
   }
