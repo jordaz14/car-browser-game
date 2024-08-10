@@ -129,7 +129,8 @@ body {
   margin-top: 10px;
 }
 
-.game-status-sign {
+.game-status-sign,
+#mute-button {
   background-color: black;
   color: white;
   font-weight: bold;
@@ -144,7 +145,8 @@ body {
 }
 
 .game-status-sign:hover,
-.difficulty-buttons:hover {
+.difficulty-buttons:hover,
+#mute-button:hover {
   background-color: white;
   color: black;
 }
@@ -171,6 +173,8 @@ body {
   flex-direction: column;
   gap: 20px;
   width: clamp(250px, 50%, 300px);
+  justify-content: center;
+  align-content: center;
 }
 
 button {
