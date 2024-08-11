@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <script type="module" src="main.js" async></script>
+    <title>"RC" CAR</title>
+    <link
+      rel="shortcut icon"
+      href="../assets/car-favicon.ico"
+      type="image/x-icon"
+    />
+  </head>
+  <body>
+    <audio id="audio-player">
+      <source src="../assets/chiptune.mp3" type="audio/mp3" />
+    </audio>
+    <div class="dirt-left">
+      <div class="game-card">
+        <div>
+          <h1>"RC" CAR</h1>
+          <p>DODGE POTHOLES TO SET A HIGH SCORE</p>
+        </div>
+        <div>
+          <p>DIFFICULTY:</p>
+          <button id="easy-button" class="difficulty-buttons">EASY</button>
+          <button id="normal-button" class="difficulty-buttons">NORMAL</button>
+          <button id="hard-button" class="difficulty-buttons">HARD</button>
+        </div>
+        <div>
+          <p id="active-score">SCORE: 0</p>
+          <p id="high-score">HIGH SCORE:</p>
+        </div>
+        <button id="mute-button">MUTE</button>
+        <button class="game-status-sign">START</button>
+      </div>
+    </div>
+    <div class="road">
+      <div class="lane"><div id="left-arrow">⇦</div></div>
+      <div class="lane"><div id="right-arrow">⇨</div></div>
+    </div>
+    <div class="dirt-right">
+      <div class="leaderboard">
+        <div>
+          <h1>LEADERBOARD</h1>
+          <p>GLOBAL</p>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>USERNAME</th>
+              <th>RANKING</th>
+              <th>SCORE</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>user1</td>
+              <td>1</td>
+              <td>1200</td>
+            </tr>
+            <tr>
+              <td>user2</td>
+              <td>2</td>
+              <td>800</td>
+            </tr>
+            <tr>
+              <td>user3</td>
+              <td>3</td>
+              <td>600</td>
+            </tr>
+            <tr>
+              <td>user4</td>
+              <td>4</td>
+              <td>500</td>
+            </tr>
+          </tbody>
+        </table>
+        <form action="POST" class="party-submit">
+          <label for="">PARTY NAME</label><input type="text" />
+          <button>JOIN PARTY</button>
+        </form>
+        <form action="POST" class="score-submit">
+          <label for="">USERNAME</label><input type="text" />
+          <button>SUBMIT SCORE</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
