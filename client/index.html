@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
     <script type="module" src="main.js" async></script>
-    <title>"RC" CAR</title>
+    <title>RC CAR</title>
     <link
       rel="shortcut icon"
       href="../assets/car-favicon.ico"
@@ -19,7 +19,7 @@
     <div class="dirt-left">
       <div class="game-card">
         <div>
-          <h1>"RC" CAR</h1>
+          <h1>RC CAR</h1>
           <p>DODGE POTHOLES TO SET A HIGH SCORE</p>
         </div>
         <div>
@@ -77,12 +77,14 @@
             </tr>
           </tbody>
         </table>
-        <form action="POST" class="party-submit">
-          <label for="">PARTY NAME</label><input type="text" />
+        <form action="POST" class="party-form">
+          <label for="party-name">PARTY NAME</label
+          ><input type="text" name="party-name" />
           <button>JOIN PARTY</button>
         </form>
-        <form action="POST" class="score-submit">
-          <label for="">USERNAME</label><input type="text" />
+        <form action="POST" class="score-form">
+          <label for="user-name">USERNAME</label
+          ><input type="text" name="user-name" />
           <button>SUBMIT SCORE</button>
         </form>
       </div>

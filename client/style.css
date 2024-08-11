@@ -210,8 +210,8 @@ input {
   height: 25px;
 }
 
-.party-submit,
-.score-submit {
+.party-form,
+.score-form {
   display: flex;
   flex-direction: column;
   gap: 10px;
