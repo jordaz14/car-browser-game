@@ -1,6 +1,9 @@
 import { helper } from "./modules/helper.js";
 import { motion } from "./modules/motion.js";
 import { audio } from "./modules/audio.js";
+import { environment } from "./modules/environment.js";
+import { score } from "./modules/score.js";
+import { sayHi } from "./modules/leaderboard.js";
 
 export const gameState = {
   active: false,
@@ -9,11 +12,8 @@ export const gameState = {
   movement: undefined,
   lastSpawnTime: 0,
   spawnInterval: undefined,
+  animationFrameId: 0,
 };
-
-let animationFrameId = 0;
-let activeObstacles = [];
-let activeScenery = [];
 
 const difficulty = {
   easy: {
@@ -161,60 +161,6 @@ audio.setAudioSpeed();
 let gameStatusSign = document.querySelector(".game-status-sign");
 gameStatusSign.addEventListener("click", startGame);
 
-const scores = {
-  active: {
-    el: document.querySelector("#active-score"),
-  },
-  high: {
-    el: document.querySelector("#high-score"),
-    score: sessionStorage.getItem("highScore"),
-
-    setHighScore() {
-      this.el.textContent = `HIGH SCORE: ${this.score}`;
-    },
-  },
-};
-
-scores.high.setHighScore();
-
-const road = {
-  el: document.querySelector(".road"),
-  rect: document.querySelector(".road").getBoundingClientRect(),
-};
-
-const dirt = {
-  left: {
-    el: document.querySelector(".dirt-left"),
-    rect: document.querySelector(".dirt-left").getBoundingClientRect(),
-  },
-  right: {
-    el: document.querySelector(".dirt-right"),
-    rect: document.querySelector(".dirt-right").getBoundingClientRect(),
-  },
-};
-
-class sceneObj {
-  constructor(el, elType) {
-    this.el = document.createElement(elType);
-    this.el.className = el;
-    elType == "img"
-      ? (this.el.src = `../assets/${el}.png`)
-      : (this.el.src = null);
-    this.rect = this.el.getBoundingClientRect();
-  }
-
-  updateRect() {
-    this.rect = this.el.getBoundingClientRect();
-  }
-}
-
-const car = new sceneObj("car", "img");
-road.el.appendChild(car.el);
-
-const cactus = new sceneObj("cactus", "img");
-dirt.right.el.append(cactus.el);
-activeScenery.push(cactus);
-
 toggleStatusSign();
 
 function startGame() {
@@ -228,25 +174,27 @@ function startGame() {
 
 function gameLoop(timestamp) {
   if (gameState.active) {
-    motion.moveUser(car, road);
+    motion.moveUser(environment.car, environment.road);
 
     if (timestamp - gameState.lastSpawnTime > gameState.spawnInterval) {
-      createObstacle();
+      environment.createObstacle();
       gameState.lastSpawnTime = timestamp;
     }
 
-    motion.moveSceneObj(activeObstacles, road);
-    motion.moveSceneObj(activeScenery, dirt.left);
+    motion.moveSceneObj(environment.activeObstacles, environment.road);
+    motion.moveSceneObj(environment.activeScenery, environment.dirt.left);
 
-    if (motion.collisionDetector(car, activeObstacles)) {
+    if (
+      motion.collisionDetector(environment.car, environment.activeObstacles)
+    ) {
       audio.playSoundEffect("death");
-      car.el.className = "dead";
-      car.el.src = "../assets/skull.png";
+      environment.car.el.className = "dead";
+      environment.car.el.src = "../assets/skull.png";
       stopGame();
     }
 
-    updateScore(animationFrameId);
-    animationFrameId = requestAnimationFrame(gameLoop);
+    score.updateScore(gameState.animationFrameId);
+    gameState.animationFrameId = requestAnimationFrame(gameLoop);
   }
 }
 
@@ -255,13 +203,6 @@ function stopGame() {
   motion.toggleUserInput(gameState.active);
   toggleStatusSign(gameState.active);
   audio.toggleAudio(gameState.active);
-}
-
-function createObstacle() {
-  const newObstacle = new sceneObj("hole", "img");
-  motion.randomLeftPos(newObstacle, road);
-  road.el.appendChild(newObstacle.el);
-  activeObstacles.push(newObstacle);
 }
 
 function toggleStatusSign(gameActive) {
@@ -274,29 +215,4 @@ function toggleStatusSign(gameActive) {
 
 function resetGame() {
   window.location.reload();
-}
-
-function updateScore(scoreInput) {
-  let activeScore = scoreInput;
-
-  switch (gameState.difficultyLevel) {
-    case "easy":
-      activeScore *= 1 / 2;
-      break;
-    case "normal":
-      activeScore;
-      break;
-    case "hard":
-      activeScore *= 2;
-      break;
-  }
-
-  activeScore = Math.round(activeScore);
-
-  scores.active.el.textContent = `SCORE: ${activeScore}`;
-
-  if (activeScore > scores.high.score) {
-    sessionStorage.setItem("highScore", activeScore);
-    scores.high.el.textContent = `High Score: ${activeScore}`;
-  }
 }
