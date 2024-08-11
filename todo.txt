@@ -1,6 +1,0 @@
-Add difficulty levels
-Add different obstacles 
-Add different scenery items
-Add mute button
-Refactor start game modal
-Stylize arrow indicators
