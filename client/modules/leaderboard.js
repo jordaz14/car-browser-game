@@ -3,6 +3,23 @@ export function sayHi() {
 }
 
 const url = "http://localhost:3000/";
+const tbody = document.querySelector("tbody");
+
+fetchData("").then((leaderboard) => {
+  console.log(leaderboard);
+  for (const entry of leaderboard) {
+    const newRow = document.createElement("tr");
+    for (const data in entry) {
+      if (data != "id") {
+        const newTableData = document.createElement("td");
+        newTableData.textContent = entry[data];
+        newRow.appendChild(newTableData);
+        console.log(entry[data]);
+      }
+    }
+    tbody.appendChild(newRow);
+  }
+});
 
 const partyForm = document.querySelector(".party-form");
 partyForm.addEventListener("submit", (e) => {
