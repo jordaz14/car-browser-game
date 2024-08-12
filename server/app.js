@@ -33,6 +33,20 @@ async function getPgVersion() {
 getPgVersion();
 
 // ROUTE HANDLERS
+app.get("/", async (req, res) => {
+  try {
+    const leaderboard = await sql`
+    SELECT * FROM leaderboard WHERE party = 'global'`;
+
+    console.log(leaderboard);
+
+    res.json(leaderboard);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 app.get("/join-party", (req, res) => {
   res.json({ message: "hello, world!" });
 });
