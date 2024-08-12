@@ -1,6 +1,7 @@
 import { gameState } from "../main.js";
 import { helper } from "./helper.js";
 
+// HOLDS STATE OF ARROW KEYS
 const arrowKeys = {
   ArrowLeft: false,
   ArrowRight: false,
@@ -11,6 +12,7 @@ const arrowKeys = {
 };
 
 export const motion = {
+  // ENABLES/DISABLES USER MOVEMENT
   toggleUserInput(gameActive) {
     // Add keyboard input if game active
     if (gameActive) {
@@ -29,7 +31,7 @@ export const motion = {
         }
       });
     }
-    // Remove keyboard input if game over
+    // Remove keyboard input if game unactive
     else {
       document.removeEventListener("keydown", (event) => {
         if (arrowKeys.hasOwnPropert(event.key)) {
@@ -44,6 +46,7 @@ export const motion = {
     }
   },
 
+  //HANDLES USER MOVEMENT
   moveUser(movingObj, scene) {
     const MOVEMENT = 10;
 
@@ -53,23 +56,30 @@ export const motion = {
     // Calculate object width
     const objWidth = movingObj.rect.width;
 
+    // If left arrow key active
     if (arrowKeys.ArrowLeft) {
-      // Move left
+      // If object within bounds
       if (movingObj.rect.left - MOVEMENT >= scene.rect.left) {
+        // Move left
         movingObj.el.style.left = `${
           movingObj.rect.left - scene.rect.left - MOVEMENT
         }px`;
       } else {
+        // Restrict within bounds
         movingObj.el.style.left = `${0}px`;
       }
     }
+
+    // If right arrow key active
     if (arrowKeys.ArrowRight) {
-      // Move right
+      // If object within bounds
       if (movingObj.rect.right + MOVEMENT <= scene.rect.right) {
+        // Move right
         movingObj.el.style.left = `${
           movingObj.rect.left - scene.rect.left + MOVEMENT
         }px`;
       } else {
+        // Restrict within bounds
         movingObj.el.style.left = `${
           scene.rect.right - objWidth - scene.rect.left
         }px`;
@@ -77,11 +87,13 @@ export const motion = {
     }
   },
 
+  //HANDLES OBSTACLE & SCENERY MOVEMENT
   moveSceneObj(activeObjsArr, scene) {
+    // Establish y-axis positioning & movement speed
     const OFFSET = 200;
     const MOVEMENT = gameState.movement;
 
-    // Iterate over every object in environment
+    // Iterate through every object in environment
     for (const activeObj of activeObjsArr) {
       // Move object downwards
       let currentTop = parseInt(activeObj.el.style.top) || 0;
@@ -100,9 +112,11 @@ export const motion = {
     }
   },
 
+  //HANDLES COLLISIONS
   collisionDetector(movingObj, activeObjsArr) {
     movingObj.updateRect();
 
+    //Iterate through every active object in environment
     for (const activeObj of activeObjsArr) {
       activeObj.updateRect();
 
@@ -121,6 +135,7 @@ export const motion = {
     return false;
   },
 
+  //HANDLES X-POSITION SPAWNING
   randomLeftPos(movingObj, scene) {
     movingObj.el.style.left = `${helper.getRandomInt(
       0,
