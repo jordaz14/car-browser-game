@@ -2,6 +2,8 @@ export function sayHi() {
   console.log("hello");
 }
 
+const url = "http://localhost:3000/";
+
 const partyForm = document.querySelector(".party-form");
 partyForm.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -13,11 +15,18 @@ partyForm.addEventListener("submit", (e) => {
 const scoreForm = document.querySelector(".score-form");
 scoreForm.addEventListener("submit", (e) => {
   e.preventDefault();
+  postData("submit-score", {
+    username: "testuser3",
+    party: "global",
+    score: 1000,
+  }).then((result) => {
+    console.log(result);
+  });
 });
 
 async function fetchData(endpoint) {
   try {
-    const response = await fetch(`http://localhost:3000/${endpoint}`);
+    const response = await fetch(`${url}${endpoint}`);
 
     if (!response.ok) {
       throw new Error("Network response was not ok");
@@ -31,4 +40,12 @@ async function fetchData(endpoint) {
   }
 }
 
-console.log("leaderboard module");
+async function postData(endpoint, data = {}) {
+  const response = await fetch(`${url}${endpoint}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+
+  return response.json();
+}
