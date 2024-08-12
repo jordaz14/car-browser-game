@@ -1,5 +1,7 @@
-export function sayHi() {
-  console.log("hello");
+import { score } from "./score.js";
+
+export function init() {
+  console.log("leadership.js init");
 }
 
 const url = "http://localhost:3000/";
@@ -40,13 +42,17 @@ partyForm.addEventListener("submit", (e) => {
 const scoreForm = document.querySelector(".score-form");
 scoreForm.addEventListener("submit", (e) => {
   e.preventDefault();
+  const scoreFormData = new FormData(scoreForm);
+  const scoreFormObject = Object.fromEntries(scoreFormData.entries());
   postData("submit-score", {
-    username: "testuser3",
+    username: scoreFormObject.username,
     party: "global",
-    score: 1000,
-  }).then((result) => {
-    console.log(result);
-  });
+    score: score.active.score,
+  })
+    .then((result) => {
+      console.log(result);
+    })
+    .then(refreshLeaderboard);
 });
 
 async function fetchData(endpoint) {
