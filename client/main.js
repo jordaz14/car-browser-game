@@ -3,7 +3,7 @@ import { motion } from "./modules/motion.js";
 import { audio } from "./modules/audio.js";
 import { environment } from "./modules/environment.js";
 import { score } from "./modules/score.js";
-import { sayHi } from "./modules/leaderboard.js";
+import { init } from "./modules/leaderboard.js";
 
 export const gameState = {
   active: false,
@@ -15,6 +15,7 @@ export const gameState = {
   animationFrameId: 0,
 };
 
+// HANDLES GAME DIFFICULTY (to be modularized)
 const difficulty = {
   easy: {
     el: document.querySelector("#easy-button"),
@@ -50,9 +51,11 @@ const difficulty = {
     },
   },
 
+  // ADDS CLICK EVENT LISTENER TO EVERY DIFFICULTY LEVEL
   addDifficultyEventHandler() {
     for (const level in difficulty) {
       if (difficulty[level].el) {
+        // Binds hanadle click to correct context of difficulty level
         difficulty[level].boundHandleClick = difficulty[level].handleClick.bind(
           difficulty[level]
         );
@@ -64,6 +67,7 @@ const difficulty = {
     }
   },
 
+  // REMOVES CLICK LISTENER FROM EVERY DIFFICULTY LEVEL
   removeDifficultyEventHandler() {
     for (const level in difficulty) {
       if (difficulty[level].el) {
@@ -92,6 +96,7 @@ const difficulty = {
     }
   },
 
+  // HANDLES DIFFICULTY STATUS STATE
   toggleDifficultyStatus(difficultyLevel) {
     for (const level in difficulty) {
       if (difficulty[level] == difficultyLevel) {
@@ -106,6 +111,7 @@ const difficulty = {
     }
   },
 
+  // HANDLES UI OF DIFFICULTY BUTTONS
   toggleDifficultyUI() {
     for (const level in difficulty) {
       if (difficulty[level].status) {
@@ -158,10 +164,8 @@ difficulty.toggleDifficultyUI();
 audio.muteInit();
 audio.setAudioSpeed();
 
-let gameStatusSign = document.querySelector(".game-status-sign");
-gameStatusSign.addEventListener("click", startGame);
-
-toggleStatusSign();
+let startButton = document.querySelector(".game-status-sign");
+startButton.addEventListener("click", startGame);
 
 function startGame() {
   gameState.active = true;
@@ -174,16 +178,20 @@ function startGame() {
 
 function gameLoop(timestamp) {
   if (gameState.active) {
+    // Enable user movement
     motion.moveUser(environment.car, environment.road);
 
+    // Checks spawning
     if (timestamp - gameState.lastSpawnTime > gameState.spawnInterval) {
       environment.createObstacle();
       gameState.lastSpawnTime = timestamp;
     }
 
+    // Enable obstacle and scenery movement
     motion.moveSceneObj(environment.activeObstacles, environment.road);
     motion.moveSceneObj(environment.activeScenery, environment.dirt.left);
 
+    // Check collisions
     if (
       motion.collisionDetector(environment.car, environment.activeObstacles)
     ) {
@@ -193,6 +201,7 @@ function gameLoop(timestamp) {
       stopGame();
     }
 
+    // Update score
     score.updateScore(gameState.animationFrameId);
     gameState.animationFrameId = requestAnimationFrame(gameLoop);
   }
@@ -205,11 +214,12 @@ function stopGame() {
   audio.toggleAudio(gameState.active);
 }
 
+//HANDLES UI OF START BUTTON
 function toggleStatusSign(gameActive) {
   if (gameActive) {
-    gameStatusSign.textContent = `RESTART`;
-    gameStatusSign.removeEventListener("click", startGame);
-    gameStatusSign.addEventListener("click", resetGame);
+    startButton.textContent = `RESTART`;
+    startButton.removeEventListener("click", startGame);
+    startButton.addEventListener("click", resetGame);
   }
 }
 
