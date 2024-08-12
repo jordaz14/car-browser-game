@@ -18,8 +18,7 @@ body {
   position: relative;
 }
 
-.dirt-left,
-.dirt-right {
+.dirt-left {
   border-right: black;
   border-right: double;
   border-width: 20px;
@@ -33,6 +32,10 @@ body {
   border-left: black;
   border-left: double;
   border-width: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .road {
@@ -132,8 +135,8 @@ body {
 
 .game-status-sign,
 #mute-button,
-.party-submit button,
-.score-submit button {
+.party-form button,
+.score-form button {
   background-color: black;
   color: white;
   font-weight: bold;
