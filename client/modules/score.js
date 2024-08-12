@@ -3,6 +3,7 @@ import { gameState } from "../main.js";
 export const score = {
   active: {
     el: document.querySelector("#active-score"),
+    score: 0,
   },
   high: {
     el: document.querySelector("#high-score"),
@@ -29,6 +30,7 @@ export const score = {
     }
 
     activeScore = Math.round(activeScore);
+    score.active.score = activeScore;
 
     score.active.el.textContent = `SCORE: ${activeScore}`;
 
