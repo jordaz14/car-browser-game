@@ -8,10 +8,10 @@ import { sayHi } from "./modules/leaderboard.js";
 export const gameState = {
   active: false,
   muted: helper.toBoolean(sessionStorage.getItem("muted")),
-  difficultyLevel: undefined,
-  movement: undefined,
+  difficultyLevel: "normal",
+  movement: 2,
   lastSpawnTime: 0,
-  spawnInterval: undefined,
+  spawnInterval: 4000,
   animationFrameId: 0,
 };
 
