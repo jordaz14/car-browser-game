@@ -37,6 +37,22 @@ app.get("/join-party", (req, res) => {
   res.json({ message: "hello, world!" });
 });
 
+app.post("/submit-score", async (req, res) => {
+  try {
+    const { username, party, score } = req.body;
+    console.log(username, party, score);
+
+    await sql`
+    INSERT INTO leaderboard (username, party, score)
+    VALUES (${username}, ${party}, ${score})`;
+
+    res.status(201).json({ message: "User added successfully." });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "An error occurred." });
+  }
+});
+
 app.listen(PORT, () => {
   console.log("Server is running.");
 });
