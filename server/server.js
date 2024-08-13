@@ -63,16 +63,28 @@ app.get("/refresh-leaderboard/:partyId", async (req, res) => {
 app.post("/join-party", async (req, res) => {
   try {
     const { party } = req.body;
-    console.log("attempting party");
-    console.log(party);
 
-    const leaderboard = await sql`SELECT * 
-      FROM leaderboard 
-      WHERE party = ${party}`;
+    const partyData = await sql`
+    SELECT party_id
+    FROM party
+    WHERE party_name = ${party}`;
 
-    console.log(leaderboard);
+    if (partyData.length > 0) {
+      console.log("result found!");
+      console.log(partyData);
+      const partyId = partyData[0].party_id;
 
-    res.status(201).json({ message: "Party successfully joined" });
+      /*
+      const leaderboard = await sql`SELECT username, score, party_id
+      FROM leaderboard
+      WHERE party_id = ${partyId}`;
+      */
+      res.json(partyId);
+    } else {
+      await sql`
+      INSERT INTO party (party_name) VALUES (${party})`;
+      res.status(201).json({ message: "Party successfully created" });
+    }
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "An error occurred." });
