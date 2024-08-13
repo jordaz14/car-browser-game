@@ -3,7 +3,7 @@ const cors = require("cors");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(cors({ origin: "http://localhost:5501" }));
+app.use(cors({ origin: "https://traffic-browser-game.onrender.com" }));
 app.use(express.json());
 
 const postgres = require("postgres");
