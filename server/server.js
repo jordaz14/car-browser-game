@@ -38,15 +38,6 @@ app.get("/refresh-leaderboard/:partyId", async (req, res) => {
     const partyId = req.params.partyId;
     console.log(partyId);
 
-    /*
-    const party = await sql`
-    SELECT party_id
-    FROM party
-    WHERE party_name = 'global'`;
-
-    const partyId = party[0].party_id;
-    */
-
     const leaderboard = await sql`
     SELECT username, score 
     FROM leaderboard 
@@ -74,11 +65,6 @@ app.post("/join-party", async (req, res) => {
       console.log(partyData);
       const partyId = partyData[0].party_id;
 
-      /*
-      const leaderboard = await sql`SELECT username, score, party_id
-      FROM leaderboard
-      WHERE party_id = ${partyId}`;
-      */
       res.json(partyId);
     } else {
       await sql`
