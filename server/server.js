@@ -68,8 +68,19 @@ app.post("/join-party", async (req, res) => {
       res.json(partyId);
     } else {
       await sql`
-      INSERT INTO party (party_name) VALUES (${party})`;
-      res.status(201).json({ message: "Party successfully created" });
+      INSERT INTO party (party_name) 
+      VALUES (${party})`;
+
+      // Query party id data for new party
+      const newPartyData = await sql`
+      SELECT party_id
+      FROM party
+      WHERE party_name = ${party}`;
+
+      // Isolate id number for new party
+      const newPartyId = newPartyData[0].party_id;
+
+      res.json({ message: "PARTY CREATED", data: newPartyId });
     }
   } catch (error) {
     console.error(error);
