@@ -94,9 +94,9 @@ app.post("/submit-score", async (req, res) => {
       SET score = ${score} 
       WHERE username = ${username} AND party_id = ${partyId}`;
     } else {
-    await sql`
-    INSERT INTO leaderboard (username, party_id, score)
-    VALUES (${username}, ${partyId}, ${score})`;
+      await sql`
+      INSERT INTO leaderboard (username, party_id, score)
+      VALUES (${username}, ${partyId}, ${score})`;
     }
 
     res.status(201).json({ message: "User added successfully." });
