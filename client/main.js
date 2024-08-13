@@ -197,7 +197,7 @@ function gameLoop(timestamp) {
     ) {
       audio.playSoundEffect("death");
       environment.car.el.className = "dead";
-      environment.car.el.src = "../assets/skull.png";
+      environment.car.el.src = "./assets/skull.png";
       stopGame();
     }
 

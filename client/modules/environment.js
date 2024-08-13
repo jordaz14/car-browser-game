@@ -5,7 +5,7 @@ class sceneObj {
     this.el = document.createElement(elType);
     this.el.className = el;
     elType == "img"
-      ? (this.el.src = `../assets/${el}.png`)
+      ? (this.el.src = `./assets/${el}.png`)
       : (this.el.src = null);
     this.rect = this.el.getBoundingClientRect();
   }
