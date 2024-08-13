@@ -93,15 +93,17 @@ app.post("/join-party", async (req, res) => {
 
 app.post("/submit-score", async (req, res) => {
   try {
-    const { username, party, score } = req.body;
-    console.log(username, party, score);
+    const { username, partyId, score } = req.body;
+    console.log(username, partyId, score);
 
+    /*
     const partyData = await sql`
     SELECT party_id
     FROM party
     WHERE party_name = ${party}`;
 
     const partyId = partyData[0].party_id;
+    */
 
     await sql`
     INSERT INTO leaderboard (username, party_id, score)
