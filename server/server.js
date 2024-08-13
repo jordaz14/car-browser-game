@@ -33,14 +33,19 @@ async function getPgVersion() {
 getPgVersion();
 
 // ROUTE HANDLERS
-app.get("/", async (req, res) => {
+app.get("/refresh-leaderboard/:partyId", async (req, res) => {
   try {
+    const partyId = req.params.partyId;
+    console.log(partyId);
+
+    /*
     const party = await sql`
     SELECT party_id
     FROM party
     WHERE party_name = 'global'`;
 
     const partyId = party[0].party_id;
+    */
 
     const leaderboard = await sql`
     SELECT username, score 
