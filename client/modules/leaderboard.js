@@ -5,6 +5,8 @@ export function init() {
 }
 
 let activeParty = 1;
+const partyNav = document.querySelector("#party-nav");
+const leaderboardNotify = document.querySelector("#leaderboard-notify");
 const url = "http://localhost:3000/";
 const tbody = document.querySelector("tbody");
 
@@ -12,7 +14,8 @@ function refreshLeaderboard(partyId) {
   tbody.innerHTML = "";
   let rowCounter = 0;
   fetchData("refresh-leaderboard", partyId).then((leaderboard) => {
-    for (const entry of leaderboard) {
+    console.log(leaderboard);
+    for (const entry of leaderboard.data) {
       const newRow = document.createElement("tr");
       rowCounter++;
       for (const data in entry) {
@@ -41,8 +44,10 @@ partyForm.addEventListener("submit", (e) => {
   postData("join-party", { party: partyFormObject.partyname }).then(
     (result) => {
       console.log(result);
-      activeParty = result;
-      refreshLeaderboard(`/${result}`);
+      leaderboardNotify.textContent = result.message;
+      activeParty = result.data;
+      partyNav.textContent = partyFormObject.partyname.toUpperCase();
+      refreshLeaderboard(`/${result.data}`);
     }
   );
 });
@@ -59,6 +64,7 @@ scoreForm.addEventListener("submit", (e) => {
     score: score.active.score,
   }).then((result) => {
     console.log(result);
+    leaderboardNotify.textContent = result.message;
     refreshLeaderboard(`/${activeParty}`);
   });
 });
