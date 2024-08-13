@@ -18,6 +18,11 @@ body {
   position: relative;
 }
 
+input {
+  padding: 0px 6px;
+  text-transform: capitalize;
+}
+
 .dirt-left {
   border-right: black;
   border-right: double;
