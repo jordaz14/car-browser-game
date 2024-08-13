@@ -7,7 +7,7 @@ export function init() {
 let activeParty = 1;
 const partyNav = document.querySelector("#party-nav");
 const leaderboardNotify = document.querySelector("#leaderboard-notify");
-const url = "http://localhost:3000/";
+const url = "https://traffic-browser-game-b0ad.onrender.com/";
 const tbody = document.querySelector("tbody");
 
 function refreshLeaderboard(partyId) {
