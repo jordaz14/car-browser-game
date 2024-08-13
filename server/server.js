@@ -79,21 +79,25 @@ app.post("/join-party", async (req, res) => {
 
 app.post("/submit-score", async (req, res) => {
   try {
-    const { username, partyId, score } = req.body;
+    let { username, partyId, score } = req.body;
     console.log(username, partyId, score);
 
-    /*
-    const partyData = await sql`
-    SELECT party_id
-    FROM party
-    WHERE party_name = ${party}`;
+    username = username.toUpperCase();
 
-    const partyId = partyData[0].party_id;
-    */
+    const users = await sql`
+    SELECT username
+    FROM leaderboard
+    WHERE username = ${username} AND party_id = ${partyId}`;
 
+    if (users.length > 0) {
+      await sql`UPDATE leaderboard
+      SET score = ${score} 
+      WHERE username = ${username} AND party_id = ${partyId}`;
+    } else {
     await sql`
     INSERT INTO leaderboard (username, party_id, score)
     VALUES (${username}, ${partyId}, ${score})`;
+    }
 
     res.status(201).json({ message: "User added successfully." });
   } catch (error) {
