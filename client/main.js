@@ -20,6 +20,8 @@ const difficulty = {
   easy: {
     el: document.querySelector("#easy-button"),
     status: false,
+    movement: 1,
+    spawnInterval: 5000,
     handleClick: function () {
       difficulty.toggleDifficultyStatus(this);
       difficulty.toggleDifficultyUI();
@@ -31,6 +33,8 @@ const difficulty = {
   normal: {
     el: document.querySelector("#normal-button"),
     status: true,
+    movement: 2,
+    spawnInterval: 4000,
     handleClick: function () {
       difficulty.toggleDifficultyStatus(this);
       difficulty.toggleDifficultyUI();
@@ -42,6 +46,8 @@ const difficulty = {
   hard: {
     el: document.querySelector("#hard-button"),
     status: false,
+    movement: 3,
+    spawnInterval: 3000,
     handleClick: function () {
       difficulty.toggleDifficultyStatus(this);
       difficulty.toggleDifficultyUI();
@@ -124,8 +130,9 @@ const difficulty = {
     }
   },
 
-  setDifficultyGameState(difficultyLevel, movement, spawnInterval) {
+  setDifficultyGameState() {
     const cachedDifficulty = sessionStorage.getItem("difficulty");
+
     if (cachedDifficulty) {
       switch (cachedDifficulty) {
         case "easy":
@@ -149,9 +156,9 @@ const difficulty = {
 
     for (const level in difficulty) {
       if (difficulty[level].status) {
-        gameState.difficultyLevel = difficultyLevel;
-        gameState.movement = movement;
-        gameState.spawnInterval = spawnInterval;
+        gameState.difficultyLevel = level;
+        gameState.movement = difficulty[level].movement;
+        gameState.spawnInterval = difficulty[level].spawnInterval;
       }
     }
   },
