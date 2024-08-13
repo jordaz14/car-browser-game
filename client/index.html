@@ -44,7 +44,7 @@
       <div class="leaderboard">
         <div>
           <h1>LEADERBOARD</h1>
-          <p>GLOBAL</p>
+          <p id="party-nav">GLOBAL</p>
         </div>
         <div class="table-container">
           <table>
@@ -59,15 +59,26 @@
           </table>
         </div>
         <form action="POST" class="party-form">
-          <label for="partyname">PARTY NAME</label
-          ><input type="text" name="partyname" />
+          <input
+            type="text"
+            name="partyname"
+            maxlength="10"
+            placeholder="ENTER PARTY NAME"
+            required
+          />
           <button>JOIN PARTY</button>
         </form>
         <form action="POST" class="score-form">
-          <label for="username">USERNAME</label
-          ><input type="text" name="username" />
+          <input
+            type="text"
+            name="username"
+            maxlength="10"
+            placeholder="ENTER USERNAME"
+            required
+          />
           <button>SUBMIT SCORE</button>
         </form>
+        <p id="leaderboard-notify"></p>
       </div>
     </div>
   </body>
