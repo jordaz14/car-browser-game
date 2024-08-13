@@ -4,13 +4,14 @@ export function init() {
   console.log("leadership.js init");
 }
 
+let activeParty = 1;
 const url = "http://localhost:3000/";
 const tbody = document.querySelector("tbody");
 
-function refreshLeaderboard() {
+function refreshLeaderboard(partyId) {
   tbody.innerHTML = "";
   let rowCounter = 0;
-  fetchData("").then((leaderboard) => {
+  fetchData("refresh-leaderboard", partyId).then((leaderboard) => {
     for (const entry of leaderboard) {
       const newRow = document.createElement("tr");
       rowCounter++;
@@ -29,35 +30,42 @@ function refreshLeaderboard() {
   });
 }
 
-refreshLeaderboard();
+refreshLeaderboard(`/${activeParty}`);
 
 const partyForm = document.querySelector(".party-form");
+
 partyForm.addEventListener("submit", (e) => {
   e.preventDefault();
-  fetchData("join-party").then((result) => {
-    console.log(result);
-  });
+  const partyFormData = new FormData(partyForm);
+  const partyFormObject = Object.fromEntries(partyFormData.entries());
+  postData("join-party", { party: partyFormObject.partyname }).then(
+    (result) => {
+      console.log(result);
+      activeParty = result;
+      refreshLeaderboard(`/${result}`);
+    }
+  );
 });
 
 const scoreForm = document.querySelector(".score-form");
+
 scoreForm.addEventListener("submit", (e) => {
   e.preventDefault();
   const scoreFormData = new FormData(scoreForm);
   const scoreFormObject = Object.fromEntries(scoreFormData.entries());
   postData("submit-score", {
     username: scoreFormObject.username,
-    party: "global",
+    partyId: activeParty,
     score: score.active.score,
-  })
-    .then((result) => {
-      console.log(result);
-    })
-    .then(refreshLeaderboard);
+  }).then((result) => {
+    console.log(result);
+    refreshLeaderboard(`/${activeParty}`);
+  });
 });
 
-async function fetchData(endpoint) {
+async function fetchData(endpoint, param = "") {
   try {
-    const response = await fetch(`${url}${endpoint}`);
+    const response = await fetch(`${url}${endpoint}${param}`);
 
     if (!response.ok) {
       throw new Error("Network response was not ok");
@@ -71,8 +79,8 @@ async function fetchData(endpoint) {
   }
 }
 
-async function postData(endpoint, data = {}) {
-  const response = await fetch(`${url}${endpoint}`, {
+async function postData(endpoint, data = {}, param = "") {
+  const response = await fetch(`${url}${endpoint}${param}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
