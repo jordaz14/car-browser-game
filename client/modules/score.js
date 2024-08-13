@@ -7,7 +7,7 @@ export const score = {
   },
   high: {
     el: document.querySelector("#high-score"),
-    score: sessionStorage.getItem("highScore"),
+    score: sessionStorage.getItem("highScore") || 0,
 
     setHighScore() {
       this.el.textContent = `HIGH SCORE: ${this.score}`;
