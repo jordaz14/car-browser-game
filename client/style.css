@@ -187,7 +187,6 @@ input {
   height: 400px;
   width: clamp(250px, 50%, 300px);
   align-content: center;
-  justify-content: center;
   z-index: 5;
 }
 
