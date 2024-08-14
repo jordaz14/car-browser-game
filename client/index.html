@@ -20,7 +20,7 @@
       <div class="game-card">
         <div>
           <h1>RC CAR</h1>
-          <p>DODGE POTHOLES TO SET A HIGH SCORE</p>
+          <p>DODGE THE POTHOLES</p>
         </div>
         <div>
           <p>DIFFICULTY:</p>
@@ -30,7 +30,7 @@
         </div>
         <div>
           <p id="active-score">SCORE: 0</p>
-          <p id="high-score">HIGH SCORE:</p>
+          <p id="high-score">PERSONAL HIGH SCORE:</p>
         </div>
         <button id="mute-button">MUTE</button>
         <button class="game-status-sign">START</button>
@@ -44,7 +44,7 @@
       <div class="leaderboard">
         <div>
           <h1>LEADERBOARD</h1>
-          <p id="party-nav">PARTY: GLOBAL</p>
+          <p id="party-nav">PARTY:</p>
         </div>
         <div class="table-container">
           <table>
@@ -60,6 +60,7 @@
         </div>
         <form action="POST" class="party-form">
           <input
+            id="party-form-input"
             type="text"
             name="partyname"
             maxlength="10"
@@ -70,6 +71,7 @@
         </form>
         <form action="POST" class="score-form">
           <input
+            id="score-form-input"
             type="text"
             name="username"
             maxlength="10"
