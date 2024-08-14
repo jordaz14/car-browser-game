@@ -157,7 +157,9 @@ input {
 
 .game-status-sign:hover,
 .difficulty-buttons:hover,
-#mute-button:hover {
+#mute-button:hover,
+.party-form button:hover,
+.score-form button:hover {
   background-color: white;
   color: black;
 }
