@@ -1,17 +1,33 @@
 import { score } from "./score.js";
 
 export function init() {
-  console.log("leadership.js init");
+  console.log("leaderboard.js active");
 }
 
-let activeParty = 1;
-let firstload = true;
-const partyNav = document.querySelector("#party-nav");
-const leaderboardNotify = document.querySelector("#leaderboard-notify");
 const url = "https://traffic-browser-game-b0ad.onrender.com/";
-const tbody = document.querySelector("tbody");
+let firstload = true;
 
-function refreshLeaderboard(partyId) {
+const party = {
+  activeId: sessionStorage.getItem("cachedPartyId") || 11,
+  activeName: sessionStorage.getItem("cachedPartyName") || "GLOBAL",
+};
+
+const partyNav = document.querySelector("#party-nav");
+partyNav.textContent = `PARTY: ${party.activeName}`;
+
+const leaderboardNotify = document.querySelector("#leaderboard-notify");
+
+const partyNameInput = document.querySelector("#party-form-input");
+const usernameInput = document.querySelector("#score-form-input");
+usernameInput.value = sessionStorage.getItem("cachedUsername") || "";
+
+// Refresh leaderboard on initial load
+refreshLeaderboard(`/${party.activeId}`);
+
+// REFRESHES LEADERBOARD BASED ON PARTY ID
+function refreshLeaderboard(activeId) {
+  // Clear existing leaderboard table
+  const tbody = document.querySelector("tbody");
   tbody.innerHTML = "";
 
   fetchData("refresh-leaderboard", activeId).then((result) => {
