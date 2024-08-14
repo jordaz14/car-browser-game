@@ -70,22 +70,28 @@ partyForm.addEventListener("submit", (e) => {
   partyNameInput.value = "";
 });
 
+// SENDS USER SCORE TO SERVER ON SCORE FORM SUBMIT
 const scoreForm = document.querySelector(".score-form");
-
 scoreForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
   // Transform score form data to JSON
   const scoreFormData = new FormData(scoreForm);
-  const scoreFormObject = Object.fromEntries(scoreFormData.entries());
-  postData("submit-score", {
-    username: scoreFormObject.username,
-    partyId: activeParty,
+  const scoreFormJSON = Object.fromEntries(scoreFormData.entries());
+
+  // Post username, partyId, & score to endpoint
+  postData("submit-score", undefined, {
+    username: scoreFormJSON.username,
+    partyId: party.activeId,
     score: score.active.score,
   }).then((result) => {
-    console.log(result);
-    leaderboardNotify.textContent = `PARTY: ${result.message}`;
-    refreshLeaderboard(`/${activeParty}`);
+    // Notify user of response
+    leaderboardNotify.textContent = result.message;
+
+    // Cache username
+    sessionStorage.setItem("cachedUsername", scoreFormJSON.username);
+
+    refreshLeaderboard(`/${party.activeId}`);
   });
 });
 
