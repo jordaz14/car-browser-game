@@ -38,7 +38,8 @@ getPgVersion();
 app.get("/refresh-leaderboard/:partyId", async (req, res) => {
   try {
     // Extract requested party id
-    const partyId = req.params.partyId;
+    let partyId = req.params.partyId;
+    partyId = parseInt(partyId);
 
     // Query usernames & scores for given party id
     const leaderboard = await sql`
