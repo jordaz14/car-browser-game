@@ -26,7 +26,7 @@ function refreshLeaderboard(partyId) {
   });
 }
 
-refreshLeaderboard(`/1`);
+refreshLeaderboard(`/12`);
 
 async function fetchData(endpoint, param = "") {
   try {

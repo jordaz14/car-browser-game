@@ -5,6 +5,7 @@ export function init() {
 }
 
 let activeParty = 1;
+let firstload = true;
 const partyNav = document.querySelector("#party-nav");
 const leaderboardNotify = document.querySelector("#leaderboard-notify");
 const url = "https://traffic-browser-game-b0ad.onrender.com/";
@@ -14,6 +15,10 @@ function refreshLeaderboard(partyId) {
   tbody.innerHTML = "";
   let rowCounter = 0;
   fetchData("refresh-leaderboard", partyId).then((leaderboard) => {
+    if (firstload) {
+      leaderboardNotify.textContent = "";
+      firstload = false;
+    }
     console.log(leaderboard);
     for (const entry of leaderboard.data) {
       const newRow = document.createElement("tr");
@@ -64,7 +69,7 @@ scoreForm.addEventListener("submit", (e) => {
     score: score.active.score,
   }).then((result) => {
     console.log(result);
-    leaderboardNotify.textContent = result.message;
+    leaderboardNotify.textContent = `PARTY: ${result.message}`;
     refreshLeaderboard(`/${activeParty}`);
   });
 });
