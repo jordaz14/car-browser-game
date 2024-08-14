@@ -13,26 +13,36 @@ const tbody = document.querySelector("tbody");
 
 function refreshLeaderboard(partyId) {
   tbody.innerHTML = "";
-  let rowCounter = 0;
-  fetchData("refresh-leaderboard", partyId).then((leaderboard) => {
+
+  fetchData("refresh-leaderboard", activeId).then((result) => {
+
+    // Clears static 'loading servers' text content
     if (firstload) {
       leaderboardNotify.textContent = "";
       firstload = false;
     }
-    console.log(leaderboard);
-    for (const entry of leaderboard.data) {
+
+    let rankCounter = 0;
+
+    // Iterate through every user row in leaderboard
+    for (const entry of result.data) {
+      rankCounter++;
       const newRow = document.createElement("tr");
-      rowCounter++;
+
+      // Iterate through every data cell in user row
       for (const data in entry) {
-        if (data != "id") {
-          const newTableData = document.createElement("td");
-          newTableData.textContent = entry[data];
-          newRow.appendChild(newTableData);
-        }
+        const newCell = document.createElement("td");
+        newCell.textContent = entry[data];
+
+        newRow.appendChild(newCell);
       }
-      const rankTableData = document.createElement("td");
-      rankTableData.textContent = rowCounter;
-      newRow.appendChild(rankTableData);
+
+      // Create additional ranking cell not in original response
+      const rankCell = document.createElement("td");
+      rankCell.textContent = rankCounter;
+      newRow.appendChild(rankCell);
+
+      // Append user row to leaderboard
       tbody.appendChild(newRow);
     }
   });
@@ -40,7 +50,6 @@ function refreshLeaderboard(partyId) {
 
 // JOINS OR CREATES PARTY ON PARTY FORM SUBMIT
 const partyForm = document.querySelector(".party-form");
-
 partyForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
