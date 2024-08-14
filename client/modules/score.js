@@ -10,7 +10,7 @@ export const score = {
     score: sessionStorage.getItem("highScore") || 0,
 
     setHighScore() {
-      this.el.textContent = `HIGH SCORE: ${this.score}`;
+      this.el.textContent = `PERSONAL HIGH SCORE: ${this.score}`;
     },
   },
 
