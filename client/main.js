@@ -173,9 +173,11 @@ audio.setAudioSpeed();
 
 let startButton = document.querySelector(".game-status-sign");
 startButton.addEventListener("click", startGame);
+let gameCard = document.querySelector(".game-card");
 
 function startGame() {
   gameState.active = true;
+  checkScreenWidth(1200) ? (gameCard.style.display = "none") : null;
   difficulty.removeDifficultyEventHandler();
   motion.toggleUserInput(gameState.active);
   toggleStatusSign(gameState.active);
@@ -216,6 +218,7 @@ function gameLoop(timestamp) {
 
 function stopGame() {
   gameState.active = false;
+  checkScreenWidth(1200) ? (gameCard.style.display = "flex") : null;
   motion.toggleUserInput(gameState.active);
   toggleStatusSign(gameState.active);
   audio.toggleAudio(gameState.active);
@@ -232,4 +235,14 @@ function toggleStatusSign(gameActive) {
 
 function resetGame() {
   window.location.reload();
+}
+
+function checkScreenWidth(inputWidth) {
+  const screenWidth = window.innerWidth;
+
+  if (screenWidth < inputWidth) {
+    return true;
+  } else {
+    return false;
+  }
 }
