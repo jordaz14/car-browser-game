@@ -46,16 +46,28 @@ partyForm.addEventListener("submit", (e) => {
 
   // Transform score form data to JSON
   const partyFormData = new FormData(partyForm);
-  const partyFormObject = Object.fromEntries(partyFormData.entries());
-  postData("join-party", { party: partyFormObject.partyname }).then(
+  const partyFormJSON = Object.fromEntries(partyFormData.entries());
+
+  // Post party name to endpoint
+  postData("join-party", undefined, { party: partyFormJSON.partyname }).then(
     (result) => {
-      console.log(result);
+      // Notify user of response & update party text content
       leaderboardNotify.textContent = result.message;
-      activeParty = result.data;
-      partyNav.textContent = partyFormObject.partyname.toUpperCase();
-      refreshLeaderboard(`/${result.data}`);
+      partyNav.textContent = `PARTY: ${partyFormJSON.partyname.toUpperCase()}`;
+      sessionStorage.setItem(
+        "cachedPartyName",
+        partyFormJSON.partyname.toUpperCase()
+      );
+
+      // Update the active party Id
+      party.activeId = result.data;
+      sessionStorage.setItem("cachedPartyId", party.activeId);
+      refreshLeaderboard(`/${party.activeId}`);
     }
   );
+
+  // Clear inputted value from input element
+  partyNameInput.value = "";
 });
 
 const scoreForm = document.querySelector(".score-form");
