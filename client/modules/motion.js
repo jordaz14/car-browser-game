@@ -11,6 +11,20 @@ const arrowKeys = {
   },
 };
 
+function checkTouchLeft(event) {
+  const touch = event.touches[0];
+  const touchX = touch.clientX;
+  const screenWidth = window.innerWidth;
+
+  if (touchX < screenWidth / 2) {
+    console.log("touch left");
+    return true;
+  } else {
+    console.log("touch right");
+    return false;
+  }
+}
+
 export const motion = {
   // ENABLES/DISABLES USER MOVEMENT
   toggleUserInput(gameActive) {
@@ -29,6 +43,18 @@ export const motion = {
           arrowKeys.el[event.key].style.backgroundColor = "white";
           arrowKeys.el[event.key].style.color = "black";
         }
+      });
+      // Add mobile/click input
+      document.addEventListener("touchstart", (event) => {
+        if (checkTouchLeft(event)) {
+          arrowKeys["ArrowLeft"] = true;
+        } else {
+          arrowKeys["ArrowRight"] = true;
+        }
+      });
+      document.addEventListener("touchend", () => {
+        arrowKeys["ArrowLeft"] = false;
+        arrowKeys["ArrowRight"] = false;
       });
     }
     // Remove keyboard input if game unactive
