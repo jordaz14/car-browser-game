@@ -38,12 +38,13 @@ function refreshLeaderboard(partyId) {
   });
 }
 
-refreshLeaderboard(`/${activeParty}`);
-
+// JOINS OR CREATES PARTY ON PARTY FORM SUBMIT
 const partyForm = document.querySelector(".party-form");
 
 partyForm.addEventListener("submit", (e) => {
   e.preventDefault();
+
+  // Transform score form data to JSON
   const partyFormData = new FormData(partyForm);
   const partyFormObject = Object.fromEntries(partyFormData.entries());
   postData("join-party", { party: partyFormObject.partyname }).then(
@@ -61,6 +62,8 @@ const scoreForm = document.querySelector(".score-form");
 
 scoreForm.addEventListener("submit", (e) => {
   e.preventDefault();
+
+  // Transform score form data to JSON
   const scoreFormData = new FormData(scoreForm);
   const scoreFormObject = Object.fromEntries(scoreFormData.entries());
   postData("submit-score", {
@@ -74,6 +77,7 @@ scoreForm.addEventListener("submit", (e) => {
   });
 });
 
+// HANDLES GET METHOD
 async function fetchData(endpoint, param = "") {
   try {
     const response = await fetch(`${url}${endpoint}${param}`);
@@ -90,7 +94,8 @@ async function fetchData(endpoint, param = "") {
   }
 }
 
-async function postData(endpoint, data = {}, param = "") {
+// HANDLES POST METHOD
+async function postData(endpoint, param = "", data = {}) {
   const response = await fetch(`${url}${endpoint}${param}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
