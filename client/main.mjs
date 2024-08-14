@@ -1,9 +1,9 @@
-import { helper } from "./modules/helper.js";
-import { motion } from "./modules/motion.js";
-import { audio } from "./modules/audio.js";
-import { environment } from "./modules/environment.js";
-import { score } from "./modules/score.js";
-import { init } from "./modules/leaderboard.js";
+import { helper } from "./modules/helper.mjs";
+import { motion } from "./modules/motion.mjs";
+import { audio } from "./modules/audio.mjs";
+import { environment } from "./modules/environment.mjs";
+import { score } from "./modules/score.mjs";
+import { init } from "./modules/leaderboard.mjs";
 
 export const gameState = {
   active: false,

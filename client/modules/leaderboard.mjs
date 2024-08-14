@@ -1,4 +1,4 @@
-import { score } from "./score.js";
+import { score } from "./score.mjs";
 
 export function init() {
   console.log("leaderboard.js active");
@@ -8,7 +8,7 @@ const url = "https://traffic-browser-game-b0ad.onrender.com/";
 let firstload = true;
 
 const party = {
-  activeId: sessionStorage.getItem("cachedPartyId") || 11,
+  activeId: sessionStorage.getItem("cachedPartyId") || 1,
   activeName: sessionStorage.getItem("cachedPartyName") || "GLOBAL",
 };
 
@@ -31,7 +31,6 @@ function refreshLeaderboard(activeId) {
   tbody.innerHTML = "";
 
   fetchData("refresh-leaderboard", activeId).then((result) => {
-
     // Clears static 'loading servers' text content
     if (firstload) {
       leaderboardNotify.textContent = "";

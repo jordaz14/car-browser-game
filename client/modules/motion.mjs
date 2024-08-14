@@ -1,5 +1,5 @@
-import { gameState } from "../main.js";
-import { helper } from "./helper.js";
+import { gameState } from "../main.mjs";
+import { helper } from "./helper.mjs";
 
 // HOLDS STATE OF ARROW KEYS
 const arrowKeys = {
@@ -17,10 +17,8 @@ function checkTouchLeft(event) {
   const screenWidth = window.innerWidth;
 
   if (touchX < screenWidth / 2) {
-    console.log("touch left");
     return true;
   } else {
-    console.log("touch right");
     return false;
   }
 }
@@ -48,13 +46,21 @@ export const motion = {
       document.addEventListener("touchstart", (event) => {
         if (checkTouchLeft(event)) {
           arrowKeys["ArrowLeft"] = true;
+          arrowKeys.el["ArrowLeft"].style.backgroundColor = "black";
+          arrowKeys.el["ArrowLeft"].style.color = "white";
         } else {
           arrowKeys["ArrowRight"] = true;
+          arrowKeys.el["ArrowRight"].style.backgroundColor = "black";
+          arrowKeys.el["ArrowRight"].style.color = "white";
         }
       });
       document.addEventListener("touchend", () => {
         arrowKeys["ArrowLeft"] = false;
+        arrowKeys.el["ArrowLeft"].style.backgroundColor = "white";
+        arrowKeys.el["ArrowLeft"].style.color = "black";
         arrowKeys["ArrowRight"] = false;
+        arrowKeys.el["ArrowRight"].style.backgroundColor = "white";
+        arrowKeys.el["ArrowRight"].style.color = "black";
       });
     }
     // Remove keyboard input if game unactive
