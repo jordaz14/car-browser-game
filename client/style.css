@@ -245,3 +245,31 @@ input {
   border: double;
   border-color: black;
 }
+
+@media only screen and (max-width: 1200px) {
+  body {
+    position: relative;
+    width: 100%;
+  }
+
+  .leaderboard {
+    display: none;
+  }
+
+  .game-card {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .cactus {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .road {
+    width: 100%;
+  }
+}
