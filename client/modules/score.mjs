@@ -42,3 +42,31 @@ export const score = {
 };
 
 score.high.setHighScore();
+
+/*
+const gameActive = false;
+startGame();
+
+function startGame() {
+  gameActive = true;
+  toggleUserMovement(gameActive);
+  toggleXYZ(gameActive);
+  gameLoop();
+}
+
+function gameLoop() {
+  collisionDetector();
+  otherGameLogic();
+
+  if (!gameActive) {
+    endGame();
+  }
+
+  requestAnimationFrame(gameLoop);
+}
+
+function endGame() {
+  toggleUserMovement(gameActive);
+  toggleXYZ(gameActive);
+}
+*/
