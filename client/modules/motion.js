@@ -1,4 +1,4 @@
-import { gameState } from "../main.js";
+import { gameState } from "../gameState.js";
 import { helper } from "./helper.js";
 
 // HOLDS STATE OF ARROW KEYS

@@ -1,4 +1,4 @@
-import { gameState } from "../main.js";
+import { gameState } from "../gameState.js";
 
 export const audio = {
   muteButton: document.querySelector("#mute-button"),
@@ -118,3 +118,5 @@ export const audio = {
 };
 
 audio.init();
+audio.muteInit();
+audio.setAudioSpeed();
