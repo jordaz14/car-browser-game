@@ -1,220 +1,17 @@
+/* NORMALIZE CSS */
+
 * {
   margin: 0px;
   padding: 0px;
-  font-family: monospace;
 }
+
+/* GLOBAL STYLES */
 
 body {
   display: flex;
-  height: 100dvh;
   overflow: hidden;
-}
-
-.dirt-left,
-.dirt-right {
-  background-color: rgb(255, 255, 255);
-  flex: 1;
-  height: 100%;
-  position: relative;
-}
-
-input {
-  padding: 0px 6px;
-  text-transform: capitalize;
-}
-
-.dirt-left {
-  border-right: black;
-  border-right: double;
-  border-width: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.dirt-right {
-  border-left: black;
-  border-left: double;
-  border-width: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.road {
-  display: flex;
-  width: 500px;
-  position: relative;
-  background-color: white;
-  z-index: -2;
-}
-
-.lane {
-  background-color: hsla(0, 78%, 48%, 0);
-  border: dashed;
-  border-color: black;
-  border-top: none;
-  border-bottom: none;
-  flex: 1;
-}
-
-#left-arrow {
-  position: absolute;
-  background-color: white;
-  color: black;
-  bottom: 2%;
-  left: 2%;
-  border: double;
-  border-width: 4px;
-  border-radius: 10px;
-  font-weight: bold;
-  font-size: 2.5rem;
-  padding: 2px;
-  padding-left: 4px;
-  padding-right: 4px;
-}
-
-#right-arrow {
-  position: absolute;
-  background-color: white;
-  color: black;
-  bottom: 2%;
-  right: 2%;
-  border: double;
-  border-width: 4px;
-  border-radius: 10px;
-  font-weight: bold;
-  font-size: 2.5rem;
-  padding: 2px;
-  padding-left: 4px;
-  padding-right: 4px;
-}
-
-.car {
-  position: absolute;
-  height: 120px;
-  width: 90px;
-  top: 70%;
-  left: 50%;
-  z-index: 2;
-}
-
-.cactus {
-  position: absolute;
-  height: 120px;
-  width: 90px;
-  top: 30%;
-  left: 30%;
-  z-index: 2;
-}
-
-.ascii-art {
+  height: 100dvh;
   font-family: monospace;
-}
-
-.hole {
-  position: absolute;
-  z-index: -1;
-  width: 80px;
-  height: 40px;
-  top: 0;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.difficulty-buttons {
-  background-color: black;
-  color: white;
-  font-weight: bold;
-  border: double;
-  border-width: 1;
-  border-radius: 25px;
-  padding: 10px;
-  width: 75px;
-  font-family: monospace;
-  text-align: center;
-  margin-top: 10px;
-}
-
-.game-status-sign,
-#mute-button,
-.party-form button,
-.score-form button {
-  background-color: black;
-  color: white;
-  font-weight: bold;
-  border: double;
-  border-width: 1;
-  border-radius: 25px;
-  padding: 10px;
-  justify-content: center;
-  align-items: center;
-  font-family: monospace;
-  text-align: center;
-}
-
-.game-status-sign:hover,
-.difficulty-buttons:hover,
-#mute-button:hover,
-.party-form button:hover,
-.score-form button:hover {
-  background-color: white;
-  color: black;
-}
-
-.scenery {
-  background-color: black;
-  width: fit-content;
-  font-weight: bold;
-  padding: 20px;
-  color: white;
-  font-size: x-large;
-}
-
-.game-card,
-.leaderboard {
-  padding: 20px;
-  background-color: black;
-  color: white;
-  width: 75%;
-  border-radius: 20px;
-  text-align: center;
-  border: double;
-  border-width: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  height: 400px;
-  width: clamp(250px, 50%, 300px);
-  align-content: center;
-  z-index: 5;
-}
-
-.table-container {
-  width: 100%;
-  height: 100px;
-  overflow-y: auto;
-}
-
-table {
-  width: 100%;
-  flex: 1;
-}
-
-button {
-  color: black;
-  padding: 4px;
-}
-
-.dead {
-  position: absolute;
-  height: 120px;
-  width: 160px;
-  top: 70%;
-  left: 50%;
-  z-index: 2;
 }
 
 form {
@@ -222,8 +19,78 @@ form {
   flex-direction: column;
 }
 
+table {
+  flex: 1;
+  width: 100%;
+}
+
 input {
   height: 25px;
+  padding: 0px 6px;
+  text-transform: capitalize;
+}
+
+button {
+  padding: 10px;
+  background-color: black;
+  border: double;
+  border-width: 1;
+  border-radius: 25px;
+  font-family: monospace;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+}
+
+button:hover {
+  background-color: white;
+  color: black;
+}
+
+/* LAYOUT STYLE */
+
+.dirt-left {
+  border-right: black;
+}
+
+.dirt-right {
+  border-left: black;
+}
+
+.dirt-left,
+.dirt-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  position: relative;
+  height: 100%;
+  background-color: rgb(255, 255, 255);
+  border-width: 20px;
+}
+
+.road {
+  display: flex;
+  position: relative;
+  z-index: -2;
+  width: 500px;
+  background-color: white;
+}
+
+.lane {
+  flex: 1;
+  background-color: hsla(0, 78%, 48%, 0);
+  border: dashed;
+  border-top: none;
+  border-bottom: none;
+  border-color: black;
+}
+
+.table-container {
+  overflow-y: auto;
+  width: 100%;
+  height: 100px;
 }
 
 .party-form,
@@ -233,20 +100,108 @@ input {
   gap: 10px;
 }
 
+/* COMPONENT STYLES */
+
+#left-arrow {
+  left: 2%;
+}
+
+#right-arrow {
+  right: 2%;
+}
+
+#left-arrow,
+#right-arrow {
+  position: absolute;
+  bottom: 2%;
+  padding: 2px;
+  padding-right: 4px;
+  padding-left: 4px;
+  background-color: white;
+  border: double;
+  border-width: 4px;
+  border-radius: 10px;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: black;
+}
+
+.car {
+  position: absolute;
+  z-index: 2;
+  top: 70%;
+  left: 50%;
+  width: 90px;
+  height: 120px;
+}
+
+.dead-car {
+  position: absolute;
+  z-index: 2;
+  top: 70%;
+  left: 50%;
+  width: 160px;
+  height: 120px;
+}
+
+.cactus {
+  position: absolute;
+  z-index: 2;
+  top: 30%;
+  left: 30%;
+  width: 90px;
+  height: 120px;
+}
+
+.hole {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 40px;
+}
+
+.difficulty-buttons {
+  width: 75px;
+  margin-top: 10px;
+}
+
+.controller,
+.leaderboard {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  gap: 20px;
+  z-index: 5;
+  width: 75%;
+  height: 400px;
+  padding: 20px;
+  background-color: black;
+  border: double;
+  border-width: 10px;
+  border-radius: 20px;
+  color: white;
+  text-align: center;
+}
+
 ::-webkit-scrollbar {
   width: 10px;
   background-color: black;
   border: double;
-  border-color: white;
   border-width: 2px;
+  border-color: white;
 }
 
 ::-webkit-scrollbar-thumb {
-  border-radius: 5px;
   background-color: white;
   border: double;
   border-color: black;
+  border-radius: 5px;
 }
+
+/* RESPONSIVE STYLES */
 
 @media only screen and (max-width: 1200px) {
   body {
@@ -258,7 +213,7 @@ input {
     display: none;
   }
 
-  .game-card {
+  .controller {
     position: fixed;
     top: 50%;
     left: 50%;
