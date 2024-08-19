@@ -4,11 +4,11 @@ export const audio = {
   muteButton: document.querySelector("#mute-button"),
 
   // ADD EVENT LISTENER TO MUTE BUTTON
-  init() {
+  activateMuteButton() {
     this.muteButton.addEventListener("click", () => this.toggleMute());
   },
 
-  // HANDLES MUTE STATE
+  // TOGGLES MUTE STATE
   toggleMute() {
     if (!gameState.muted) {
       //Set to mute state
@@ -20,22 +20,22 @@ export const audio = {
       // Mute audio
       this.toggleAudio(gameState.active);
 
-      //Inverse styling of mute button
+      // Inverse styling of mute button
       this.muteButton.textContent = "UNMUTE";
       this.muteButton.style.backgroundColor = "white";
       this.muteButton.style.color = "black";
     } else if (gameState.muted) {
-      //Set to unmuted state
+      // Set to unmuted state
       gameState.muted = false;
 
       // Cache muted state
       sessionStorage.setItem("muted", false);
 
-      //Unmute audio
+      // Unmute audio
       this.toggleAudio(gameState.active);
       this.playSoundEffect("select");
 
-      //Inverse styling of mute button
+      // Inverse styling of mute button
       this.muteButton.textContent = "MUTE";
       this.muteButton.style.backgroundColor = "black";
       this.muteButton.style.color = "white";
@@ -43,19 +43,19 @@ export const audio = {
   },
 
   // HANDLES MUTE STATE ON INITIAL LOAD
-  muteInit() {
+  checkMuteState() {
     if (!gameState.muted) {
-      //Unmute audio
+      // Unmute audio
       audio.toggleAudio(gameState.active);
 
-      //Inverse styling of mute button
+      // Inverse styling of mute button
       this.muteButton.textContent = "MUTE";
       this.muteButton.style.backgroundColor = "black";
       this.muteButton.style.color = "white";
     } else if (gameState.muted) {
       audio.toggleAudio(gameState.active);
 
-      //Inverse styling of mute button
+      // Inverse styling of mute button
       this.muteButton.textContent = "UNMUTE";
       this.muteButton.style.backgroundColor = "white";
       this.muteButton.style.color = "black";
@@ -81,7 +81,7 @@ export const audio = {
     const audioTrack = document.querySelector("#audio-player");
     const cachedDifficulty = sessionStorage.getItem("difficulty");
 
-    //Check cached difficulty, adjust playback speed accordingly
+    // Check cached difficulty, adjust playback speed accordingly
     switch (cachedDifficulty) {
       case "easy":
         audioTrack.playbackRate = 0.75;
@@ -117,6 +117,7 @@ export const audio = {
   },
 };
 
-audio.init();
-audio.muteInit();
+// Initialize audio.js
+audio.activateMuteButton();
+audio.checkMuteState();
 audio.setAudioSpeed();
