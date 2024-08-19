@@ -8,4 +8,14 @@ export const helper = {
   toBoolean(str) {
     return str === "true";
   },
+
+  checkScreenWidth(inputWidth) {
+    const screenWidth = window.innerWidth;
+
+    if (screenWidth < inputWidth) {
+      return true;
+    } else {
+      return false;
+    }
+  },
 };
