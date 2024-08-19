@@ -14,38 +14,48 @@
   </head>
   <body>
     <audio id="audio-player">
-      <source src="./assets/chiptune.mp3" type="audio/mp3" />
+      <source src="./assets/audio/chiptune.mp3" type="audio/mp3" />
     </audio>
+    <!--- LEFT SIDE OF SCREEN-->
     <div class="dirt-left">
-      <div class="game-card">
+      <!--Control Game Options-->
+      <div class="controller">
         <div>
           <h1>RC CAR</h1>
           <p>DODGE THE POTHOLES</p>
         </div>
+        <!--Set Difficulty-->
         <div>
           <p>DIFFICULTY:</p>
           <button id="easy-button" class="difficulty-buttons">EASY</button>
           <button id="normal-button" class="difficulty-buttons">NORMAL</button>
           <button id="hard-button" class="difficulty-buttons">HARD</button>
         </div>
+        <!--Track Score-->
         <div>
           <p id="active-score">SCORE: 0</p>
           <p id="high-score">PERSONAL HIGH SCORE:</p>
         </div>
+        <!--Mute Audio-->
         <button id="mute-button">MUTE</button>
+        <!--Start Game-->
         <button class="game-status-sign">START</button>
       </div>
     </div>
+    <!--- CENTER OF SCREEN-->
     <div class="road">
       <div class="lane"><div id="left-arrow">⇦</div></div>
       <div class="lane"><div id="right-arrow">⇨</div></div>
     </div>
+    <!--- RIGHT SIDE OF SCREEN-->
     <div class="dirt-right">
+      <!--Control Game Leaderboard-->
       <div class="leaderboard">
         <div>
           <h1>LEADERBOARD</h1>
           <p id="party-nav">PARTY:</p>
         </div>
+        <!--See User Scores-->
         <div class="table-container">
           <table>
             <thead>
@@ -58,6 +68,7 @@
             <tbody></tbody>
           </table>
         </div>
+        <!--Join a Party-->
         <form action="POST" class="party-form">
           <input
             id="party-form-input"
@@ -69,6 +80,7 @@
           />
           <button>JOIN PARTY</button>
         </form>
+        <!--Submit a Score-->
         <form action="POST" class="score-form">
           <input
             id="score-form-input"
@@ -80,6 +92,7 @@
           />
           <button>SUBMIT SCORE</button>
         </form>
+        <!--Communicate Status to User-->
         <p id="leaderboard-notify">CONNECTING TO SERVER...</p>
       </div>
     </div>
