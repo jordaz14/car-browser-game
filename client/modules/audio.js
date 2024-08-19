@@ -105,11 +105,11 @@ export const audio = {
 
       switch (action) {
         case "select":
-          audioTrack.src = "./assets/select.mp3";
+          audioTrack.src = "./assets/audio/select.mp3";
           audioTrack.play();
           break;
         case "death":
-          audioTrack.src = "./assets/death.mp3";
+          audioTrack.src = "./assets/audio/death.mp3";
           audioTrack.play();
           break;
       }
