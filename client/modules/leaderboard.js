@@ -1,4 +1,4 @@
-import { score } from "./score.mjs";
+import { score } from "./score.js";
 
 export function init() {
   console.log("leaderboard.js active");

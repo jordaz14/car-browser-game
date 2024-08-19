@@ -1,4 +1,4 @@
-import { motion } from "./motion.mjs";
+import { motion } from "./motion.js";
 
 class sceneObj {
   constructor(el, elType) {

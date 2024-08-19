@@ -1,5 +1,5 @@
-import { gameState } from "../main.mjs";
-import { helper } from "./helper.mjs";
+import { gameState } from "../main.js";
+import { helper } from "./helper.js";
 
 // HOLDS STATE OF ARROW KEYS
 const arrowKeys = {

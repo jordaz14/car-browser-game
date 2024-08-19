@@ -1,4 +1,4 @@
-import { gameState } from "../main.mjs";
+import { gameState } from "../main.js";
 
 export const audio = {
   muteButton: document.querySelector("#mute-button"),
