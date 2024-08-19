@@ -1,6 +1,6 @@
 import { score } from "./score.js";
 
-export function init() {
+export function leaderboard() {
   console.log("leaderboard.js active");
 }
 

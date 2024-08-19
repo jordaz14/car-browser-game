@@ -3,6 +3,7 @@
 * {
   margin: 0px;
   padding: 0px;
+  font-family: monospace;
 }
 
 /* GLOBAL STYLES */
@@ -11,7 +12,6 @@ body {
   display: flex;
   overflow: hidden;
   height: 100dvh;
-  font-family: monospace;
 }
 
 form {
@@ -36,7 +36,6 @@ button {
   border: double;
   border-width: 1;
   border-radius: 25px;
-  font-family: monospace;
   font-weight: bold;
   color: white;
   text-align: center;
@@ -50,11 +49,13 @@ button:hover {
 /* LAYOUT STYLE */
 
 .dirt-left {
-  border-right: black;
+  border-right: double;
+  border-right-color: black;
 }
 
 .dirt-right {
-  border-left: black;
+  border-left: double;
+  border-left-color: black;
 }
 
 .dirt-left,
@@ -168,7 +169,7 @@ button:hover {
   margin-top: 10px;
 }
 
-.controller,
+.options,
 .leaderboard {
   display: flex;
   flex-direction: column;
@@ -213,7 +214,7 @@ button:hover {
     display: none;
   }
 
-  .controller {
+  .options {
     position: fixed;
     top: 50%;
     left: 50%;
