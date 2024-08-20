@@ -25,7 +25,7 @@ export const environment = {
   // Contains all active elements in scenery (i.e. dirt)
   activeScenery: [],
 
-  // Contains all octive elements on road
+  // Contains all active elements on road
   activeObstacles: [],
 
   car: new sceneObj("car"),

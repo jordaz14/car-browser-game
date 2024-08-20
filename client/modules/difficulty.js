@@ -46,7 +46,7 @@ export const difficulty = {
   addDifficultyEventHandler() {
     for (const level in difficulty) {
       if (difficulty[level].el) {
-        // Binds hanadle click to correct context of difficulty level
+        // Binds handle click to correct context of difficulty level
         difficulty[level].boundHandleClick = difficulty[level].handleClick.bind(
           difficulty[level]
         );

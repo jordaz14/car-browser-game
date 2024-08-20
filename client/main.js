@@ -46,7 +46,7 @@ function gameLoop(timestamp) {
       gameState.lastSpawnTime = timestamp;
     }
 
-    // Move abstacles and scenery
+    // Move obstacles and scenery
     motion.moveSceneObj(environment.activeObstacles, environment.road);
     motion.moveSceneObj(environment.activeScenery, environment.dirt.left);
 
