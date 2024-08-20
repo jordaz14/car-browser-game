@@ -1,3 +1,4 @@
+// OTHER MISC. FUNCTIONS
 export const helper = {
   getRandomInt(min, max) {
     min = Math.ceil(min);

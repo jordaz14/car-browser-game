@@ -149,6 +149,7 @@ export const difficulty = {
   },
 };
 
+// Initialize difficulty.js
 difficulty.addDifficultyEventHandler();
 difficulty.checkCachedDifficulty();
 difficulty.setDifficultyGameState();
