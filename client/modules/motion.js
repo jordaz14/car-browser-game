@@ -11,59 +11,68 @@ const arrowKeys = {
   },
 };
 
-function checkTouchLeft(event) {
-  const touch = event.touches[0];
-  const touchX = touch.clientX;
-  const screenWidth = window.innerWidth;
-
-  if (touchX < screenWidth / 2) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
 export const motion = {
   // ENABLES/DISABLES USER MOVEMENT
   toggleUserInput(gameActive) {
-    // Add keyboard input if game active
+    // Add user input if game active
     if (gameActive) {
+      // Add keyboard input
       document.addEventListener("keydown", (event) => {
         if (arrowKeys.hasOwnProperty(event.key)) {
+          // Update key state
           arrowKeys[event.key] = true;
+
+          // Update UI of arrow icon
           arrowKeys.el[event.key].style.backgroundColor = "black";
           arrowKeys.el[event.key].style.color = "white";
         }
       });
       document.addEventListener("keyup", (event) => {
         if (arrowKeys.hasOwnProperty(event.key)) {
+          // Update key state
           arrowKeys[event.key] = false;
+
+          // Update UI of arrow icon
           arrowKeys.el[event.key].style.backgroundColor = "white";
           arrowKeys.el[event.key].style.color = "black";
         }
       });
-      // Add mobile/click input
+
+      // Add mobile input
       document.addEventListener("touchstart", (event) => {
+        // If left side of screen touched...
         if (checkTouchLeft(event)) {
+          // Update key state
           arrowKeys["ArrowLeft"] = true;
+
+          //Update UI of arrow icon
           arrowKeys.el["ArrowLeft"].style.backgroundColor = "black";
           arrowKeys.el["ArrowLeft"].style.color = "white";
-        } else {
+        }
+        // If right side of screen touched...
+        else {
+          //Update key state
           arrowKeys["ArrowRight"] = true;
+
+          //Update UI of arrow icon
           arrowKeys.el["ArrowRight"].style.backgroundColor = "black";
           arrowKeys.el["ArrowRight"].style.color = "white";
         }
       });
+
       document.addEventListener("touchend", () => {
+        //Clear left arrow state
         arrowKeys["ArrowLeft"] = false;
         arrowKeys.el["ArrowLeft"].style.backgroundColor = "white";
         arrowKeys.el["ArrowLeft"].style.color = "black";
+
+        //Clear right arrow state
         arrowKeys["ArrowRight"] = false;
         arrowKeys.el["ArrowRight"].style.backgroundColor = "white";
         arrowKeys.el["ArrowRight"].style.color = "black";
       });
     }
-    // Remove keyboard input if game unactive
+    // Remove user input if game unactive
     else {
       document.removeEventListener("keydown", (event) => {
         if (arrowKeys.hasOwnPropert(event.key)) {
@@ -175,3 +184,16 @@ export const motion = {
     )}px`;
   },
 };
+
+// CHECKS WHERE USER TOUCHES SCREEN
+function checkTouchLeft(event) {
+  const touch = event.touches[0];
+  const touchX = touch.clientX;
+  const screenWidth = window.innerWidth;
+
+  if (touchX < screenWidth / 2) {
+    return true;
+  } else {
+    return false;
+  }
+}
