@@ -34,6 +34,11 @@ getPgVersion();
 
 /* ROUTE HANDLERS */
 
+// CHECK IF SERVER IS LIVE ON DEPLOYMENT
+app.get("/", (req, res) => {
+  res.status(200).send({ message: "Welcome to the Server" });
+});
+
 // REFRESHES LEADERBOARD
 app.get("/refresh-leaderboard/:partyId", async (req, res) => {
   try {
