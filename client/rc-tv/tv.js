@@ -1,7 +1,7 @@
 console.log("Hello world");
 
 const tbody = document.querySelector("tbody");
-const url = "https://traffic-browser-game-b0ad.onrender.com/";
+const url = "https://car-browser-game-car-browser-game-pr-3.up.railway.app/";
 
 function refreshLeaderboard(partyId) {
   tbody.innerHTML = "";
