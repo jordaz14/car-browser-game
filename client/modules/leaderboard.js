@@ -4,7 +4,7 @@ export function leaderboard() {
   console.log("leaderboard.js active");
 }
 
-const url = "https://traffic-browser-game-b0ad.onrender.com/";
+const url = "https://car-browser-game-car-browser-game-pr-2.up.railway.app/";
 let firstload = true;
 
 const party = {
