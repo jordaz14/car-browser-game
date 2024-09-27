@@ -1,7 +1,7 @@
 console.log("Hello world");
 
 const tbody = document.querySelector("tbody");
-const url = "https://car-browser-game-car-browser-game-pr-3.up.railway.app/";
+const url = "https://car-browser-game-production.up.railway.app/";
 
 function refreshLeaderboard(partyId) {
   tbody.innerHTML = "";
