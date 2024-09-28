@@ -107,7 +107,7 @@ scoreForm.addEventListener("submit", (e) => {
     "Submitted Data:",
     scoreFormJSON.username,
     party.activeId,
-    score.active.score
+    score.active.count
   );
 
   // Post username, partyId, & score to endpoint
