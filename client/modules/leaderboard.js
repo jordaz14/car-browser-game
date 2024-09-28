@@ -103,7 +103,7 @@ scoreForm.addEventListener("submit", (e) => {
   const scoreFormData = new FormData(scoreForm);
   const scoreFormJSON = Object.fromEntries(scoreFormData.entries());
 
-  let submittedScore = score.active.score;
+  let submittedScore = score.active.count;
   console.log(submittedScore);
 
   // Post username, partyId, & score to endpoint
