@@ -103,21 +103,21 @@ scoreForm.addEventListener("submit", (e) => {
   const scoreFormData = new FormData(scoreForm);
   const scoreFormJSON = Object.fromEntries(scoreFormData.entries());
 
-  console.log(
-    "Submitted Data:",
-    scoreFormJSON.username,
-    party.activeId,
-    score.active.count
-  );
+    console.log(
+      "Submitted Data:",
+      scoreFormJSON.username,
+      party.activeId,
+      score.active.count
+    );
 
-  // Post username, partyId, & score to endpoint
-  postData("submit-score", undefined, {
-    username: scoreFormJSON.username,
-    partyId: party.activeId,
-    score: score.active.score,
-  }).then((result) => {
-    // Notify user of response
-    leaderboardNotify.textContent = result.message;
+    // Post username, partyId, & score to endpoint
+    postData("submit-score", undefined, {
+      username: scoreFormJSON.username,
+      partyId: party.activeId,
+      score: 100,
+    }).then((result) => {
+      // Notify user of response
+      leaderboardNotify.textContent = result.message;
 
     // Cache username
     sessionStorage.setItem("cachedUsername", scoreFormJSON.username);
