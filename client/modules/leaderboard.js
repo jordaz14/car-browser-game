@@ -103,6 +103,13 @@ scoreForm.addEventListener("submit", (e) => {
   const scoreFormData = new FormData(scoreForm);
   const scoreFormJSON = Object.fromEntries(scoreFormData.entries());
 
+  console.log(
+    "Submitted Data:",
+    scoreFormJSON.username,
+    party.activeId,
+    score.active.score
+  );
+
   // Post username, partyId, & score to endpoint
   postData("submit-score", undefined, {
     username: scoreFormJSON.username,
