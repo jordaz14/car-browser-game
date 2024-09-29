@@ -21,19 +21,19 @@ Traffic trouble is a top-down car game where you dodge potholes, featuring multi
 
 ## Core Technologies
 
-### Frontend
-- JavaScript
-- HTML / CSS
-## Backend
-- Node.js
-- Express.js
-## Database
-- Supabase
-- PostgreSQL
-- SQL
-## Deployment
-- Render
-- Railway
+- **Frontend**
+  - JavaScript
+  - HTML / CSS
+- **Backend**
+  - Node.js
+  - Express.js
+- **Database**
+  - Supabase
+  - PostgreSQL
+  - SQL
+- **Deployment**
+  - Render
+  - Railway
 
 ## Installation
 
