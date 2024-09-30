@@ -22,17 +22,17 @@ Traffic trouble is a top-down car game where you dodge potholes, featuring multi
 ## Core Technologies
 
 - **Frontend**
-  - JavaScript
-  - HTML / CSS
+  - JavaScript - _handle game logic (e.g. score tracking, movement, and difficulty levels)_
+  - HTML / CSS - _structure static game control cards and stylize in 1-bit art style_
 - **Backend**
-  - Node.js - 
-  - Express.js -
+  - Node.js - _runtime environment which enables JavaScript on server side_
+  - Express.js - _manages logic for score, leaderboard, and party endpoints_
 - **Database**
-  - Supabase -
-  - PostgreSQL -
-  - SQL -
+  - Supabase - _host PostgreSQL database on Supabase's free plan_
+  - PostgreSQL - _RDBMS which supports SQL for querying data_
+  - SQL - _create leaderboard table and query user scores_
 - **Deployment**
-  - Render - _deploy client (i.e. HTML, CSS, JavaScript) on free plan_  
+  - Render - _deploy client (i.e. HTML, CSS, JavaScript) on Render's free plan_  
   - Railway - _deploy backend on Railway to avoid Render's free plan server downtimes_ 
 
 ## Installation
@@ -89,21 +89,20 @@ node server.js
 
 ## Codebase Overview
 
-->**CLIENT**
-  - [main.js](./client/main.js)
-  - [gameState.js](./client/gameState.js)
-  - **Modules**
-    - [audio.js](./client/modules/audio.js)
-    - [difficulty.js](./)
-    - [environment.js]()
-    - [leaderboard.js]()
-    - [motion.js]()
-    - [score.js]()
-    - [helper.js]()
-  - **Rc-tv**
-    
-**SERVER**
-  - [server.js](./server/server.js)
+- **CLIENT**
+  - [main.js](./client/main.js) - starts game, runs game loops, and ends game
+  - [gameState.js](./client/gameState.js) - contains core game settings which are dynamically updated across app
+  - **modules**
+    - [audio.js](./client/modules/audio.js) - toggles mute status, handles audio player, and updates playback speed
+    - [difficulty.js](./client/modules/difficulty.js) - handles state and UI for difficulty levels
+    - [environment.js](./client/modules/environment.js) - constructs environment objects, creates obstacles and environment
+    - [leaderboard.js](./client/modules/leaderboard.js) - displays leaderboard, submit scores to backend, create & join parties
+    - [motion.js](./client/modules/motion.js) - establishes keyboard and touch user input, collision detection, and obstacle/scenery movement
+    - [score.js](./client/modules/score.js) - tracks active and high scores, caches high score in browser
+    - [helper.js](./client/modules/helper.js) - misc. helper functions
+  - **rc-tv**  
+- **SERVER**
+  - [server.js](./server/server.js) - handles party creation/joining, leaderboard fetching, and score submissions
 
 ## Technical Features
 
