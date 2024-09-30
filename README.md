@@ -15,7 +15,7 @@ Traffic trouble is a top-down car game where you dodge potholes, featuring multi
 - [Installation](#installation)
 - [How to Use](#how-to-use)
 - [Codebase Overview](#codebase-overview)
-- [Key Features](#key-features)
+- [Technical Features](#technical-features)
 - [Future Improvements](#future-improvements)
 - [License](#license)
 
@@ -25,25 +25,104 @@ Traffic trouble is a top-down car game where you dodge potholes, featuring multi
   - JavaScript
   - HTML / CSS
 - **Backend**
-  - Node.js
-  - Express.js
+  - Node.js - 
+  - Express.js -
 - **Database**
-  - Supabase
-  - PostgreSQL
-  - SQL
+  - Supabase -
+  - PostgreSQL -
+  - SQL -
 - **Deployment**
-  - Render
-  - Railway
+  - Render - _deploy client (i.e. HTML, CSS, JavaScript) on free plan_  
+  - Railway - _deploy backend on Railway to avoid Render's free plan server downtimes_ 
 
 ## Installation
+
+As a reminder, this game is available to play on [render](https://traffic-browser-game.onrender.com/).
+
+Before installing, you will need to create an account with NeonDB and deploy your own DB [here](https://console.neon.tech/app/projects). Copy the connection details provided in the dashboard section of NeonDB to your clipboard, as these will be used to establish your own DB for the project.
+
+Below are the steps to install and build upon this game:
+
+**1. Clone the respository to your IDE:**
+```
+git clone https://github.com/jordaz14/car-browser-game.git
+```
+**2. Navigate to the project directory:**
+```
+cd car-browser-game.git
+```
+**3. Install npm in the `./server` directory to get dependencies:**
+```
+cd ./server && npm install
+```
+**4. Create a `.env` file in the `./server` directory in the following format to configure your database:**
+```
+PGHOST="<neon_db_host>"
+PGDATABASE="<neon_db_name>"
+PGUSER="<neon_db_owner>"
+PGPASSWORD="<neon-db-password>"
+ENDPOINT_ID="<neon-db-endpoint>"
+```
+**5. Run the following SQL queries in NeonDB's SQL editor to create your tables:**
+
+This table records all scores and establishes a many-to-one relationship on party_id's:
+```
+CREATE TABLE leaderboard (
+  id SERIAL PRIMARY KEY,
+  username VARCHAR(50) NOT NULL,
+  party_id INT NOT NULL REFERENCES party(party_id),
+  score INTEGER NOT NULL)
+```
+This table tracks all parties (i.e. lobbies) created:
+```
+CREATE TABLE party (
+  party_id SERIAL PRIMARY KEY,
+  party_name VARCHAR(50))
+```
+**6. Use LiveServer to run your `./client` and the following command to run your `./server`:**
+```
+node server.js
+```
+**7. Ready to Use!**
 
 ## How to Use
 
 ## Codebase Overview
 
-## Key Features
+->**CLIENT**
+  - [main.js](./client/main.js)
+  - [gameState.js](./client/gameState.js)
+  - **Modules**
+    - [audio.js](./client/modules/audio.js)
+    - [difficulty.js](./)
+    - [environment.js]()
+    - [leaderboard.js]()
+    - [motion.js]()
+    - [score.js]()
+    - [helper.js]()
+  - **Rc-tv**
+    
+**SERVER**
+  - [server.js](./server/server.js)
+
+## Technical Features
+
+- **Object-Oriented Programming**
+
+- **RESTful API Design**
+
+- **Game Loops, Collision Detection, and Dynamic State Management**
+
+- **Keyboard and Touch Control Input Methods**
+
+- **Responsive Design**
 
 ## Future Improvements
+- [ ] Correct bug where initial obstacle loads too soon
+- [ ] Add leaderboard UI to mobile version
+- [ ] Create different obstacle and terrain elements
+- [ ] Prevent users from editing scores and posting to endpoint
+- [ ] Allow users to search for existing parties
 
 ## License
 This project is licensed under the GNU General Public License (GPL) - see the [LICENSE](./LICENSE) file for details.
