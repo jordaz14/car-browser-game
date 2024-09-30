@@ -87,6 +87,26 @@ node server.js
 
 ## How to Use
 
+**Play and Restart Game**
+
+https://github.com/user-attachments/assets/daad9a9c-c34b-4117-8525-3d01262880ff
+
+**Change Difficulty Levels**
+
+https://github.com/user-attachments/assets/fbcc0e86-ab81-459a-b469-90ac07d6f83b
+
+**Toggle Audio**
+
+https://github.com/user-attachments/assets/c29a03ab-7124-4fe1-b84e-cc8f59dc954d
+
+**Join and Create Parties**
+
+https://github.com/user-attachments/assets/efd19a83-1418-46d5-825c-86ea67cf0294
+
+**Submit Your Score**
+
+https://github.com/user-attachments/assets/7c6611cf-c6c2-418d-9cd3-681d570236d2
+
 ## Codebase Overview
 
 - **CLIENT**
@@ -100,7 +120,7 @@ node server.js
     - [motion.js](./client/modules/motion.js) - establishes keyboard and touch user input, collision detection, and obstacle/scenery movement
     - [score.js](./client/modules/score.js) - tracks active and high scores, caches high score in browser
     - [helper.js](./client/modules/helper.js) - misc. helper functions
-  - **rc-tv**  
+  - **rc-tv** - misc. directory pertaining to deployment on TV at The Recurse Center
 - **SERVER**
   - [server.js](./server/server.js) - handles party creation/joining, leaderboard fetching, and score submissions
 
