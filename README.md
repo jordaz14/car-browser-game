@@ -28,7 +28,7 @@ Traffic trouble is a top-down car game where you dodge potholes, featuring multi
   - Node.js - _runtime environment which enables JavaScript on server side_
   - Express.js - _manages logic for score, leaderboard, and party endpoints_
 - **Database**
-  - Supabase - _host PostgreSQL database on Supabase's free plan_
+  - NeonDB - _host PostgreSQL database on NeonDB's free plan_
   - PostgreSQL - _RDBMS which supports SQL for querying data_
   - SQL - _create leaderboard table and query user scores_
 - **Deployment**
