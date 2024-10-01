@@ -127,13 +127,10 @@ https://github.com/user-attachments/assets/7c6611cf-c6c2-418d-9cd3-681d570236d2
 ## Technical Features
 
 - **Object-Oriented Programming**
-
 - **RESTful API Design**
-
 - **Game Loops, Collision Detection, and Dynamic State Management**
-
+- **Caching in Session Storage to capture game settings**
 - **Keyboard and Touch Control Input Methods**
-
 - **Responsive Design**
 
 ## Future Improvements
